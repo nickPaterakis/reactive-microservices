@@ -1,0 +1,13 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: user-service
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+    import: optional:configserver:http://config-server:8888

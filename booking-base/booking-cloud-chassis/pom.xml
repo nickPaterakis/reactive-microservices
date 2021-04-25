@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.booking</groupId>
+		<artifactId>booking-build-chassis</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../booking-build-chassis/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>booking-cloud-chassis</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>booking-cloud-chassis</name>
+	<description>Parent pom project for Building Booking Services</description>
+	<packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>springboot</id>
+			<activation>
+				<file>
+					<!-- Just a way to identify a Spring Boot application -->
+					<exists>src/main/resources/application.yml</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<fork>true</fork>
+							<!-- Layered jars optimizes Docker images -->
+							<layers>
+								<enabled>true</enabled>
+							</layers>
+						</configuration>
+						<executions>
+							<execution>
+								<!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
+								<goals>
+									<goal>build-info</goal>
+								</goals>
+								<configuration>
+									<additionalProperties>
+										<encoding.source>${project.build.sourceEncoding}</encoding.source>
+										<encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+										<java.source>${maven.compiler.source}</java.source>
+										<java.target>${maven.compiler.target}</java.target>
+									</additionalProperties>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>buildDocker</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>com.spotify</groupId>
+							<artifactId>docker-maven-plugin</artifactId>
+							<version>${docker.plugin.version}</version>
+							<executions>
+								<execution>
+									<phase>install</phase>
+									<goals>
+										<goal>build</goal>
+									</goals>
+								</execution>
+							</executions>
+							<configuration>
+								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+								<dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>
+								<serverId>docker-hub</serverId>
+								<registryUrl>https://index.docker.io/v2/</registryUrl>
+								<resources>
+									<resource>
+										<targetPath>/</targetPath>
+										<directory>${project.build.directory}</directory>
+										<include>${project.build.finalName}.jar</include>
+									</resource>
+								</resources>
+								<buildArgs>
+									<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>
+									<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>
+									<DOCKERIZE_VERSION>${docker.image.dockerize.version}</DOCKERIZE_VERSION>
+								</buildArgs>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

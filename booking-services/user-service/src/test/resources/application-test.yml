@@ -1,0 +1,13 @@
+spring.jpa.hibernate.ddl-auto: none
+
+spring:
+  datasource:
+    schema: classpath*:db/hsqldb/schema.sql
+    data: classpath*:db/hsqldb/data.sql
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false

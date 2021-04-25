@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.booking</groupId>
+	<artifactId>booking-aggregator</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+
+	<developers>
+		<developer>
+			<id>0001</id>
+			<name>Nicholas Paterakis</name>
+			<email>nikolas.paterakis@gmail.com</email>
+			<roles>
+				<role>
+					Software Engineer
+				</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<properties>
+		<maven.install.skip>true</maven.install.skip>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
+	<modules>
+		<module>booking-base/booking-build-chassis</module>
+		<module>booking-base/booking-cloud-chassis</module>
+		<module>booking-base/booking-service-chassis</module>
+		<module>booking-cloud-infra/api-gateway</module>
+		<module>booking-cloud-infra/config-server</module>
+		<module>booking-cloud-infra/discovery-server</module>
+		<module>booking-services/property-service</module>
+		<module>booking-services/user-service</module>
+		<module>booking-services/booking-service</module>
+	</modules>
+</project>

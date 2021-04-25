@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.booking</groupId>
+		<artifactId>booking-cloud-chassis</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../../booking-base/booking-cloud-chassis/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>discovery-server</artifactId>
+	<name>discovery-server</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>Booking Discovery Server</description>
+	<packaging>jar</packaging>
+
+	<properties>
+		<docker.exposed.port>8888</docker.exposed.port>
+		<docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>buildDocker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>${docker.plugin.version}</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

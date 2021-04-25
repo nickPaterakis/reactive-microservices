@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "app.property-service.host",
+      "type": "java.lang.String",
+      "description": "Description for app.property-service.host."
+    },
+    {
+      "name": "app.user-service.host",
+      "type": "java.lang.String",
+      "description": "Description for app.user-service.host."
+    }
+  ]
+}
