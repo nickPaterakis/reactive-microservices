@@ -1,0 +1,28 @@
+.input {
+  padding: 0.7rem 0.3rem;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 1.7rem;
+  color: rgb(48, 48, 48);
+
+  &--search {
+    padding: 0;
+    &::placeholder {
+      font-size: 1.4rem;
+    }
+  }
+
+  &--sign-in {
+    border-bottom: 1px solid $white;
+    resize: vertical;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 1.7rem;
+    color: rgb(235, 235, 235);
+
+    &:hover {
+      border-bottom: 1px solid white;
+      transition: 0.8s ease;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.options {
+  display: block;
+  list-style: none;
+  width: 30rem;
+  transition: width 0.3s;
+  margin: auto;
+  position: absolute;
+  top: 7rem;
+  left: 0rem;
+  background-color: white;
+  border-radius: 2rem;
+  padding: 1rem;
+  &:first-child {
+    border-radius: 1rem;
+  }
+}
+
+ul.options li {
+  background: white;
+  padding: 10px;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+ul.options li:hover {
+  font-weight: bold;
+  color: #d3d3d3;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+
+ul.options li.option-active {
+  background: whitesmoke;
+  font-size: 1.5rem;
+  color: #212121;
+}

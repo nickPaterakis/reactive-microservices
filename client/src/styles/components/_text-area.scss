@@ -1,0 +1,16 @@
+.text-area {
+  width: 100%;
+  padding: 1.2rem 0.3rem;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  height: 15rem;
+  background-color: transparent;
+  font-size: 1.9rem;
+  color: rgb(39, 39, 39);
+
+  &:hover {
+    border-bottom: 1px solid white;
+    transition: 0.8s ease;
+  }
+}

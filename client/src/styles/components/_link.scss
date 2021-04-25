@@ -1,0 +1,27 @@
+.link {
+  &,
+  &:link,
+  &:visited {
+    text-decoration: none;
+  }
+
+  &--sign-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
+    position: relative;
+    width: 14rem;
+    height: 4rem;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 1rem;
+    color: rgb(255, 255, 255);
+    font-size: 1.6rem;
+    font-weight: 600;
+    transition: 0.7s;
+    &:hover {
+      color: #ffd52f;
+      background: white;
+    }
+  }
+}
