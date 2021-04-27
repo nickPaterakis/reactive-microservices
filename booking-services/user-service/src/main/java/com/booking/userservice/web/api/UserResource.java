@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RestController
 @Log4j2
-//@Secured("ROLE_user")
 public class UserResource implements UserEndpoint {
 
     private final UserService userService;
@@ -35,7 +34,7 @@ public class UserResource implements UserEndpoint {
 
     @Override
     public UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {
-        return null;
+        return userService.saveUserDetails(userDetailsDto);
     }
     //
 //    @Override

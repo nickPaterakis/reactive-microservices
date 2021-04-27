@@ -11,6 +11,6 @@ public class UserMapper {
                 .setFirstName(userDetailsDto.getFirstName())
                 .setLastName(userDetailsDto.getLastName())
                 .setEmail(userDetailsDto.getEmail())
-                .setRules(userDetailsDto.getRoles());
+                .setRoles(userDetailsDto.getRoles());
     }
 }

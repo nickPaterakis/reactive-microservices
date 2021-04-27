@@ -30,7 +30,7 @@ public class User {
 
     private String phone;
 
-    private List<Role> rules;
+    private List<Role> roles;
 
     @PersistenceConstructor
     public User(UUID id, String email, String firstName, String lastName, String phone, List<Role> roles) {
@@ -39,6 +39,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.rules = roles;
+        this.roles = roles;
     }
 }

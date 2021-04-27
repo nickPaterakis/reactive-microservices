@@ -1,4 +1,4 @@
-package com.booking.bookingapi.core.user.security;
+package com.booking.bookingapi.composite.dto;
 
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.security.core.GrantedAuthority;

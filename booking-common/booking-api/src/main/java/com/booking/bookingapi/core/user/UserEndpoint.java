@@ -13,9 +13,9 @@ public interface UserEndpoint extends UserService {
 
     @GetMapping("/me/{uuid}")
     @Override
-    Mono<UserDetailsDto> getUserDetails(UUID uuid);
+    Mono<UserDetailsDto> getUserDetails(@PathVariable UUID uuid);
 
-    @GetMapping("/me/{email}")
+    @GetMapping("/{email}")
     @Override
     Mono<UserDetailsDto> findUserByEmail(@PathVariable String email);
 }

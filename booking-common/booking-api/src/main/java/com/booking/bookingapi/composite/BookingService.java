@@ -4,8 +4,8 @@ import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
-import com.booking.bookingapi.core.user.security.BookingUser;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +28,7 @@ public interface BookingService {
 
     Mono<UserDetailsDto> findUserByEmail(String email);
 
-    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser bookingUser);
+    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt);
 
     Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, Mono<Principal> principal);
 

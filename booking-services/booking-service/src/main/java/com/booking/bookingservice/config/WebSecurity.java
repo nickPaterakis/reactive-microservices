@@ -3,14 +3,16 @@ package com.booking.bookingservice.config;
 import com.booking.bookingservice.security.BookingReactiveUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class WebSecurity {
 
-    BookingReactiveUserDetailsService bookingReactiveUserDetailsService;
+    private final BookingReactiveUserDetailsService bookingReactiveUserDetailsService;
 
     @Autowired
     public WebSecurity(BookingReactiveUserDetailsService bookingReactiveUserDetailsService) {
@@ -18,7 +20,7 @@ public class WebSecurity {
     }
 
     @Bean
-    SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http)  {
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http)  {
         http
                 .cors()
                 .disable()
@@ -27,12 +29,13 @@ public class WebSecurity {
                 .authorizeExchange()
                 .pathMatchers("/booking/api/v1/countries/**").permitAll()
                 .pathMatchers("/booking/api/v1/properties/**").permitAll()
+                .pathMatchers("/booking/api/v1/users/**").permitAll()
                 .anyExchange()
                 .authenticated()
                 .and()
                 .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(bookingUserJwtAuthenticationConverter());
+                .jwt();
+                //.jwtAuthenticationConverter(bookingUserJwtAuthenticationConverter());
 
         return http.build();
     }

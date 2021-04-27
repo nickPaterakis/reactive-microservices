@@ -97,7 +97,7 @@ public class BookingIntegration implements CountryService, PropertyService, User
         var url = UriComponentsBuilder
                 .fromUriString("http://localhost:8082"
                         .concat("/users/me/{uuid}"))
-                .build(uuid);
+                .build(uuid.toString());
 
         return getWebClient()
                 .get()
@@ -111,15 +111,19 @@ public class BookingIntegration implements CountryService, PropertyService, User
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         var url = UriComponentsBuilder
                 .fromUriString("http://localhost:8082"
-                .concat("/users/me/{email}"))
+                .concat("/users/{email}"))
                 .build(email);
 
-        return getWebClient()
+        Mono<UserDetailsDto> user = getWebClient()
                 .get()
                 .uri(url)
                 .retrieve()
                 .bodyToMono(UserDetailsDto.class)
                 .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
+
+        user.subscribe(System.out::println);
+
+        return user;
     }
 
     @Override

@@ -4,8 +4,8 @@ spring:
   application:
     name: user-service
 
-
 ---
+
 spring:
   config:
     activate:

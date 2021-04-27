@@ -5,11 +5,11 @@ import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
-import com.booking.bookingapi.core.user.security.BookingUser;
 import com.booking.bookingservice.integration.BookingIntegration;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -45,19 +45,21 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
-        System.out.println(user.getId().toString());
+    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt) {
+        System.out.println(jwt.getClaims());
         return integration.getUserDetails(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
                 .onErrorMap(Throwable::getCause);
     }
 
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {
-        return null;
+        log.info("findUserByEmail: {}", email);
+        return integration.findUserByEmail(email);
     }
 
     @Override
     public Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, Mono<Principal> principal) {
+        log.info("saveUserDetails: {}", userDetailsRequest.getEmail());
         return Mono.just(integration.saveUserDetails(createUser(userDetailsRequest)));
     }
 
