@@ -11,4 +11,5 @@ public interface UserService {
     Mono<UserDetailsDto> findUserByEmail(String email);
 
     UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto);
+
 }

@@ -1,8 +1,9 @@
 package com.booking.bookingservice.security;
 
+import com.booking.bookingapi.composite.BookingService;
 import com.booking.bookingapi.composite.dto.BookingUser;
-import com.booking.bookingservice.service.BookingServiceImpl;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,9 @@ import reactor.core.publisher.Mono;
 @Log4j2
 public class BookingReactiveUserDetailsService implements ReactiveUserDetailsService {
 
-    private final BookingServiceImpl bookingService;
+    private final BookingService bookingService;
 
-    public BookingReactiveUserDetailsService(BookingServiceImpl bookingService) {
+    public BookingReactiveUserDetailsService(@Qualifier("BookingServiceImpl") BookingService bookingService) {
         this.bookingService = bookingService;
     }
 

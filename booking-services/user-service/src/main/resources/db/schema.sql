@@ -8,11 +8,12 @@ use user_db;
 # DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS users (
-    id INT NOT NULL auto_increment,
-    user_id varchar(40),
+    id binary(16),
     first_name VARCHAR(30),
     last_name VARCHAR(30),
     email VARCHAR(100),
     phone_number VARCHAR(20),
     CONSTRAINT PK_User PRIMARY KEY (id)
 );
+
+select * from properties where owner = "76393fab-10b2-40bb-b3ef-b75a76829178";

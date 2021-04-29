@@ -4,7 +4,7 @@ import com.booking.bookingapi.composite.BookingEndpoint;
 import com.booking.bookingapi.composite.BookingService;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
+import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +36,13 @@ public class BookingResource implements BookingEndpoint {
     }
 
     @Override
-    public Flux<PropertyDto> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
         return bookingService.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
     }
 
     @Override
-    public Flux<PropertyDto> getProperties(String ownerId) {
-        return null;
+    public Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt) {
+        return bookingService.getProperties(jwt);
     }
 
     @Override

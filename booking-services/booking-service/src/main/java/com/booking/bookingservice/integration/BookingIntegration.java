@@ -2,7 +2,8 @@ package com.booking.bookingservice.integration;
 
 import com.booking.bookingapi.core.property.CountryService;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
+import com.booking.bookingapi.core.property.Dto.PageProperties;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.property.PropertyService;
 import com.booking.bookingapi.core.user.UserService;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
@@ -71,7 +72,7 @@ public class BookingIntegration implements CountryService, PropertyService, User
     }
 
     @Override
-    public Flux<PropertyDto> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
 
         var url = UriComponentsBuilder
                 .fromUriString( "http://localhost:8081"
@@ -84,12 +85,37 @@ public class BookingIntegration implements CountryService, PropertyService, User
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToFlux(PropertyDto.class);
+                .bodyToMono(PageProperties.class);
     }
 
     @Override
-    public Flux<PropertyDto> getProperties(String ownerId) {
-        return null;
+    public Mono<PageProperties> getProperties(UUID ownerId) {
+        var url = UriComponentsBuilder
+                .fromUriString("http://localhost:8081"
+                        .concat("/properties/{ownerId}"))
+                .build(ownerId.toString());
+
+        return getWebClient()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(PageProperties.class)
+                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
+    }
+
+    @Override
+    public Mono<PropertyDetailsDto> getProperty(Long propertyId) {
+        var url = UriComponentsBuilder
+                .fromUriString("http://localhost:8081"
+                        .concat("/properties/property/{propertyId}"))
+                .build(propertyId);
+
+        return getWebClient()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(PropertyDetailsDto.class)
+                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
     }
 
     @Override

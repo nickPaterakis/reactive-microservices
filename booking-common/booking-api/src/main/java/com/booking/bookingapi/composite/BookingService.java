@@ -1,8 +1,9 @@
 package com.booking.bookingapi.composite;
 
+import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
+import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,7 +17,7 @@ public interface BookingService {
 
     Flux<CountryDto> getCountries(String name);
 
-    Flux<PropertyDto> searchProperties(
+    Mono<PageProperties> searchProperties(
             String location,
             LocalDate checkIn,
             LocalDate checkOut,
@@ -24,7 +25,9 @@ public interface BookingService {
             int currentPage
     );
 
-    Flux<PropertyDto> getProperties(String ownerId);
+    Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt);
+
+    Mono<PropertyAggregate> getProperty(Long propertyId);
 
     Mono<UserDetailsDto> findUserByEmail(String email);
 

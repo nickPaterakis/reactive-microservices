@@ -1,8 +1,9 @@
 package com.booking.bookingapi.composite;
 
+import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
+import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,7 @@ public interface BookingEndpoint extends BookingService  {
 
     @GetMapping("/properties/search")
     @Override
-    Flux<PropertyDto> searchProperties(
+    Mono<PageProperties> searchProperties(
             @RequestParam(value = "location") String location,
             @RequestParam(value = "checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
             @RequestParam(value = "checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
@@ -31,9 +32,13 @@ public interface BookingEndpoint extends BookingService  {
             @RequestParam(value = "currentPage") int currentPage
     );
 
-    @GetMapping("properties/{ownerId}")
+    @GetMapping("properties/user")
     @Override
-    Flux<PropertyDto> getProperties(@PathVariable String ownerId);
+    Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt);
+
+    @GetMapping("properties/property/{propertyId}")
+    @Override
+    Mono<PropertyAggregate> getProperty(@PathVariable Long propertyId);
 
     @GetMapping("users/me")
     @Override

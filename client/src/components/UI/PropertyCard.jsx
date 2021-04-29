@@ -23,41 +23,42 @@ const PropertyCard = ({ property }) => {
   // console.log(dynamicImage);
   // const image = '3.jpg';
   return (
-    <div className="card card--property">
-      {/* <Link to={`/property/${property.id}`} className="card_link" /> */}
-      <div className="card__image-container">
-        <img className="card__image" src={image} alt={property.title} />
-      </div>
-      <div className="card__description">
-        <h1 className="card__title">{property.title}</h1>
-        <h1 className="card__sub-title">
-          {property.propertyType}
-          {' in '}
-          {property.country}
-        </h1>
-        <div className="card__property-characteristics">
-          {`${property.maxGuestNumber} guests ${property.bedroomNumber} bedrooms ${property.bathNumber} bath`}
+    <Link to={`/property/${property.id}`} className="link card_link">
+      <div className="card card--property">
+        <div className="card__image-container">
+          <img className="card__image" src={image} alt={property.title} />
         </div>
-        <div className="card__amenities">
-          {property.amenities.map((amenity, index) => (
-            <aux key={amenity.id}>
-              <span>{amenity.name}</span>
-              {index < property.amenities.length - 1 ? <span>{' · '}</span> : null}
-            </aux>
-          ))}
-        </div>
-        <div className="card__price">
-          {'€ '}
-          <span className="card__price__number bold">{property.pricePerNight}</span>
-          {' / night'}
-        </div>
-        {/* <div className="card__total-price">
+        <div className="card__description">
+          <h1 className="card__title">{property.title}</h1>
+          <h1 className="card__sub-title">
+            {property.propertyType}
+            {' in '}
+            {property.country}
+          </h1>
+          <div className="card__property-characteristics">
+            {`${property.maxGuestNumber} guests ${property.bedroomNumber} bedrooms ${property.bathNumber} bath`}
+          </div>
+          <div className="card__amenities">
+            {property.amenities.map((amenity, index) => (
+              <aux key={amenity.id}>
+                <span>{amenity}</span>
+                {index < property.amenities.length - 1 ? <span>{' · '}</span> : null}
+              </aux>
+            ))}
+          </div>
+          <div className="card__price">
+            {'€ '}
+            <span className="card__price__number bold">{property.pricePerNight}</span>
+            {' / night'}
+          </div>
+          {/* <div className="card__total-price">
           {'€ '}
           <span className="card__total-price__number bold">{days * property.pricePerNight}</span>
           {' total'}
         </div> */}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

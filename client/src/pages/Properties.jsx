@@ -30,7 +30,7 @@ const Properties = () => {
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
   };
-  
+
   if (status === 'loading') {
     return (
       <Spinner />
@@ -45,25 +45,26 @@ const Properties = () => {
     );
   }
 
-  if (status === 'succeeded') {
-    return (
-      <div>
-        {propertiesPage}
-      </div>
-    );
-  }
+  // if (status === 'succeeded') {  
+  //   const { properties } = propertiesPage;
+  //   console.log(properties);
+  //   return (
+  //     <div>
+  //       {propertiesPage}
+  //     </div>
+  //   );
+  // }
 
-  const properties = propertiesPage.content;
-  const { totalElements } = propertiesPage;
+  const { properties } = JSON.parse(propertiesPage);
+  const { totalElements } = JSON.parse(propertiesPage);
   const pageCount = Math.ceil(totalElements / PER_PAGE);
 
-  console.log(currentPage);
-
+  console.log(properties);
   return (
     <div className="properties">
       <section className="result-section">
         <div className="properties-header  u-margin-bottom-medium">
-          <h1 className="properties-header__title">{`${location}: ${propertiesPage.totalElements} properties found ` }</h1>
+          <h1 className="properties-header__title">{`${location}: ${totalElements} properties found ` }</h1>
         </div>
         <div className="properties_list">
           {properties.map((element) => <PropertyCard property={element} key={element.id} />)}

@@ -13,7 +13,7 @@ export const listProperties = (
   checkIn = '',
   checkOut = '',
   guestNumber = '',
-  currentPage = 1,
+  currentPage = 0,
 ) => async (dispatch) => {
   try {
     dispatch({ type: PROPERTY_LIST_REQUEST });
@@ -28,11 +28,11 @@ export const listProperties = (
       }&guestNumber=${  
         guestNumber
       }&currentPage=${  
-        1}`,
+        currentPage}`,
     );
-
-    console.log(data);
-    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: data });
+    
+    console.log(JSON.stringify(data.properties));
+    dispatch({ type: PROPERTY_LIST_SUCCESS, payload: JSON.stringify(data) });
   } catch (error) {
     dispatch({ type: PROPERTY_LIST_FAIL, payload: error.message });
   }

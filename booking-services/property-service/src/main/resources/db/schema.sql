@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS properties (
     bath_number int,
     price_per_night int,
     country_id INT NOT NULL,
-    owner_id int,
+    owner varchar(36),
     CONSTRAINT PK_Property PRIMARY KEY (id),
     CONSTRAINT FK_Country FOREIGN KEY (country_id)
         REFERENCES countries (id),
@@ -95,18 +95,18 @@ CREATE TABLE IF NOT EXISTS property_amenities (
         REFERENCES amenities (id)
 );
 
--- SELECT * FROM properties p
---              inner join countries c on p.country_id = c.id
---              inner join reservations r on p.id = r.property_id
---              WHERE
---              p.max_guest_number >= 2
---              and
---              c.name = 'greece'
---              and
---              (DATE('2021-3-3') not between r.check_in and r.check_out
---              or
---              DATE('2021-3-5') not between r.check_in and r.check_out)
---              and
---              (r.check_in not between DATE('2021-3-3')  and DATE('2021-3-5')
---              or
---              r.check_out not between DATE('2021-3-3')  and DATE('2021-3-5'));
+SELECT count(*) FROM properties p
+             inner join countries c on p.country_id = c.id
+             inner join reservations r on p.id = r.property_id
+             WHERE
+             p.max_guest_number >= 2
+             and
+             c.name = 'greece'
+             and
+             (DATE('2021-3-3') not between r.check_in and r.check_out
+             or
+             DATE('2021-3-5') not between r.check_in and r.check_out)
+             and
+             (r.check_in not between DATE('2021-3-3')  and DATE('2021-3-5')
+             or
+             r.check_out not between DATE('2021-3-3')  and DATE('2021-3-5'));

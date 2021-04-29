@@ -1,10 +1,15 @@
 package com.booking.propertyservice.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -38,8 +43,10 @@ public class Property extends BaseEntity{
     @Column(name = "price_per_night")
     private Float pricePerNight;
 
-    @Column( name = "owner_id")
-    private String owner_id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "owner", columnDefinition = "BINARY(16)")
+    private UUID owner;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

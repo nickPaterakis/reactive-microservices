@@ -35,6 +35,8 @@
         "arrow-body-style": "warn",
         "no-trailing-spaces": "off",
         "no-undef": "warn",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "jsx-a11y/anchor-is-valid": "warn",
+        "import/no-unresolved": "warn"
     }
 }

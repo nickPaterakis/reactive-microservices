@@ -1,9 +1,10 @@
 package com.booking.bookingservice.service;
 
 import com.booking.bookingapi.composite.BookingService;
+import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
+import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import com.booking.bookingservice.integration.BookingIntegration;
 import lombok.extern.log4j.Log4j2;
@@ -35,18 +36,46 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Flux<PropertyDto> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
         return integration.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
     }
 
     @Override
-    public Flux<PropertyDto> getProperties(String ownerId) {
-        return null;
+    public Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt) {
+        return integration.getProperties(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"));
+    }
+
+    @Override
+    public Mono<PropertyAggregate> getProperty(Long propertyId) {
+        PropertyAggregate propertyAggregate = new PropertyAggregate();
+        return integration.getProperty(propertyId)
+                .map(propertyDetailsDto -> {
+                    propertyAggregate
+                            .setId(propertyDetailsDto.getId())
+                            .setTitle(propertyDetailsDto.getTitle())
+                            .setPropertyType(propertyDetailsDto.getPropertyType())
+                            .setGuestSpace(propertyDetailsDto.getGuestSpace())
+                            .setMaxGuestNumber(propertyDetailsDto.getMaxGuestNumber())
+                            .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
+                            .setBathNumber(propertyDetailsDto.getBathNumber())
+                            .setPricePerNight(propertyDetailsDto.getPricePerNight())
+                            .setCountry(propertyDetailsDto.getCountry())
+                            .setImage(propertyDetailsDto.getImage())
+                            .setAmenities(propertyDetailsDto.getAmenities())
+                            .setUserId(propertyDetailsDto.getUserId());
+                    return propertyAggregate;
+                })
+                .flatMap(pa -> integration.getUserDetails(pa.getUserId()))
+                .map(userDetailsDto -> {
+                    propertyAggregate
+                            .setUserName(userDetailsDto.getFirstName() + " " + userDetailsDto.getLastName());
+                    return propertyAggregate;
+                });
     }
 
     @Override
     public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt) {
-        System.out.println(jwt.getClaims());
+        System.out.println(jwt.getClaims().get("sub"));
         return integration.getUserDetails(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
                 .onErrorMap(Throwable::getCause);
     }
@@ -70,4 +99,7 @@ public class BookingServiceImpl implements BookingService {
                 .setLastName(userDetailsRequest.getLastName())
                 .setEmail(userDetailsRequest.getEmail());
     }
+
+
+
 }

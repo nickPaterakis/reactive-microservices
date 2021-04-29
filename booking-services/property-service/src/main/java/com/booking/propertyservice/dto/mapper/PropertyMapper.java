@@ -1,10 +1,10 @@
 package com.booking.propertyservice.dto.mapper;
 
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDto;
-import com.booking.propertyservice.model.*;
+import com.booking.propertyservice.model.NameEntity;
+import com.booking.propertyservice.model.Property;
 
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PropertyMapper {
@@ -22,6 +22,22 @@ public class PropertyMapper {
                 .setCountry(property.getCountry().getName())
                 .setImage(property.getImages().iterator().next().getName())
                 .setAmenities(property.getAmenities().stream().map(NameEntity::getName).collect(Collectors.toSet()));
+    }
+
+    public static PropertyDetailsDto toPropertyDetailsDto(Property property) {
+        return new PropertyDetailsDto()
+                .setId(property.getId())
+                .setTitle(property.getTitle())
+                .setPropertyType(property.getPropertyType().getName())
+                .setGuestSpace(property.getGuestSpace().getName())
+                .setMaxGuestNumber(property.getMaxGuestNumber())
+                .setBedroomNumber(property.getBedroomNumber())
+                .setPricePerNight(property.getPricePerNight())
+                .setBathNumber(property.getBathNumber())
+                .setCountry(property.getCountry().getName())
+                .setImage(property.getImages().iterator().next().getName())
+                .setAmenities(property.getAmenities().stream().map(NameEntity::getName).collect(Collectors.toSet()))
+                .setUserId(property.getOwner());
     }
 //
 //    public static Property toProperty(PropertyDto propertyDto) {
