@@ -1,0 +1,70 @@
+.dropdown {
+  position: relative;
+  border-radius: 0.7rem;
+  font-size: 1.3rem;
+
+  &--guests {
+    position: absolute;
+    padding: 0.7rem;
+    top: 7rem;
+    right: 0rem;
+    width: 28rem;
+    background-color: rgb(255, 255, 255);
+  }
+
+  &--account {
+    position: absolute;
+    padding: 0.2rem;
+    top: 5.7rem;
+    right: 0.2rem;
+    width: 23rem;
+    background-color: rgb(255, 255, 255);
+  }
+
+  &__item {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+
+    &--guests {
+      justify-content: space-between;
+    }
+
+    &--account {
+      &:hover {
+        background-color: rgb(247, 247, 247);
+      }
+    }
+
+    &__text {
+      color: black;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    &__icon {
+      display: flex;
+      margin-right: 1rem;
+      svg {
+        color: rgb(95, 95, 95);
+        font-weight: 300;
+        align-self: center;
+        width: 2.5rem;
+        height: 3rem;
+      }
+    }
+
+    &__number {
+      margin: auto 0;
+    }
+
+    &__buttons {
+      width: 9rem;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
