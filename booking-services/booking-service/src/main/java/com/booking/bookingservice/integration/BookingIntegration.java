@@ -124,7 +124,7 @@ public class BookingIntegration implements CountryService, PropertyService, User
                 .fromUriString("http://localhost:8082"
                         .concat("/users/me/{uuid}"))
                 .build(uuid.toString());
-
+        System.out.println(uuid.toString());
         return getWebClient()
                 .get()
                 .uri(url)

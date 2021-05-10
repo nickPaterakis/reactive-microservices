@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -43,10 +41,8 @@ public class Property extends BaseEntity{
     @Column(name = "price_per_night")
     private Float pricePerNight;
 
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "owner", columnDefinition = "BINARY(16)")
-    private UUID owner;
+    @Column(name = "owner")
+    private String owner;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -56,9 +52,9 @@ public class Property extends BaseEntity{
     )
     Set<Amenity> amenities;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @OneToMany(mappedBy = "property")
     private Set<Reservation> reservations;

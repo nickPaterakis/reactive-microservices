@@ -1,5 +1,6 @@
 package com.booking.bookingapi.composite.dto;
 
+import com.booking.bookingapi.core.property.Dto.AddressDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -36,14 +37,16 @@ public class PropertyAggregate {
 
     private Float pricePerNight;
 
-    private String country;
+    private AddressDto address;
 
     private String image;
 
     private Set<String> amenities;
 
-    private String userName;
+    private String ownerFirstName;
 
-    private UUID userId;
+    private String ownerLastName;
+
+    private UUID ownerId;
 
 }

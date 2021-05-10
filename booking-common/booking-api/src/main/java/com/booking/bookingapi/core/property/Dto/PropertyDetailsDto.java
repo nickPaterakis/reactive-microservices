@@ -36,12 +36,12 @@ public class PropertyDetailsDto {
 
     private Float pricePerNight;
 
-    private String country;
+    private AddressDto address;
 
     private String image;
 
     private Set<String> amenities;
 
-    private UUID userId;
+    private UUID ownerId;
 
 }

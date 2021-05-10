@@ -12,7 +12,19 @@
 
 	<artifactId>discovery-server</artifactId>
 	<name>discovery-server</name>
-	<version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <version>1.0-SNAPSHOT</version>
 	<description>Booking Discovery Server</description>
 	<packaging>jar</packaging>
 

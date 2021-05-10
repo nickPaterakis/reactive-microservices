@@ -38,6 +38,18 @@ CREATE TABLE IF NOT EXISTS guest_spaces (
 --     CONSTRAINT PK_Owner PRIMARY KEY (id)
 -- );
 
+create table if not exists addresses (
+	id int not null auto_increment,
+    city varchar(30),
+    country_id int,
+    postcode varchar(30),
+    street_name varchar(30),
+    street_number int,
+	CONSTRAINT PK_Property PRIMARY KEY (id),
+	CONSTRAINT FK_Country FOREIGN KEY (country_id)
+        REFERENCES countries (id)
+);
+
 CREATE TABLE IF NOT EXISTS properties (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(200),
@@ -47,15 +59,13 @@ CREATE TABLE IF NOT EXISTS properties (
     bedroom_number int,
     bath_number int,
     price_per_night int,
-    country_id INT NOT NULL,
+	address_id int,
     owner varchar(36),
     CONSTRAINT PK_Property PRIMARY KEY (id),
-    CONSTRAINT FK_Country FOREIGN KEY (country_id)
-        REFERENCES countries (id),
 	CONSTRAINT FK_Property_Type FOREIGN KEY (property_type_id)
         REFERENCES property_types (id),
--- 	CONSTRAINT FK_owner FOREIGN KEY (owner_id)
---         REFERENCES owners (id),
+	CONSTRAINT FK_Address FOREIGN KEY (address_id)
+        REFERENCES addresses (id),
 	CONSTRAINT FK_Guest_Space FOREIGN KEY (guest_space_id)
         REFERENCES guest_spaces (id)
 );
@@ -94,14 +104,15 @@ CREATE TABLE IF NOT EXISTS property_amenities (
     CONSTRAINT FK_Amenity FOREIGN KEY (amenity_id)
         REFERENCES amenities (id)
 );
+select * from addresses a inner join countries c on a.country_id = c.id where c.name = 'Spain';
 
-SELECT count(*) FROM properties p
-             inner join countries c on p.country_id = c.id
+SELECT * FROM properties p
+             -- inner join addresses c on p.address_id = c.id
              inner join reservations r on p.id = r.property_id
              WHERE
-             p.max_guest_number >= 2
+             p.max_guest_number >= 1
              and
-             c.name = 'greece'
+             p.address_id in (select a.id from addresses a inner join countries c on a.country_id = c.id where c.name = 'spain')
              and
              (DATE('2021-3-3') not between r.check_in and r.check_out
              or

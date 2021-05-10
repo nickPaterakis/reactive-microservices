@@ -14,7 +14,19 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>booking-service-chassis</name>
 	<description>Parent pom project for Booking Services</description>
-	<packaging>pom</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <packaging>pom</packaging>
 
 	<dependencies>
 

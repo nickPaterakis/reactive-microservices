@@ -15,6 +15,11 @@
 	<name>booking-service</name>
 	<description>Demo project for Spring Boot</description>
 
+	<properties>
+		<docker.exposed.port>8083</docker.exposed.port>
+		<docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,6 +42,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>14</source>
+					<target>14</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

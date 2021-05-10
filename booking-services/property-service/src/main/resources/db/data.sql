@@ -19,36 +19,56 @@ insert ignore into guest_spaces values (1, "Entire place");
 insert ignore into guest_spaces values (2, "Private room");
 insert ignore into guest_spaces values (3, "Shared room");
 
+insert ignore into addresses values (1,"Athens", 1, "01313" ,"filoloaou", 20);
+insert ignore into addresses values (2,"Berlin", 2, "01012" ,"An der Windmühle", 4);
+insert ignore into addresses values (3,"Budapest", 3, "01613" ,"Church Road", 4);
+insert ignore into addresses values (4,"Tbilisi", 4, "01323" ,"Main Street", 45);
+insert ignore into addresses values (5,"Rome", 5, "01317" ,"Springfield Road", 3);
+insert ignore into addresses values (6,"Madrid", 6, "01213" ,"Kingsway", 5);
+insert ignore into addresses values (7,"London", 7, "01813" ,"Victoria Road", 14);
+insert ignore into addresses values (8,"Paris", 8, "01343" ,"High Street", 10);
+insert ignore into addresses values (9,"Athens", 1, "01313" ,"filoloaou", 43);
+insert ignore into addresses values (10,"Athens", 1, "01413" ,"filoloaou", 42);
+insert ignore into addresses values (11,"Athens", 1, "01513" ,"filoloaou", 95);
+insert ignore into addresses values (12,"Athens", 1, "01363" ,"filoloaou", 38);
+insert ignore into addresses values (13,"Athens", 1, "01353" ,"filoloaou", 21);
+insert ignore into addresses values (14,"Athens", 1, "01213" ,"filoloaou", 28);
+insert ignore into addresses values (15,"Athens", 1, "01113" ,"filoloaou", 48);
+insert ignore into addresses values (16,"Athens", 1, "01353" ,"filoloaou", 23);
+insert ignore into addresses values (17,"Athens", 1, "01363" ,"filoloaou", 19);
+
+
+
 -- insert ignore into owners values ("76393fab-10b2-40bb-b3ef-b75a76829178", "Nicholas", "Paterakis");
 
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
 	values (1, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, "76393fab-10b2-40bb-b3ef-b75a76829178");
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
 	values (2, "80 qm Apartment, Prenzlauer Benrg", 2, 1, 7, 2, 2, 170, 2, "76393fab-10b2-40bb-b3ef-b75a76829178");
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
 	values (3,"Cutting Edge Design Apartment in the Heart of Budapest Downtown", 2, 1, 2, 1, 1, 50, 3, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
 	values (4, "Be Mate Plaza Espana Suite Terrace 601", 2, 2, 3, 1, 1, 209, 6, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
 	values (5, "80 qm Apartment, Prenzlauer Benrg", 3, 2, 3, 2, 2, 170, 2, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (6, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (7, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (8, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (9, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (10, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (11, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (12, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (13, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
-insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, country_id, owner) 
-	values (14, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 1, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (6, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 9, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (7, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 10, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (8, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 11, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (9, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 12, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (10, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 13, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (11, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 14, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (12, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 15, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (13, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 16, null);
+insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 
+	values (14, "Luxurious flat in central Athens", 1, 1, 5, 2, 1, 30, 17, null);
 
 insert ignore into images (id, name, property_id) 
 	values (1, "Spain/madrid/1/12cb3f49-f25f-42b1-9d68-697496811fc9.jpg", 4);
@@ -79,6 +99,8 @@ insert ignore into images (id, name, property_id)
     
 insert ignore into reservations values (1, '2021-05-01', '2021-05-10', 1);
 insert ignore into reservations values (2, '2021-05-01', '2021-05-10', 2);
+insert ignore into reservations values (3, '2021-05-01', '2021-05-10', 3);
+insert ignore into reservations values (4, '2021-05-01', '2021-05-10', 4);
 insert ignore into reservations values (3, '2021-05-01', '2021-05-10', 5);
 insert ignore into reservations values (4, '2021-05-01', '2021-05-10', 6);
 insert ignore into reservations values (5, '2021-05-01', '2021-05-10', 7);

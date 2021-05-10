@@ -59,16 +59,18 @@ public class BookingServiceImpl implements BookingService {
                             .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
                             .setBathNumber(propertyDetailsDto.getBathNumber())
                             .setPricePerNight(propertyDetailsDto.getPricePerNight())
-                            .setCountry(propertyDetailsDto.getCountry())
+                            .setAddress(propertyDetailsDto.getAddress())
                             .setImage(propertyDetailsDto.getImage())
                             .setAmenities(propertyDetailsDto.getAmenities())
-                            .setUserId(propertyDetailsDto.getUserId());
+                            .setOwnerId(propertyDetailsDto.getOwnerId());
+                    System.out.println(propertyDetailsDto.getOwnerId());
                     return propertyAggregate;
                 })
-                .flatMap(pa -> integration.getUserDetails(pa.getUserId()))
+                .flatMap(pa -> integration.getUserDetails(pa.getOwnerId()))
                 .map(userDetailsDto -> {
                     propertyAggregate
-                            .setUserName(userDetailsDto.getFirstName() + " " + userDetailsDto.getLastName());
+                            .setOwnerFirstName(userDetailsDto.getFirstName())
+                            .setOwnerLastName(userDetailsDto.getLastName());
                     return propertyAggregate;
                 });
     }
@@ -94,7 +96,7 @@ public class BookingServiceImpl implements BookingService {
 
     UserDetailsDto createUser(UserDetailsRequest userDetailsRequest) {
         return new UserDetailsDto()
-                .setId(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
+                //.setId(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
                 .setFirstName(userDetailsRequest.getFirstName())
                 .setLastName(userDetailsRequest.getLastName())
                 .setEmail(userDetailsRequest.getEmail());

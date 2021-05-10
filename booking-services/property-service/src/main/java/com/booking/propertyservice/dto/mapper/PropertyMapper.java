@@ -1,10 +1,12 @@
 package com.booking.propertyservice.dto.mapper;
 
+import com.booking.bookingapi.core.property.Dto.AddressDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDto;
 import com.booking.propertyservice.model.NameEntity;
 import com.booking.propertyservice.model.Property;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PropertyMapper {
@@ -19,12 +21,13 @@ public class PropertyMapper {
                 .setBedroomNumber(property.getBedroomNumber())
                 .setPricePerNight(property.getPricePerNight())
                 .setBathNumber(property.getBathNumber())
-                .setCountry(property.getCountry().getName())
+                .setCountry(property.getAddress().getCountry().getName())
                 .setImage(property.getImages().iterator().next().getName())
                 .setAmenities(property.getAmenities().stream().map(NameEntity::getName).collect(Collectors.toSet()));
     }
 
     public static PropertyDetailsDto toPropertyDetailsDto(Property property) {
+        System.out.println(property.getOwner());
         return new PropertyDetailsDto()
                 .setId(property.getId())
                 .setTitle(property.getTitle())
@@ -34,10 +37,16 @@ public class PropertyMapper {
                 .setBedroomNumber(property.getBedroomNumber())
                 .setPricePerNight(property.getPricePerNight())
                 .setBathNumber(property.getBathNumber())
-                .setCountry(property.getCountry().getName())
+                .setAddress(new AddressDto()
+                        .setCity(property.getAddress().getCity())
+                        .setCountry(property.getAddress().getCountry().getName())
+                        .setPostCode(property.getAddress().getPostcode())
+                        .setStreetName(property.getAddress().getStreetName())
+                        .setStreetNumber(property.getAddress().getStreetNumber())
+                )
                 .setImage(property.getImages().iterator().next().getName())
                 .setAmenities(property.getAmenities().stream().map(NameEntity::getName).collect(Collectors.toSet()))
-                .setUserId(property.getOwner());
+                .setOwnerId(UUID.fromString(property.getOwner()));
     }
 //
 //    public static Property toProperty(PropertyDto propertyDto) {

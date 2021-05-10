@@ -7,10 +7,10 @@ public class UserMapper {
 
     public static User toUser(UserDetailsDto userDetailsDto) {
         return new User()
-                .setId(userDetailsDto.getId())
+                //.setId(userDetailsDto.getId())
                 .setFirstName(userDetailsDto.getFirstName())
                 .setLastName(userDetailsDto.getLastName())
-                .setEmail(userDetailsDto.getEmail())
-                .setRoles(userDetailsDto.getRoles());
+                .setEmail(userDetailsDto.getEmail());
+                //.setRoles(userDetailsDto.getRoles());
     }
 }

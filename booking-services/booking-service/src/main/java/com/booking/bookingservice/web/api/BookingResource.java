@@ -2,6 +2,7 @@ package com.booking.bookingservice.web.api;
 
 import com.booking.bookingapi.composite.BookingEndpoint;
 import com.booking.bookingapi.composite.BookingService;
+import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
@@ -43,6 +44,11 @@ public class BookingResource implements BookingEndpoint {
     @Override
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt) {
         return bookingService.getProperties(jwt);
+    }
+
+    @Override
+    public Mono<PropertyAggregate> getProperty(Long propertyId) {
+        return bookingService.getProperty(propertyId);
     }
 
     @Override

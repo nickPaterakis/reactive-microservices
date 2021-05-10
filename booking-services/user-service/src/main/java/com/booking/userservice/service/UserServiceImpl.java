@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {
-        log.info("saveUserDetails: {}", userDetailsDto.getId().toString());
+        //log.info("saveUserDetails: {}", userDetailsDto.getId().toString());
         User user = UserMapper.toUser(userDetailsDto);
         System.out.println(user);
         userRepository.save(user).block();;

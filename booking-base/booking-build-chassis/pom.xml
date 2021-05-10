@@ -20,11 +20,15 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.2</spring-cloud.version>
 
+		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+		<maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
 		<docker.image.prefix>nicholaspat</docker.image.prefix>
 		<docker.image.exposed.port>9090</docker.image.exposed.port>
 		<docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
 		<docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 		<docker.plugin.version>1.2.0</docker.plugin.version>
+		<maven.plugin.dockerfile.version>1.4.13</maven.plugin.dockerfile.version>
+		<org.lombok.version>1.18.12</org.lombok.version>
 	</properties>
 
 	<dependencyManagement>
@@ -69,15 +73,29 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<excludes>
-						<exclude>
+					<release>${java.version}</release>
+					<compilerArgs>--enable-preview</compilerArgs>
+					<annotationProcessorPaths>
+						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+							<version>${org.lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<argLine>--enable-preview</argLine>
+					<includes>
+						<include>**/*Tests.java</include>
+						<include>**/*Test.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>

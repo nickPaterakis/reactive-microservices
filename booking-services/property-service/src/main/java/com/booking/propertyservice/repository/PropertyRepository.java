@@ -14,12 +14,12 @@ import java.util.List;
 public interface PropertyRepository extends PagingAndSortingRepository<Property, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM properties p" +
-            " inner join countries c on p.country_id = c.id" +
             " inner join reservations r on p.id = r.property_id" +
             " WHERE" +
             " p.max_guest_number >= :guestNumber" +
             " and" +
-            " c.name = :location" +
+            " p.address_id in" +
+            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
             " and" +
             " (DATE(:checkIn) not between r.check_in and r.check_out" +
             " or" +
@@ -38,12 +38,12 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             );
 
     @Query(nativeQuery = true, value = "SELECT count(*) FROM properties p" +
-            " inner join countries c on p.country_id = c.id" +
             " inner join reservations r on p.id = r.property_id" +
             " WHERE" +
             " p.max_guest_number >= :guestNumber" +
             " and" +
-            " c.name = :location" +
+            " p.address_id in" +
+            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
             " and" +
             " (DATE(:checkIn) not between r.check_in and r.check_out" +
             " or" +

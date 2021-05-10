@@ -8,25 +8,6 @@ services:
     ports:
       - 8888:8888
 
-  mysql:
-    image: mysql
-    restart: always
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: booking
-    ports:
-      - "3306:3306"
-    volumes:
-      - "./db:/var/lib/mysql"
-
-#  zipkin-server:
-#    image: openzipkin/zipkin
-#    container_name: zipkin-server
-#    mem_limit: 512M
-#    ports:
-#      - 9411:9411
-
   discovery-server:
     image: nicholaspat/booking-discovery-server
     container_name: discovery-server
@@ -58,13 +39,11 @@ services:
       - 8081:8081
     depends_on:
       - config-server
-      - discovery-server
+      - rabbitmq
       - mysql
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   user-service:
-    links:
-      - mysql
     image: nicholaspat/user-service
     mem_limit: 700m
     container_name: user-service
@@ -72,6 +51,49 @@ services:
       - 8082:8082
     depends_on:
       - config-server
-      - discovery-server
-      - mysql
+      - rabbitmq
+      - mongodb
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+
+  booking-service:
+    image: nicholaspat/booking-service
+    mem_limit: 700m
+    container_name: booking-service
+    ports:
+      - 8083:8083
+    depends_on:
+      - config-server
+      - rabbitmq
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+
+  mongodb:
+    image: mongo:4.2.6-bionic
+    ports:
+      - "27017-27019:27017-27019"
+
+  mysql:
+    image: mysql
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: property_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./db:/var/lib/mysql"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin-server
+    mem_limit: 512M
+    ports:
+      - 9411:9411
+    depends_on:
+      - rabbitmq
