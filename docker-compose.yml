@@ -2,69 +2,76 @@ version: '3.9'
 
 services:
   config-server:
-    build: nicholaspat/booking-config-server
+    build: booking-cloud-infra/config-server
     container_name: config-server
     mem_limit: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8888:8888
 
   discovery-server:
-    build: nicholaspat/booking-discovery-server
+    build: booking-cloud-infra/discovery-server
     container_name: discovery-server
     mem_limit: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8761:8761
     depends_on:
       - config-server
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   api-gateway:
-    build: nicholaspat/api-gateway
+    build: booking-cloud-infra/api-gateway
     container_name: api-gateway
     mem_limit: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8765:8765
     depends_on:
       - config-server
       - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   property-service:
     links:
       - mysql
-    build: nicholaspat/booking-property-service
+    build: booking-services/property-service
     mem_limit: 700m
     container_name: property-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8081:8081
     depends_on:
       - config-server
       - rabbitmq
       - mysql
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   user-service:
-    build: nicholaspat/user-service
+    build: booking-services/user-service
     mem_limit: 700m
     container_name: user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8082:8082
     depends_on:
       - config-server
       - rabbitmq
       - mongodb
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   booking-service:
-    build: nicholaspat/booking-service
+    build: booking-services/booking-service
     mem_limit: 700m
     container_name: booking-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - 8083:8083
     depends_on:
       - config-server
       - rabbitmq
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   mongodb:
     image: mongo:4.2.6-bionic
@@ -79,7 +86,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: property_db
     ports:
-      - "3306:3306"
+      - "3308:3308"
     volumes:
       - "./db:/var/lib/mysql"
 

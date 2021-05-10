@@ -51,9 +51,9 @@ function Account() {
   return (
     <main className="account">
       <div className="account__container">
-        {/* <div className="profile-title">
+        <div className="profile-title">
           Account
-        </div> */}
+        </div>
         <div className="account__wrapper">
           <div className="account__left-column">
             <div className="account__profile-image">

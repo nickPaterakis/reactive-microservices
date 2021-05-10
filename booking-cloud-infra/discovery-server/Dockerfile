@@ -1,7 +1,7 @@
 #### Start of builder image
 # ------------------------
 # Builder stage to prepare application for final image
-FROM openjdk:15-slim-buster as builder
+FROM openjdk:11-jre as builder
 WORKDIR temp
 
 # Fatjar location, but could be set to different location from command line
@@ -21,8 +21,7 @@ else echo "Directory [snapshot-deps] already exists."; fi
 
 #### Start of actual image
 # ------------------------
-# Build image based on latest JDK 15 base image, based on latest debian buster OS
-FROM openjdk:15-slim-buster
+FROM openjdk:11-jre
 
 # Set image information, but could be set to different location from command line
 ARG IMAGE_VERSION="0.0.1-SNAPSHOT"
@@ -32,7 +31,7 @@ ARG MAINTAINER="Nicholas Paterakis <nikolas.paterakis@gmail.com>"
 LABEL version=${IMAGE_VERSION} name=${IMAGE_NAME} maintainer=${MAINTAINER}
 
 # Limiting security access to not user root user
-RUN addgroup nicholaspat && useradd -g siriusxi -ms /bin/bash nicholas
+RUN addgroup nicholaspat && useradd -g nicholaspat -ms /bin/bash nicholas
 
 # Setting user to current created user
 USER nicholas
