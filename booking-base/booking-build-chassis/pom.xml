@@ -22,7 +22,9 @@
 
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
-		<docker.image.prefix>nicholaspat</docker.image.prefix>
+		<docker.repo.image.prefix>nicholaspat</docker.repo.image.prefix>
+		<maintainer.name>Nicholas Paterakis</maintainer.name>
+		<maintainer.email>nikolas.paterakis@gmail.com</maintainer.email>
 		<docker.image.exposed.port>9090</docker.image.exposed.port>
 		<docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
 		<docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>

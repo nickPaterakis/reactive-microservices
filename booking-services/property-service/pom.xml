@@ -28,11 +28,6 @@
 	</build>
 	<packaging>jar</packaging>
 
-	<properties>
-		<docker.exposed.port>8081</docker.exposed.port>
-		<docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
-	</properties>
-
 	<dependencies>
 
 		<dependency>

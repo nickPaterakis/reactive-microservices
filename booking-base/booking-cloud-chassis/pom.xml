@@ -109,35 +109,51 @@
 					<plugins>
 						<plugin>
 							<groupId>com.spotify</groupId>
-							<artifactId>docker-maven-plugin</artifactId>
-							<version>${docker.plugin.version}</version>
-							<executions>
-								<execution>
-									<phase>install</phase>
-									<goals>
-										<goal>build</goal>
-									</goals>
-								</execution>
-							</executions>
+							<artifactId>dockerfile-maven-plugin</artifactId>
+							<version>${maven.plugin.dockerfile.version}</version>
 							<configuration>
-								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-								<dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>
-								<serverId>docker-hub</serverId>
-								<registryUrl>https://index.docker.io/v2/</registryUrl>
-								<resources>
-									<resource>
-										<targetPath>/</targetPath>
-										<directory>${project.build.directory}</directory>
-										<include>${project.build.finalName}.jar</include>
-									</resource>
-								</resources>
+								<dockerfile>Dockerfile</dockerfile>
+								<repository>${docker.repo.image.prefix}/${project.artifactId}</repository>
+								<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 								<buildArgs>
-									<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>
-									<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>
-									<DOCKERIZE_VERSION>${docker.image.dockerize.version}</DOCKERIZE_VERSION>
+									<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+									<IMAGE_VERSION>${project.version}</IMAGE_VERSION>
+									<IMAGE_NAME>${project.name}</IMAGE_NAME>
+									<MAINTAINER>${maintainer.name} (${maintainer.email})</MAINTAINER>
 								</buildArgs>
 							</configuration>
 						</plugin>
+<!--						<plugin>-->
+<!--							<groupId>com.spotify</groupId>-->
+<!--							<artifactId>docker-maven-plugin</artifactId>-->
+<!--							<version>${docker.plugin.version}</version>-->
+<!--							<executions>-->
+<!--								<execution>-->
+<!--									<phase>install</phase>-->
+<!--									<goals>-->
+<!--										<goal>build</goal>-->
+<!--									</goals>-->
+<!--								</execution>-->
+<!--							</executions>-->
+<!--							<configuration>-->
+<!--								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>-->
+<!--								<dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>-->
+<!--								<serverId>docker-hub</serverId>-->
+<!--								<registryUrl>https://index.docker.io/v2/</registryUrl>-->
+<!--								<resources>-->
+<!--									<resource>-->
+<!--										<targetPath>/</targetPath>-->
+<!--										<directory>${project.build.directory}</directory>-->
+<!--										<include>${project.build.finalName}.jar</include>-->
+<!--									</resource>-->
+<!--								</resources>-->
+<!--								<buildArgs>-->
+<!--									<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>-->
+<!--									<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>-->
+<!--									<DOCKERIZE_VERSION>${docker.image.dockerize.version}</DOCKERIZE_VERSION>-->
+<!--								</buildArgs>-->
+<!--							</configuration>-->
+<!--						</plugin>-->
 					</plugins>
 				</pluginManagement>
 			</build>

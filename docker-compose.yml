@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   config-server:
-    image: nicholaspat/booking-config-server
+    build: nicholaspat/booking-config-server
     container_name: config-server
     mem_limit: 512M
     ports:
       - 8888:8888
 
   discovery-server:
-    image: nicholaspat/booking-discovery-server
+    build: nicholaspat/booking-discovery-server
     container_name: discovery-server
     mem_limit: 512M
     ports:
@@ -19,7 +19,7 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   api-gateway:
-    image: nicholaspat/api-gateway
+    build: nicholaspat/api-gateway
     container_name: api-gateway
     mem_limit: 512M
     ports:
@@ -32,7 +32,7 @@ services:
   property-service:
     links:
       - mysql
-    image: nicholaspat/booking-property-service
+    build: nicholaspat/booking-property-service
     mem_limit: 700m
     container_name: property-service
     ports:
@@ -44,7 +44,7 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   user-service:
-    image: nicholaspat/user-service
+    build: nicholaspat/user-service
     mem_limit: 700m
     container_name: user-service
     ports:
@@ -56,7 +56,7 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   booking-service:
-    image: nicholaspat/booking-service
+    build: nicholaspat/booking-service
     mem_limit: 700m
     container_name: booking-service
     ports:

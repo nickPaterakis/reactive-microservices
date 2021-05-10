@@ -15,11 +15,6 @@
 	<name>booking-service</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
-		<docker.exposed.port>8083</docker.exposed.port>
-		<docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
