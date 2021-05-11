@@ -37,8 +37,6 @@ insert ignore into addresses values (15,"Athens", 1, "01113" ,"filoloaou", 48);
 insert ignore into addresses values (16,"Athens", 1, "01353" ,"filoloaou", 23);
 insert ignore into addresses values (17,"Athens", 1, "01363" ,"filoloaou", 19);
 
-
-
 -- insert ignore into owners values ("76393fab-10b2-40bb-b3ef-b75a76829178", "Nicholas", "Paterakis");
 
 insert ignore into properties (id, title, property_type_id, guest_space_id, max_guest_number, bedroom_number, bath_number, price_per_night, address_id, owner) 

@@ -74,14 +74,15 @@ services:
       - rabbitmq
 
   mongodb:
+    container_name: booking-mongo
     image: mongo:4.2.6-bionic
     ports:
       - "27017-27019:27017-27019"
 
   mysql:
     image: mysql
-    restart: always
-    container_name: mysql
+    # restart: always
+    container_name: booking-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: property_db
@@ -92,13 +93,14 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: booking-rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
 
   zipkin-server:
     image: openzipkin/zipkin
-    container_name: zipkin-server
+    container_name: booking-zipkin
     mem_limit: 512M
     ports:
       - 9411:9411
