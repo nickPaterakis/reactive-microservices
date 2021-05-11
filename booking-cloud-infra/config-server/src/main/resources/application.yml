@@ -12,3 +12,10 @@ spring:
   #          uri: file:///C:/Users/Nicholas/Documents/Projects/Spring/booking/git-local-config-repo
   application:
     name: booking-config-server
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    config.server.native.searchLocations: file:/config/repo
