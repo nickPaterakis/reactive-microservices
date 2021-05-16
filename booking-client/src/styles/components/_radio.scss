@@ -1,0 +1,100 @@
+/* The container */
+.radio__container {
+  display: inline-block;
+  position: relative;
+  padding-left: 3.5rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &--top-align {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0rem;
+  }
+}
+
+.radio__label {
+  margin: 0.7rem 0;
+  text-align: center;
+}
+
+.radio-group {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  &--inline {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}
+
+.radio-group:not(:last-child) {
+  margin-bottom: 0rem;
+}
+
+/* Hide the browser's default radio button */
+.radio__container input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.9rem;
+  width: 1.9rem;
+  border: 1px solid rgb(189, 189, 189);
+  border-radius: 50%;
+
+  &--relative {
+    position: relative;
+  }
+}
+
+/* On mouse-over, add a grey background color */
+.radio__container:hover input ~ .checkmark:hover {
+  background-color: #ccc;
+  transition: 0.4s ease;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio__container input:checked ~ .checkmark {
+  border: 1px solid $yellow;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio__container input:checked ~ .checkmark:hover {
+  background-color: #db414100;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio__container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio__container .checkmark:after {
+  top: 0.4rem;
+  left: 0.4rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: $yellow;
+}

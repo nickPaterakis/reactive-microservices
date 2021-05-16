@@ -1,0 +1,22 @@
+.select-input {
+  margin-top: 1rem;
+  font-size: 1.7rem;
+  max-width: 60rem;
+
+  &:focus {
+    border: 1px solid $yellow;
+    transition: 0.8s ease;
+  }
+
+  // @media screen and (max-width: 75em) {
+  //   width: 50%;
+  // }
+
+  // @media screen and (max-width: 56.25em) {
+  //   width: 70%;
+  // }
+
+  // @media screen and (max-width: 37.5em) {
+  //   width: 80%;
+  // }
+}
