@@ -38,6 +38,8 @@
 		<module>booking-cloud-infra/api-gateway</module>
 		<module>booking-services/property-service</module>
 		<module>booking-services/user-service</module>
+		<module>booking-services/reservation-service</module>
 		<module>booking-services/booking-service</module>
 	</modules>
+
 </project>

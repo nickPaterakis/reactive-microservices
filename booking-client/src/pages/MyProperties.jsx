@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import MyPropertyCard from '../components/UI/MyPropertyCard';
@@ -8,7 +9,7 @@ import { PER_PAGE } from '../constants/systemConstants';
 import { getUserProperties } from '../api/UserService';
 import Spinner from '../components/UI/Spinner';
 
-const MyProperties = () => {
+const MyProperties = ({ history }) => {
   const { keycloak, initialized } = useKeycloak();
   const [propertiesPage, setPropertiesPage] = useState();
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,6 +24,10 @@ const MyProperties = () => {
 
   const handlePageClick = ({ selected: selectedPage }) => {
     setCurrentPage(selectedPage);
+  };
+
+  const handleCreatePropertyButton = () => {
+    history.push('/create-property');
   };
   
   if (!propertiesPage) {
@@ -44,8 +49,8 @@ const MyProperties = () => {
             <div className="my-properties__title">
               {totalElements === 1 ? `You Have ${totalElements} Property` : `You Have ${totalElements} Properties`}
             </div>
-            <button type="button" className="btn btn--create-property">
-              Create A New Property
+            <button type="button" className="btn btn--create-property" onClick={handleCreatePropertyButton}>
+              Create A New Listing
             </button>
           </div>
           <section className="result-section">
@@ -78,4 +83,8 @@ const MyProperties = () => {
   );
 };
 
-export default MyProperties;
+MyProperties.propTypes = {
+  history: PropTypes.func.isRequired,
+};
+
+export default withRouter(MyProperties);

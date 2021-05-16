@@ -24,6 +24,9 @@
 @import 'components/property-information';
 @import 'components/edit-text';
 @import 'components/my-property-card';
+@import 'components/radio';
+@import 'components/checkbox';
+@import 'components/react-select';
 
 @import 'layout/header';
 
@@ -34,3 +37,4 @@
 @import 'pages/profile';
 @import 'pages/account';
 @import 'pages/my-properties';
+@import 'pages/create-property';

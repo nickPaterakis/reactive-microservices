@@ -1,6 +1,7 @@
 package com.booking.bookingservice.service;
 
 import com.booking.bookingapi.composite.BookingService;
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -41,8 +41,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt) {
-        return integration.getProperties(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"));
+    public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user) {
+        log.info("getPropertiesByUserId: {}", user.getId());
+        return integration.getProperties(UUID.fromString(user.getId()));
     }
 
     @Override
@@ -76,9 +77,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt) {
-        System.out.println(jwt.getClaims().get("sub"));
-        return integration.getUserDetails(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
+    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
+        log.info("getUserDetails: {}", user.getEmail());
+        return integration.getUserDetails(UUID.fromString(user.getId()))
                 .onErrorMap(Throwable::getCause);
     }
 
@@ -89,14 +90,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, Mono<Principal> principal) {
+    public Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, @AuthenticationPrincipal Jwt jwt) {
         log.info("saveUserDetails: {}", userDetailsRequest.getEmail());
-        return Mono.just(integration.saveUserDetails(createUser(userDetailsRequest)));
+        return Mono.just(integration.saveUserDetails(createUser(userDetailsRequest, jwt.getClaimAsString("sub"))));
     }
 
-    UserDetailsDto createUser(UserDetailsRequest userDetailsRequest) {
+    UserDetailsDto createUser(UserDetailsRequest userDetailsRequest, String userId) {
         return new UserDetailsDto()
-                //.setId(UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178"))
+                .setId(userId)
                 .setFirstName(userDetailsRequest.getFirstName())
                 .setLastName(userDetailsRequest.getLastName())
                 .setEmail(userDetailsRequest.getEmail());

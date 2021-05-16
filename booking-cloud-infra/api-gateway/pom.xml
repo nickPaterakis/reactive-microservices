@@ -15,19 +15,12 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>api-gateway</name>
 	<description>Api Gateway</description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <packaging>jar</packaging>
+
+	<properties>
+		<docker.exposed.port>8765</docker.exposed.port>
+		<docker.image.dockerfile.dir>${basedir}/../../docker</docker.image.dockerfile.dir>
+	</properties>
 
 	<dependencies>
 
@@ -58,6 +51,15 @@
 
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<profile>
 			<id>buildDocker</id>
@@ -72,5 +74,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

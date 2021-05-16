@@ -1,5 +1,6 @@
 package com.booking.bookingapi.composite;
 
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.Principal;
 import java.time.LocalDate;
 
 @RequestMapping("/booking/api/v1")
@@ -34,7 +34,7 @@ public interface BookingEndpoint extends BookingService  {
 
     @GetMapping("properties/user")
     @Override
-    Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt);
+    Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user);
 
     @GetMapping("properties/property/{propertyId}")
     @Override
@@ -42,11 +42,11 @@ public interface BookingEndpoint extends BookingService  {
 
     @GetMapping("users/me")
     @Override
-    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt);
+    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user);
 
     @PostMapping("users/me")
     @Override
     Mono<UserDetailsDto> saveUserDetails(
             @RequestBody UserDetailsRequest updateUserDetailsRequest,
-            Mono<Principal> principal);
+            @AuthenticationPrincipal Jwt jwt);
 }

@@ -1,5 +1,6 @@
 package com.booking.bookingapi.composite;
 
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
@@ -10,7 +11,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.Principal;
 import java.time.LocalDate;
 
 public interface BookingService {
@@ -25,14 +25,14 @@ public interface BookingService {
             int currentPage
     );
 
-    Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt);
+    Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user);
 
     Mono<PropertyAggregate> getProperty(Long propertyId);
 
     Mono<UserDetailsDto> findUserByEmail(String email);
 
-    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt);
+    Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user);
 
-    Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, Mono<Principal> principal);
+    Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest userDetailsRequest, @AuthenticationPrincipal Jwt jwt);
 
 }

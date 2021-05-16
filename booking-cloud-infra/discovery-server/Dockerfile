@@ -19,9 +19,16 @@ RUN if test ! -d ./snapshot-dependencies; \
 then mkdir snapshot-dependencies && echo "Directory [snapshot-deps] created."; \
 else echo "Directory [snapshot-deps] already exists."; fi
 
+
+# Download dockerize and cache that layer
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget -O dockerize.tar.gz https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+RUN tar xzf dockerize.tar.gz
+RUN chmod +x dockerize
+
 #### Start of actual image
 # ------------------------
-FROM openjdk:11-jre
+FROM adoptopenjdk:11-jre-hotspot
 
 # Set image information, but could be set to different location from command line
 ARG IMAGE_VERSION="0.0.1-SNAPSHOT"
@@ -39,22 +46,27 @@ USER nicholas
 # Set working directory to application folder
 WORKDIR /home/nicholas/application
 
+# Expose current application to port 8080
+EXPOSE 8761
+
+# Dockerize
+COPY --from=builder temp/dockerize ./
+
 # Copy all layers from builder stage to current image
 COPY --from=builder temp/dependencies/ ./
 COPY --from=builder temp/snapshot-dependencies/ ./
 COPY --from=builder temp/spring-boot-loader/ ./
 COPY --from=builder temp/application/ ./
 
-# Expose current application to port 8080
-EXPOSE 8761
 
-ARG JAVA_OPTS=""
 
 # Run the application with JVM configs if any
 #ENTRYPOINT ["bash", "-c", \
 #"java -server --enable-preview -XX:+UseContainerSupport -XX:+ShowCodeDetailsInExceptionMessages \
 #-XX:+AlwaysActAsServerClassMachine -XX:+UseG1GC -XX:+UseStringDeduplication ${JAVA_OPTS} \
 #org.springframework.boot.loader.JarLauncher ${0} ${@}"]
+
+#ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
 ENTRYPOINT ["bash", "-c", \
 "java -server --enable-preview \

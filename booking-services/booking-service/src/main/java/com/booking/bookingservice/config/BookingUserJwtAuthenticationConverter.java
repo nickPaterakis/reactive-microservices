@@ -24,13 +24,18 @@ public class BookingUserJwtAuthenticationConverter
   public BookingUserJwtAuthenticationConverter(BookingReactiveUserDetailsService bookingReactiveUserDetailsService) {
     this.bookingReactiveUserDetailsService = bookingReactiveUserDetailsService;
   }
+//  Mono<UserDetails> userDetailsMono = bookingReactiveUserDetailsService.saveUser(jwt);
+//                    return new UsernamePasswordAuthenticationToken(userDetailsMono, "n/a", authorities);
 
   @Override
   public Mono<AbstractAuthenticationToken> convert(Jwt jwt) {
     Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-    return bookingReactiveUserDetailsService
+    Mono<AbstractAuthenticationToken> abstractAuthenticationTokenMono =  bookingReactiveUserDetailsService
             .findByUsername(jwt.getClaimAsString("email"))
-        .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities));
+            .switchIfEmpty(bookingReactiveUserDetailsService.saveUser(jwt))
+            .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities));
+
+    return abstractAuthenticationTokenMono;
   }
 
   private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {

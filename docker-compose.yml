@@ -2,107 +2,113 @@ version: '3.9'
 
 services:
   config-server:
-    build: booking-cloud-infra/config-server
+    image: nicholaspat/config-server
     container_name: config-server
-    mem_limit: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./config/repo:/config/repo
     ports:
       - 8888:8888
 
   discovery-server:
-    build: booking-cloud-infra/discovery-server
+    image: nicholaspat/discovery-server
     container_name: discovery-server
-    mem_limit: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
     ports:
       - 8761:8761
-    depends_on:
-      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#
+#  api-gateway:
+#    image: nicholaspat/api-gateway
+#    container_name: api-gateway
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    ports:
+#      - 8765:8765
+#    depends_on:
+#      - config-server
+#      - discovery-server
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#
+#  property-service:
+#    links:
+#      - mysql
+#    image: nicholaspat/property-service
+#    mem_limit: 700m
+#    container_name: property-service
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - config-server
+#      #- rabbitmq
+#      - mysql
+#    ports:
+#      - 8081:8081
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-  api-gateway:
-    build: booking-cloud-infra/api-gateway
-    container_name: api-gateway
-    mem_limit: 512M
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8765:8765
-    depends_on:
-      - config-server
-      - discovery-server
+#  user-service:
+#    image: nicholaspat/user-service
+#    mem_limit: 700m
+#    container_name: user-service
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - config-server
+#      - rabbitmq
+#      - mongodb
+#    ports:
+#    - 8082:8082
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#
+#
+#  booking-service:
+#    image: nicholaspat/booking-service
+#    mem_limit: 700m
+#    container_name: booking-service
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - config-server
+#      #- rabbitmq
+#    ports:
+#    - 8083:8083
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-  property-service:
-    links:
-      - mysql
-    build: booking-services/property-service
-    mem_limit: 700m
-    container_name: property-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8081:8081
-    depends_on:
-      - config-server
-      - rabbitmq
-      - mysql
-
-  user-service:
-    build: booking-services/user-service
-    mem_limit: 700m
-    container_name: user-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8082:8082
-    depends_on:
-      - config-server
-      - rabbitmq
-      - mongodb
-
-  booking-service:
-    build: booking-services/booking-service
-    mem_limit: 700m
-    container_name: booking-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8083:8083
-    depends_on:
-      - config-server
-      - rabbitmq
-
-  mongodb:
-    container_name: booking-mongo
-    image: mongo:4.2.6-bionic
-    ports:
-      - "27017-27019:27017-27019"
-
-  mysql:
-    image: mysql
-    # restart: always
-    container_name: booking-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: property_db
-    ports:
-      - "3308:3308"
-    volumes:
-      - "./db:/var/lib/mysql"
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: booking-rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
-
-  zipkin-server:
-    image: openzipkin/zipkin
-    container_name: booking-zipkin
-    mem_limit: 512M
-    ports:
-      - 9411:9411
-    depends_on:
-      - rabbitmq
+#
+#  mongodb:
+#    container_name: booking-mongo
+#    image: mongo:4.2.6-bionic
+#    ports:
+#      - "27017-27019:27017-27019"
+#
+#  mysql:
+#    image: mysql
+#    # restart: always
+#    container_name: booking-mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: property_db
+#    ports:
+#      - "3308:3308"
+#    volumes:
+#      - "./db:/var/lib/mysql"
+##
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: booking-rabbitmq
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+#
+#  zipkin-server:
+#    image: openzipkin/zipkin
+#    container_name: booking-zipkin
+#    mem_limit: 512M
+#    ports:
+#      - 9411:9411
+#    depends_on:
+#      - rabbitmq

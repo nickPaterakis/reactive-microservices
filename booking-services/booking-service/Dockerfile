@@ -40,7 +40,7 @@ COPY --from=builder temp/spring-boot-loader/ ./
 COPY --from=builder temp/application/ ./
 
 # Expose current application to port 8080
-EXPOSE 8083
+EXPOSE 8080
 
 ARG JAVA_OPTS=""
 

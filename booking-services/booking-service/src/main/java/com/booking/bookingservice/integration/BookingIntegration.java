@@ -140,16 +140,14 @@ public class BookingIntegration implements CountryService, PropertyService, User
                 .concat("/users/{email}"))
                 .build(email);
 
-        Mono<UserDetailsDto> user = getWebClient()
+        //.onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
+
+        return getWebClient()
                 .get()
                 .uri(url)
                 .retrieve()
                 .bodyToMono(UserDetailsDto.class)
-                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
-
-        user.subscribe(System.out::println);
-
-        return user;
+                .switchIfEmpty(Mono.empty());
     }
 
     @Override

@@ -22,11 +22,12 @@
 
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
-		<docker.repo.image.prefix>nicholaspat</docker.repo.image.prefix>
+		<docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
+		<docker.image.prefix>nicholaspat</docker.image.prefix>
 		<maintainer.name>Nicholas Paterakis</maintainer.name>
 		<maintainer.email>nikolas.paterakis@gmail.com</maintainer.email>
 		<docker.image.exposed.port>9090</docker.image.exposed.port>
-		<docker.image.dockerfile.dir>${basedir}</docker.image.dockerfile.dir>
+		<docker.image.default.tag>latest</docker.image.default.tag>
 		<docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 		<docker.plugin.version>1.2.0</docker.plugin.version>
 		<maven.plugin.dockerfile.version>1.4.13</maven.plugin.dockerfile.version>
@@ -73,31 +74,41 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.plugin.version}</version>
+					<configuration>
+						<release>${java.version}</release>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${org.lombok.version}</version>
+							</path>
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin.version}</version>
+					<configuration>
+						<includes>
+							<include>**/*Tests.java</include>
+							<include>**/*Test.java</include>
+						</includes>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<release>${java.version}</release>
-					<compilerArgs>--enable-preview</compilerArgs>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>${org.lombok.version}</version>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.plugin.version}</version>
-				<configuration>
-					<argLine>--enable-preview</argLine>
-					<includes>
-						<include>**/*Tests.java</include>
-						<include>**/*Test.java</include>
-					</includes>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 		</plugins>

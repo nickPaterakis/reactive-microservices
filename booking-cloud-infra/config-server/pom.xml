@@ -17,16 +17,30 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<source>14</source>
-					<target>14</target>
+					<mainClass>com.booking.configserver.ConfigServerApplication</mainClass>
 				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+
 			</plugin>
+
 		</plugins>
 	</build>
 	<packaging>jar</packaging>
+
+	<properties>
+		<docker.exposed.port>8888</docker.exposed.port>
+		<docker.image.dockerfile.dir>${basedir}/../../docker</docker.image.dockerfile.dir>
+	</properties>
 
 	<dependencies>
 		<dependency>

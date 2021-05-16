@@ -18,7 +18,7 @@ import java.util.UUID;
 public class DataInitializer implements CommandLineRunner {
 
     private static final UUID USER_NICHOLAS_IDENTIFIER =
-            UUID.fromString("76393fab-10b2-40bb-b3ef-b75a768291");
+            UUID.fromString("76393fab-10b2-40bb-b3ef-b75a76829178");
 
 
     private final UserRepository userRepository;

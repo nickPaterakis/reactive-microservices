@@ -2,9 +2,11 @@ package com.booking.bookingapi.composite.dto;
 
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class BookingUser extends UserDetailsDto implements UserDetails {
 
@@ -16,13 +18,12 @@ public class BookingUser extends UserDetailsDto implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-//    return getRoles().stream()
-//        .map(Enum::name)
-//        .map(String::toUpperCase)
-//        .map(rn -> ROLE_PREFIX + rn)
-//        .map(SimpleGrantedAuthority::new)
-//        .collect(Collectors.toList());
-    return null;
+    return getRoles().stream()
+        .map(Enum::name)
+        .map(String::toUpperCase)
+        .map(rn -> ROLE_PREFIX + rn)
+        .map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList());
   }
 
   @Override

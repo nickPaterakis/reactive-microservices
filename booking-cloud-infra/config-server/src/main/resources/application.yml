@@ -1,5 +1,7 @@
 server.port: 8888
 spring:
+  application:
+    name: config-server
   cloud:
     config:
       server:
@@ -8,14 +10,10 @@ spring:
           username: nickPaterakis
           password: 1996NikO!@$
         native:
-          searchLocations: file:///${GIT_REPO}
-  #          uri: file:///C:/Users/Nicholas/Documents/Projects/Spring/booking/git-local-config-repo
-  application:
-    name: booking-config-server
+          searchLocations: file:///config/repo
+
 ---
 spring:
-  config:
-    activate:
-      on-profile: docker
+  profiles: docker
   cloud:
     config.server.native.searchLocations: file:/config/repo

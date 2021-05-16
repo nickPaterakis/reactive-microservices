@@ -14,19 +14,33 @@
 	<name>discovery-server</name>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>14</source>
-                    <target>14</target>
-                </configuration>
-            </plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.booking.bookingdiscoveryserver.BookingDiscoveryServerApplication</mainClass>
+				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
         </plugins>
     </build>
     <version>1.0-SNAPSHOT</version>
 	<description>Booking Discovery Server</description>
 	<packaging>jar</packaging>
+
+	<properties>
+		<docker.exposed.port>8761</docker.exposed.port>
+		<docker.image.dockerfile.dir>${basedir}/../../docker</docker.image.dockerfile.dir>
+	</properties>
 
 	<dependencies>
 
@@ -56,5 +70,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

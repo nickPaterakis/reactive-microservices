@@ -32,6 +32,10 @@ public class User {
 
     private List<Role> roles;
 
+    public User(User user) {
+        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhone(), user.getRoles());
+    }
+
     @PersistenceConstructor
     public User(UUID id, String email, String firstName, String lastName, String phone, List<Role> roles) {
         this.id = id;

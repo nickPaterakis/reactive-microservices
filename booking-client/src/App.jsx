@@ -18,24 +18,18 @@ import Profile from './pages/Profile';
 import Property from './pages/Property';
 import { setUser } from './store/actions/userActions';
 import Spinner from './components/UI/Spinner';
+import CreateProperty from './pages/CreateProperty';
 
 function App() {
   const initOptions = { pkceMethod: 'S256' };
   const dispatch = useDispatch();
 
   const handleOnEvent = async (event, error) => {
+    console.log(event);
     if (event === 'onAuthSuccess') {
+      console.log(keycloak.authenticated);
       if (keycloak.authenticated) {
-        let response = await getUserDetailsMe(keycloak.token);
-        if (response.status === 500) {
-          const userExtra = {
-            firstName: keycloak.tokenParsed.given_name,
-            lastName: keycloak.tokenParsed.family_name,
-            email: keycloak.tokenParsed.email,
-          };
-          response = await saveUserDetailsMe(keycloak.token, userExtra);
-          console.log(`UserExtra created for ${keycloak.tokenParsed.email}`);
-        }
+        const response = await getUserDetailsMe(keycloak.token);
         dispatch(setUser(response.data));
       }
     }
@@ -51,6 +45,9 @@ function App() {
       </Route>
       <PrivateRoute roles={['user']} path="/profile">
         <Profile />
+      </PrivateRoute>
+      <PrivateRoute roles={['user']} path="/create-property">
+        <CreateProperty />
       </PrivateRoute>
       <Route path="/reservations">
         <Reservations />

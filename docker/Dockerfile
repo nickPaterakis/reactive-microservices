@@ -14,7 +14,21 @@ RUN chmod +x dockerize
 # wget is not installed on adoptopenjdk:11-jre-hotspot
 FROM adoptopenjdk:11-jre-hotspot
 
-WORKDIR application
+# Set image information, but could be set to different location from command line
+ARG IMAGE_VERSION="0.0.1-SNAPSHOT"
+ARG IMAGE_NAME="Config Server"
+ARG MAINTAINER="Nicholas Paterakis <nikolas.paterakis@gmail.com>"
+
+LABEL version=${IMAGE_VERSION} name=${IMAGE_NAME} maintainer=${MAINTAINER}
+
+# Limiting security access to not user root user
+RUN addgroup nicholaspat && useradd -g nicholaspat -ms /bin/bash nicholas
+
+# Setting user to current created user
+USER nicholas
+
+# Set working directory to application folder
+WORKDIR /home/nicholas/application
 
 # Dockerize
 COPY --from=builder application/dockerize ./
@@ -26,4 +40,5 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
+
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

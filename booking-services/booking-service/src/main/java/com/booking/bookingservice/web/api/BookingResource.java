@@ -2,6 +2,7 @@ package com.booking.bookingservice.web.api;
 
 import com.booking.bookingapi.composite.BookingEndpoint;
 import com.booking.bookingapi.composite.BookingService;
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.security.Principal;
 import java.time.LocalDate;
 
 @RestController
@@ -42,8 +42,8 @@ public class BookingResource implements BookingEndpoint {
     }
 
     @Override
-    public Mono<PageProperties> getProperties(@AuthenticationPrincipal Jwt jwt) {
-        return bookingService.getProperties(jwt);
+    public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user) {
+        return bookingService.getProperties(user);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class BookingResource implements BookingEndpoint {
     }
 
     @Override
-    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal Jwt jwt) {
-        return bookingService.getUserDetails(jwt);
+    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
+        return bookingService.getUserDetails(user);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class BookingResource implements BookingEndpoint {
     }
 
     @Override
-    public Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest updateUserDetailsRequest, Mono<Principal> principal) {
-        return bookingService.saveUserDetails(updateUserDetailsRequest, principal);
+    public Mono<UserDetailsDto> saveUserDetails(UserDetailsRequest updateUserDetailsRequest, @AuthenticationPrincipal Jwt jwt) {
+        return bookingService.saveUserDetails(updateUserDetailsRequest, jwt);
     }
 }

@@ -47,49 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {
-        //log.info("saveUserDetails: {}", userDetailsDto.getId().toString());
+        log.info("saveUserDetails: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
-        System.out.println(user);
         userRepository.save(user).block();;
-        return modelMapper.map(user, UserDetailsDto.class);
+        return UserMapper.toUserDetailsDto(user);
     }
-
-
-
-    //    @Override
-//    public Optional<UserDetailsDto> getUserDetails(String userId) {
-//        Optional<User> user = Optional.ofNullable(userRepository.findByUserId(userId));
-//        if (user.isPresent()) {
-//            UserDetailsDto userDetailsDto = modelMapper.map(user, UserDetailsDto.class);
-//            return Optional.ofNullable(userDetailsDto);
-//        }
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public UserDetailsDto saveUserDetails(UserDetailsDto user) {
-//        userRepository.save(modelMapper.map(user, User.class));
-//        return user;
-//    }
-
-    //    @Override
-//    public UserDetailsDto getUserDetails(String username, String password) {
-//        UserDetailsDto returnValue = null;
-//
-//        User user = userRepository.findByEmail(username);
-//
-//        if (user == null) {
-//            return returnValue;
-//        }
-//
-//        if (bCryptPasswordEncoder.matches(password,
-//                user.getPassword())) {
-//            System.out.println("password matches");
-//            returnValue = new UserDetailsDto();
-//            BeanUtils.copyProperties(user, returnValue);
-//
-//        }
-//        System.out.println("password doesn't matches");
-//        return returnValue;
-//    }
 }

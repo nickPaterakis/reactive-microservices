@@ -1,10 +1,13 @@
 .input {
   padding: 0.7rem 0.3rem;
+  display: block;
   border: none;
   outline: none;
   resize: vertical;
   font-size: 1.7rem;
   color: rgb(48, 48, 48);
+  width: 100%;
+  max-width: 60rem;
 
   &--search {
     padding: 0;
@@ -13,16 +16,19 @@
     }
   }
 
-  &--sign-in {
-    border-bottom: 1px solid $white;
-    resize: vertical;
-    background-color: rgba(0, 0, 0, 0);
-    font-size: 1.7rem;
-    color: rgb(235, 235, 235);
+  &--form {
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    //height: 3rem;
+    border: 1px solid rgb(216, 216, 216);
 
-    &:hover {
-      border-bottom: 1px solid white;
+    &:focus {
+      border: 1px solid $yellow;
       transition: 0.8s ease;
     }
+  }
+
+  &--price {
+    width: 10rem;
   }
 }

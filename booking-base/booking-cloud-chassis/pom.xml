@@ -13,18 +13,6 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>booking-cloud-chassis</name>
 	<description>Parent pom project for Building Booking Services</description>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>14</source>
-					<target>14</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	<packaging>pom</packaging>
 
 	<dependencies>
@@ -60,48 +48,22 @@
 		</dependency>
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>springboot</id>
-			<activation>
-				<file>
-					<!-- Just a way to identify a Spring Boot application -->
-					<exists>src/main/resources/application.yml</exists>
-				</file>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<configuration>
-							<fork>true</fork>
-							<!-- Layered jars optimizes Docker images -->
-							<layers>
-								<enabled>true</enabled>
-							</layers>
-						</configuration>
-						<executions>
-							<execution>
-								<!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties file is present -->
-								<goals>
-									<goal>build-info</goal>
-								</goals>
-								<configuration>
-									<additionalProperties>
-										<encoding.source>${project.build.sourceEncoding}</encoding.source>
-										<encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-										<java.source>${maven.compiler.source}</java.source>
-										<java.target>${maven.compiler.target}</java.target>
-									</additionalProperties>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>11</source>
+						<target>11</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
+	<profiles>
 		<profile>
 			<id>buildDocker</id>
 			<build>
@@ -109,51 +71,35 @@
 					<plugins>
 						<plugin>
 							<groupId>com.spotify</groupId>
-							<artifactId>dockerfile-maven-plugin</artifactId>
-							<version>${maven.plugin.dockerfile.version}</version>
+							<artifactId>docker-maven-plugin</artifactId>
+							<version>${docker.plugin.version}</version>
+							<executions>
+								<execution>
+									<phase>install</phase>
+									<goals>
+										<goal>build</goal>
+									</goals>
+								</execution>
+							</executions>
 							<configuration>
-								<dockerfile>Dockerfile</dockerfile>
-								<repository>${docker.repo.image.prefix}/${project.artifactId}</repository>
-								<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+								<dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>
+								<serverId>docker-hub</serverId>
+								<registryUrl>https://index.docker.io/v1/</registryUrl>
+								<resources>
+									<resource>
+										<targetPath>/</targetPath>
+										<directory>${project.build.directory}</directory>
+										<include>${project.build.finalName}.jar</include>
+									</resource>
+								</resources>
 								<buildArgs>
-									<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-									<IMAGE_VERSION>${project.version}</IMAGE_VERSION>
-									<IMAGE_NAME>${project.name}</IMAGE_NAME>
-									<MAINTAINER>${maintainer.name} (${maintainer.email})</MAINTAINER>
+									<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>
+									<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>
+									<DOCKERIZE_VERSION>${docker.image.dockerize.version}</DOCKERIZE_VERSION>
 								</buildArgs>
 							</configuration>
 						</plugin>
-<!--						<plugin>-->
-<!--							<groupId>com.spotify</groupId>-->
-<!--							<artifactId>docker-maven-plugin</artifactId>-->
-<!--							<version>${docker.plugin.version}</version>-->
-<!--							<executions>-->
-<!--								<execution>-->
-<!--									<phase>install</phase>-->
-<!--									<goals>-->
-<!--										<goal>build</goal>-->
-<!--									</goals>-->
-<!--								</execution>-->
-<!--							</executions>-->
-<!--							<configuration>-->
-<!--								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>-->
-<!--								<dockerDirectory>${docker.image.dockerfile.dir}</dockerDirectory>-->
-<!--								<serverId>docker-hub</serverId>-->
-<!--								<registryUrl>https://index.docker.io/v2/</registryUrl>-->
-<!--								<resources>-->
-<!--									<resource>-->
-<!--										<targetPath>/</targetPath>-->
-<!--										<directory>${project.build.directory}</directory>-->
-<!--										<include>${project.build.finalName}.jar</include>-->
-<!--									</resource>-->
-<!--								</resources>-->
-<!--								<buildArgs>-->
-<!--									<ARTIFACT_NAME>${project.build.finalName}</ARTIFACT_NAME>-->
-<!--									<EXPOSED_PORT>${docker.image.exposed.port}</EXPOSED_PORT>-->
-<!--									<DOCKERIZE_VERSION>${docker.image.dockerize.version}</DOCKERIZE_VERSION>-->
-<!--								</buildArgs>-->
-<!--							</configuration>-->
-<!--						</plugin>-->
 					</plugins>
 				</pluginManagement>
 			</build>

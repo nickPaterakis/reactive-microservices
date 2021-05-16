@@ -16,6 +16,7 @@
   &__header {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     margin-bottom: 1.5rem;
   }
 
@@ -23,5 +24,6 @@
     font-size: 2.2rem;
     font-weight: 700;
     color: rgb(73, 73, 73);
+    margin-right: 2rem;
   }
 }

@@ -9,8 +9,7 @@
 
   &__image {
     display: flex;
-    margin: 0 1rem 0 0.5rem;
-
+    margin: 0 0.5rem 0 0;
     img {
       align-self: center;
       border-radius: 50%;
@@ -34,7 +33,7 @@
     flex-direction: row;
     align-items: center;
     border-radius: 4rem;
-    width: 10rem;
+    padding: 0.5rem;
     height: 4rem;
     color: rgb(17, 17, 17);
     font-size: 1.5rem;
@@ -59,6 +58,23 @@
 
     &:hover {
       background-color: rgb(45, 67, 163);
+    }
+  }
+
+  &--submit {
+    margin: 3.5rem 0;
+    width: 16rem;
+    border-radius: 0.6rem;
+    height: 4.5rem;
+    font-size: 2.3rem;
+    border: 1px solid $yellow;
+    color: $yellow;
+    background-color: white;
+    align-self: flex-end;
+
+    &:hover {
+      border: 2px solid rgb(242, 234, 15);
+      color: rgb(242, 234, 15);
     }
   }
 
@@ -89,19 +105,6 @@
 
     &:hover {
       border: 1px solid rgb(106, 106, 106);
-    }
-  }
-
-  &--sign-in {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 0.6rem;
-    background-color: rgb(30, 213, 36);
-    color: $white;
-    font-size: 1.5rem;
-
-    &:hover {
-      background-color: rgb(32, 197, 37);
     }
   }
 

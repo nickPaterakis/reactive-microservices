@@ -34,8 +34,8 @@ public class WebSecurity {
                 .authenticated()
                 .and()
                 .oauth2ResourceServer()
-                .jwt();
-                //.jwtAuthenticationConverter(bookingUserJwtAuthenticationConverter());
+                .jwt()
+                .jwtAuthenticationConverter(bookingUserJwtAuthenticationConverter());
 
         return http.build();
     }
