@@ -21,7 +21,7 @@ services:
     ports:
       - 8761:8761
     entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
-#
+
 #  api-gateway:
 #    image: nicholaspat/api-gateway
 #    container_name: api-gateway
@@ -33,7 +33,7 @@ services:
 #      - config-server
 #      - discovery-server
 #    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
-#
+
 #  property-service:
 #    links:
 #      - mysql
