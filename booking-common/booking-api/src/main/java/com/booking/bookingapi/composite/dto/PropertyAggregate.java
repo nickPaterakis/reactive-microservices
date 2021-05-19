@@ -36,6 +36,7 @@ public class PropertyAggregate {
     private Integer bathNumber;
 
     private Float pricePerNight;
+    private String description;
 
     private AddressDto address;
 

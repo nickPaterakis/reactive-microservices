@@ -5,6 +5,7 @@ import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +40,12 @@ public interface BookingEndpoint extends BookingService  {
     @GetMapping("properties/property/{propertyId}")
     @Override
     Mono<PropertyAggregate> getProperty(@PathVariable Long propertyId);
+
+    @PostMapping("properties/create")
+    Mono<Void> createProperty(@RequestBody PropertyDetailsDto propertyDetailsDto);
+
+    @DeleteMapping("properties/delete/{id}")
+    void deleteProperty(@PathVariable Long id);
 
     @GetMapping("users/me")
     @Override

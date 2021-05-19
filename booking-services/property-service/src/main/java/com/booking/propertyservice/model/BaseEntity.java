@@ -1,5 +1,6 @@
 package com.booking.propertyservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 @MappedSuperclass

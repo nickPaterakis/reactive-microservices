@@ -18,17 +18,22 @@ function AccountDropdown({ open, handleOpen, history }) {
     }
   };
 
+  const handleLink = (url) => {
+    handleOpen();
+    history.push(url);
+  };
+
   return (
     <Aux>
       {open ? (
         <div className="dropdown dropdown--account" ref={open ? wrapperRef : null}>
-          <Link to="/profile/account" className="link dropdown__item dropdown__item--account">
+          <Link onClick={() => handleLink('/profile/account')} className="link dropdown__item dropdown__item--account">
             <span className="dropdown__item__icon"><VscAccount /></span>
             <div className="dropdown__item__text">
               Manage account
             </div>
           </Link>
-          <Link to="/profile/myproperties" className="link dropdown__item dropdown__item--account">
+          <Link onClick={() => handleLink('/profile/myproperties')} className="link dropdown__item dropdown__item--account">
             <span className="dropdown__item__icon"><VscHome /></span>
             <div className="dropdown__item__text">
               My properties
@@ -50,6 +55,7 @@ function AccountDropdown({ open, handleOpen, history }) {
 AccountDropdown.propTypes = {
   open: PropTypes.bool,
   handleOpen: PropTypes.func.isRequired,
+  history: PropTypes.func.isRequired,
 };
 
 AccountDropdown.defaultProps = {

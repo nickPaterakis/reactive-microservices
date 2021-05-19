@@ -17,6 +17,7 @@ const TextArea = React.forwardRef(({
     <label className={labelStyle} htmlFor={name}>
       {label}
       <textarea
+        name={name}
         className={className}
         ref={ref}
         type="text"

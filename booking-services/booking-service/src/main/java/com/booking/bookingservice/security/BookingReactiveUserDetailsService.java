@@ -23,16 +23,12 @@ public class BookingReactiveUserDetailsService implements ReactiveUserDetailsSer
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-    log.info("Finding user for user name {}", username);
-    Mono<UserDetails> userDetailsMono =  bookingService.findUserByEmail(username).switchIfEmpty(Mono.empty()).map(BookingUser::new);
-
-    return userDetailsMono;
+        log.info("Finding user for user name {}", username);
+        return bookingService.findUserByEmail(username).switchIfEmpty(Mono.empty()).map(BookingUser::new);
     }
 
     public Mono<UserDetails> saveUser(Jwt jwt) {
         UserDetailsRequest userDetailsRequest = new UserDetailsRequest(jwt.getClaimAsString("given_name"), jwt.getClaimAsString("family_name"), jwt.getClaimAsString("email"));
-        Mono<UserDetails> userDetailsMono1 = bookingService.saveUserDetails(userDetailsRequest, jwt).map(BookingUser::new);
-
-        return userDetailsMono1;
+        return bookingService.saveUserDetails(userDetailsRequest, jwt).map(BookingUser::new);
     }
 }

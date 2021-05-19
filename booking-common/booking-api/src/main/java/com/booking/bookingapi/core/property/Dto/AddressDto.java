@@ -15,8 +15,6 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressDto {
 
-    private String id;
-
     private String city;
 
     private String country;

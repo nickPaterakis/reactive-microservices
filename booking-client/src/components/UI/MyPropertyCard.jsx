@@ -2,6 +2,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { deleteListing } from '../../api/PropertyService';
 import image from '../../assets/images/Properties/Hungary/budapest/1/72301aa8-696d-4a61-8f97-850da90e0042.jpg';
 
 const MyPropertyCard = ({ property, history }) => {
@@ -27,7 +28,8 @@ const MyPropertyCard = ({ property, history }) => {
   };
 
   const handleDelete = () => {
-    history.push(`/property/${property.id}`);
+    deleteListing(property.id);
+    window.location.reload();
   };
 
   return (

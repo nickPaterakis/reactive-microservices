@@ -5,6 +5,7 @@ import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -29,6 +30,10 @@ public interface BookingService {
 
     Mono<PropertyAggregate> getProperty(Long propertyId);
 
+    Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto);
+
+    void deleteProperty(Long id);
+    
     Mono<UserDetailsDto> findUserByEmail(String email);
 
     Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user);

@@ -1,18 +1,28 @@
 import { React, useState, useRef } from 'react';
 import CreatePropertyForm from '../components/CreatePropertyComponents/CreatePropertyForm';
+import Spinner from '../components/UI/Spinner';
 
-const CreateProperty = () => (
-  <div className="create-property">
-    <div className="create-property__container">
-      <div className="create-property__header">
-        Create a new listing 
+const CreateProperty = () => {
+  const [load, setLoad] = useState(false);
+
+  const loadHandler = (value) => {
+    setLoad(value);
+  };
+
+  return (
+    <div className="create-property">
+      {load ? <Spinner /> : null }
+      <div className="create-property__container">
+        <div className="create-property__header">
+          Create a new listing 
+        </div>
+        <div className="create-property__form-container">
+          <CreatePropertyForm loadHandler={loadHandler} />
+        </div>
       </div>
-      <div className="create-property__form-container">
-        <CreatePropertyForm />
-      </div>
-    </div>
    
-  </div>
-);
+    </div>
+  );
+};
 
 export default CreateProperty;

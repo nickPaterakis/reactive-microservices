@@ -31,10 +31,5 @@ public class UserResource implements UserEndpoint {
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         return userService.findUserByEmail(email);
     }
-
-    @Override
-    public UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {
-        return userService.saveUserDetails(userDetailsDto);
-    }
 }
 

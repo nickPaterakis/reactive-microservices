@@ -16,8 +16,6 @@ const Header = ({ location }) => {
 
   const handleOpen = () => setOpen(!open);
 
-  console.log(keycloak);
-
   if (location.pathname !== '/') {
     navStyle = 'header';
     logoStyle = 'link logo logo--header';

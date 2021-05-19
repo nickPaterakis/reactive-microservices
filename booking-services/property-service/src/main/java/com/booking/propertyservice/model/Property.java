@@ -1,9 +1,6 @@
 package com.booking.propertyservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -11,6 +8,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -18,14 +16,11 @@ import java.util.Set;
 @Table(name = "properties")
 public class Property extends BaseEntity{
 
-    @Column(name = "title")
-    private String title;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "property_type_id")
     private PropertyType propertyType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "guest_space_id")
     private GuestSpace guestSpace;
 
@@ -38,13 +33,22 @@ public class Property extends BaseEntity{
     @Column(name = "bath_number")
     private  Integer bathNumber;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "price_per_night")
     private Float pricePerNight;
 
     @Column(name = "owner")
     private String owner;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch=FetchType.EAGER)
     @JoinTable(
             name = "property_amenities",
             joinColumns = @JoinColumn(name = "property_id"),
@@ -52,14 +56,14 @@ public class Property extends BaseEntity{
     )
     Set<Amenity> amenities;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany(mappedBy = "property")
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "property")
+    @OneToMany(mappedBy = "property", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Image> images;
 
 }

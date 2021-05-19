@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import static com.booking.bookingapi.event.Event.Type.CREATE;
+import static com.booking.bookingapi.event.Event.Type.DELETE;
 import static org.springframework.integration.support.MessageBuilder.withPayload;
 
 @EnableBinding(MessageSources.class)
@@ -116,6 +117,22 @@ public class BookingIntegration implements CountryService, PropertyService, User
                 .retrieve()
                 .bodyToMono(PropertyDetailsDto.class)
                 .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
+    }
+
+    @Override
+    public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
+        System.out.println(propertyDetailsDto);
+        messageSources
+                .outputProperties()
+                .send(withPayload(new Event<>(CREATE, 1, propertyDetailsDto)).build());
+        return Mono.empty();
+    }
+
+    @Override
+    public void deleteProperty(Long id) {
+        messageSources
+                .outputProperties()
+                .send(withPayload(new Event<>(DELETE, id, null)).build());
     }
 
     @Override

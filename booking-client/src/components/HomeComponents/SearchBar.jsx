@@ -26,6 +26,10 @@ const SearchBar = ({ history }) => {
   const dates = useSelector((state) => state.searchParameters.dates);
   const guests = useSelector((state) => state.searchParameters.guests);
 
+  // dates.startDate = '';
+  // dates.endDate = '';
+  console.log(dates);
+
   const handleOpen = () => setOpen(!open);
 
   const handleSearch = () => {

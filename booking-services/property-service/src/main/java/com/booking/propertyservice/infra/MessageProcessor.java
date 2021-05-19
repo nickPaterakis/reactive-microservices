@@ -1,7 +1,7 @@
-package com.booking.userservice.infra;
+package com.booking.propertyservice.infra;
 
-import com.booking.bookingapi.core.user.UserService;
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
+import com.booking.bookingapi.core.property.PropertyService;
 import com.booking.bookingapi.event.Event;
 import com.booking.bookingutils.exception.EventProcessingException;
 import lombok.extern.log4j.Log4j2;
@@ -15,25 +15,28 @@ import org.springframework.cloud.stream.messaging.Sink;
 @Log4j2
 public class MessageProcessor {
 
-    private final UserService userService;
+    private final PropertyService propertyService;
 
     @Autowired
-    public MessageProcessor(@Qualifier("UserServiceImpl") UserService userService) {
-        this.userService = userService;
+    public MessageProcessor(@Qualifier("PropertyServiceImpl") PropertyService propertyService) {
+        this.propertyService = propertyService;
     }
 
     @StreamListener(target = Sink.INPUT)
-    public void process(Event<Integer, UserDetailsDto> event) {
+    public void process(Event<Long, PropertyDetailsDto> event) {
         log.info("Process message created at {}...", event.getEventCreatedAt());
         switch (event.getEventType()) {
             case CREATE: {
-                UserDetailsDto userDetailsDto = event.getData();
-                log.info("Create user with ID: {}", userDetailsDto.getId());
-                userService.saveUserDetails(userDetailsDto);
+                PropertyDetailsDto propertyDetailsDto = event.getData();
+                log.info("Create property with ID: {}", propertyDetailsDto.getTitle());
+                propertyService.createProperty(propertyDetailsDto);
                 break;
             }
             case DELETE: {
-
+                Long id = event.getKey();
+                log.info("Delete property with ID: {}", id);
+                propertyService.deleteProperty(id);
+                break;
             }
             case UPDATE: {
 
@@ -42,7 +45,7 @@ public class MessageProcessor {
                 String errorMessage =
                         "Incorrect event type: "
                                 .concat(event.getEventType().toString())
-                                .concat(", expected a CREATE or DELETE event.");
+                                .concat(", expected a CREATE, UPDATE or DELETE event.");
                 log.warn(errorMessage);
                 throw new EventProcessingException(errorMessage);
             }

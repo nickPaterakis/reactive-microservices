@@ -13,7 +13,11 @@ import javax.persistence.*;
 @Table(name = "images")
 public class Image extends NameEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne( fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinColumn(name = "property_id")
     private Property property;
+
+    public Image(String name) {
+        super(name);
+    }
 }

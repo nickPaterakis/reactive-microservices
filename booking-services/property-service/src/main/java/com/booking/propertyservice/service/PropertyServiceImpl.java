@@ -5,6 +5,7 @@ import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.property.PropertyService;
 import com.booking.bookingutils.exception.NotFoundException;
 import com.booking.propertyservice.dto.mapper.PropertyMapper;
+import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.repository.PropertyRepository;
 import lombok.extern.log4j.Log4j2;
 import org.reactivestreams.Publisher;
@@ -92,6 +93,19 @@ public class PropertyServiceImpl implements PropertyService {
                 .map(PropertyMapper::toPropertyDetailsDto)
                 .orElseThrow(() -> new NotFoundException(String.format("Property with id %d not found ", propertyId))))
         );
+    }
+
+    @Override
+    public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
+        Property property = PropertyMapper.toProperty(propertyDetailsDto);
+        System.out.println(property);
+        propertyRepository.save(property);
+        return Mono.empty();
+    }
+
+    @Override
+    public void deleteProperty(Long id) {
+        propertyRepository.deleteById(id);
     }
 
     private <T> Flux<T> asyncFlux(Supplier<Publisher<T>> publisherSupplier) {

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)

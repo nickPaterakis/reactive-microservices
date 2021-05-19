@@ -2,7 +2,6 @@ package com.booking.bookingapi.core.property;
 
 import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
-import com.booking.bookingapi.core.property.Dto.PropertyDto;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -22,5 +21,8 @@ public interface PropertyService {
 
     Mono<PropertyDetailsDto> getProperty(Long propertyId);
 
-//    Set<PropertyDto> findByUser(Long id);
+    default Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto){return null;};
+
+    default void deleteProperty(Long id){};
+
 }

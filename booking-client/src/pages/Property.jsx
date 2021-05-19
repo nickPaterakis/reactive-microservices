@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropertySlider from '../components/PropertyComponents/PropertySlider';
-import getProperty from '../api/PropertyService';
+import { getProperty } from '../api/PropertyService';
 import Spinner from '../components/UI/Spinner';
 import ProfileImage from '../assets/images/i.jpg';
 import SummaryCard from '../components/UI/SummaryCard';
@@ -58,14 +58,7 @@ function Property() {
           <div className="property-description margin-top-small padding-bottom-small">
             <h1 className="property-description__title margin-bottom-extra-small">Overview</h1>
             <p className="property-description__text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ornare ultrices auctor.
-              Fusce euismod id sem non efficitur. Aenean facilisis, ante ac sollicitudin hendrerit,
-              mauris nibh elementum massa, id aliquet arcu lectus non urna. In nec molestie ex, sed
-              mattis arcu. In id leo eu libero gravida sodales. Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Morbi convallis tristique leo at blandit. Vivamus
-              eget libero euismod nunc congue sollicitudin vel et dui. Etiam congue, orci
-              quis consequat venenatis, tortor tellus porttitor diam, volutpat pharetra nunc
-              nisl et ligula. Quisque tempor vitae dui sed scelerisque.
+              {property.description}
             </p>
           </div>
           <div className="property-location margin-top-small padding-bottom-small">

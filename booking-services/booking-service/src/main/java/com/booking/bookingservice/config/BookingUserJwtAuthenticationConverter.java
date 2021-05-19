@@ -24,8 +24,6 @@ public class BookingUserJwtAuthenticationConverter
   public BookingUserJwtAuthenticationConverter(BookingReactiveUserDetailsService bookingReactiveUserDetailsService) {
     this.bookingReactiveUserDetailsService = bookingReactiveUserDetailsService;
   }
-//  Mono<UserDetails> userDetailsMono = bookingReactiveUserDetailsService.saveUser(jwt);
-//                    return new UsernamePasswordAuthenticationToken(userDetailsMono, "n/a", authorities);
 
   @Override
   public Mono<AbstractAuthenticationToken> convert(Jwt jwt) {

@@ -2,10 +2,7 @@ package com.booking.bookingapi.core.property.Dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.Set;
@@ -13,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,9 +34,19 @@ public class PropertyDetailsDto {
 
     private Float pricePerNight;
 
-    private AddressDto address;
+    private String city;
+
+    private String country;
+
+    private String postCode;
+
+    private String streetName;
+
+    private int streetNumber;
 
     private String image;
+
+    private String description;
 
     private Set<String> amenities;
 

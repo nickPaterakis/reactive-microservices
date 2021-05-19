@@ -10,6 +10,6 @@ public interface UserService {
 
     Mono<UserDetailsDto> findUserByEmail(String email);
 
-    UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto);
+    default UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {return null;};
 
 }

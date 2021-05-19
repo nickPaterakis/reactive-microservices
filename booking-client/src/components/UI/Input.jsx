@@ -17,6 +17,7 @@ const Input = React.forwardRef(({
     <label className={labelStyle} htmlFor={name}>
       {label}
       <input
+        name={name}
         className={className}
         ref={ref}
         type="text"
@@ -24,7 +25,7 @@ const Input = React.forwardRef(({
         onChange={onChange}
       />
     </label>
-    {!valid 
+    {!valid
       ? (
         <div className="error">
           <p className="error-message">

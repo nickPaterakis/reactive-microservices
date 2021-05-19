@@ -15,7 +15,6 @@ import java.util.UUID;
 @RestController
 public class PropertyResource implements PropertyEndpoint {
 
-    
     private final PropertyService propertyService;
 
     @Autowired
@@ -43,11 +42,5 @@ public class PropertyResource implements PropertyEndpoint {
     public Mono<PropertyDetailsDto> getProperty(Long propertyId) {
         return propertyService.getProperty(propertyId);
     }
-
-    //
-//    @GetMapping("/{userId}")
-//    public Set<PropertyDto> findByUser(@PathVariable("userId") Long userId) {
-//        return propertyService.findByUser(userId);
-//    }
 
 }

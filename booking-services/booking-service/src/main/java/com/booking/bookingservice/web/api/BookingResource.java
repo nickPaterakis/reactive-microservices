@@ -7,6 +7,7 @@ import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,16 @@ public class BookingResource implements BookingEndpoint {
     @Override
     public Mono<PropertyAggregate> getProperty(Long propertyId) {
         return bookingService.getProperty(propertyId);
+    }
+
+    @Override
+    public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
+        return bookingService.createProperty(propertyDetailsDto);
+    }
+
+    @Override
+    public void deleteProperty(Long id) {
+        bookingService.deleteProperty(id);
     }
 
     @Override

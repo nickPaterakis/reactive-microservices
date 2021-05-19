@@ -25,12 +25,14 @@ function App() {
   const dispatch = useDispatch();
 
   const handleOnEvent = async (event, error) => {
-    console.log(event);
     if (event === 'onAuthSuccess') {
-      console.log(keycloak.authenticated);
       if (keycloak.authenticated) {
-        const response = await getUserDetailsMe(keycloak.token);
-        dispatch(setUser(response.data));
+        try {
+          const response = await getUserDetailsMe(keycloak.token);
+          dispatch(setUser(response.data));
+        } catch (er) {
+          console.log(er);
+        }
       }
     }
   };

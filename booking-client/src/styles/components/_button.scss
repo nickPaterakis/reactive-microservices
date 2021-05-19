@@ -78,6 +78,17 @@
     }
   }
 
+  &--submit-disabled {
+    border: 1px solid rgb(247, 240, 148);
+    color: rgb(247, 240, 148);
+    cursor: not-allowed;
+
+    &:hover {
+      border: 1px solid rgb(247, 240, 148);
+      color: rgb(247, 240, 148);
+    }
+  }
+
   &--reserve {
     height: 4.5rem;
     border-radius: 1rem;

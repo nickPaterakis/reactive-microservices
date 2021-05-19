@@ -1,17 +1,10 @@
 # grant all privileges on booking.* to 'nick'@'localhost';
 drop database if exists property_db;
 
+-- SET FOREIGN_KEY_CHECKS=0;
+
 create database if not exists property_db;
 use property_db;
-
--- DROP TABLE IF EXISTS property_amenities;
--- DROP TABLE IF EXISTS reservations;
--- DROP TABLE IF EXISTS images;
--- DROP TABLE IF EXISTS properties;
--- DROP TABLE IF EXISTS property_types;
--- DROP TABLE IF EXISTS countries;
--- DROP TABLE IF EXISTS guest_spaces;
--- DROP TABLE IF EXISTS amenities;
 
 CREATE TABLE IF NOT EXISTS countries (
     id INT NOT NULL AUTO_INCREMENT,
@@ -45,7 +38,7 @@ create table if not exists addresses (
     postcode varchar(30),
     street_name varchar(30),
     street_number int,
-	CONSTRAINT PK_Property PRIMARY KEY (id),
+	CONSTRAINT PK_Address PRIMARY KEY (id),
 	CONSTRAINT FK_Country FOREIGN KEY (country_id)
         REFERENCES countries (id)
 );
@@ -53,22 +46,24 @@ create table if not exists addresses (
 CREATE TABLE IF NOT EXISTS properties (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(200),
+    description VARCHAR(500),
     property_type_id int not null,
     guest_space_id int not null,
     max_guest_number INT,
     bedroom_number int,
     bath_number int,
     price_per_night int,
-	address_id int,
+ 	address_id int,
     owner varchar(36),
     CONSTRAINT PK_Property PRIMARY KEY (id),
 	CONSTRAINT FK_Property_Type FOREIGN KEY (property_type_id)
         REFERENCES property_types (id),
-	CONSTRAINT FK_Address FOREIGN KEY (address_id)
+ 	CONSTRAINT FK_Address FOREIGN KEY (address_id)
         REFERENCES addresses (id),
 	CONSTRAINT FK_Guest_Space FOREIGN KEY (guest_space_id)
         REFERENCES guest_spaces (id)
 );
+
 
 CREATE TABLE IF NOT EXISTS images (
     id INT NOT NULL AUTO_INCREMENT,
@@ -104,10 +99,13 @@ CREATE TABLE IF NOT EXISTS property_amenities (
     CONSTRAINT FK_Amenity FOREIGN KEY (amenity_id)
         REFERENCES amenities (id)
 );
+
+-- SET FOREIGN_KEY_CHECKS=1;
+
 select * from addresses a inner join countries c on a.country_id = c.id where c.name = 'Spain';
 
 SELECT * FROM properties p
-             -- inner join addresses c on p.address_id = c.id
+			 -- inner join addresses c on p.address_id = c.id
              inner join reservations r on p.id = r.property_id
              WHERE
              p.max_guest_number >= 1

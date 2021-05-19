@@ -1,12 +1,10 @@
 package com.booking.propertyservice.dto.mapper;
 
-import com.booking.bookingapi.core.property.Dto.AddressDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.property.Dto.PropertyDto;
-import com.booking.propertyservice.model.NameEntity;
-import com.booking.propertyservice.model.Property;
+import com.booking.propertyservice.model.*;
 
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PropertyMapper {
@@ -37,16 +35,39 @@ public class PropertyMapper {
                 .setBedroomNumber(property.getBedroomNumber())
                 .setPricePerNight(property.getPricePerNight())
                 .setBathNumber(property.getBathNumber())
-                .setAddress(new AddressDto()
-                        .setCity(property.getAddress().getCity())
-                        .setCountry(property.getAddress().getCountry().getName())
-                        .setPostCode(property.getAddress().getPostcode())
-                        .setStreetName(property.getAddress().getStreetName())
-                        .setStreetNumber(property.getAddress().getStreetNumber())
-                )
+                .setCity(property.getAddress().getCity())
+                .setCountry(property.getAddress().getCountry().getName())
+                .setPostCode(property.getAddress().getPostcode())
+                .setStreetName(property.getAddress().getStreetName())
+                .setStreetNumber(property.getAddress().getStreetNumber())
                 .setImage(property.getImages().iterator().next().getName())
                 .setAmenities(property.getAmenities().stream().map(NameEntity::getName).collect(Collectors.toSet()))
+                .setDescription(property.getDescription())
                 .setOwnerId(UUID.fromString(property.getOwner()));
+    }
+
+    public static Property toProperty(PropertyDetailsDto propertyDetailsDto) {
+        Set<Image> images = new HashSet<Image>();
+        images.add(new Image(propertyDetailsDto.getImage()));
+        return new Property()
+                .setTitle(propertyDetailsDto.getTitle())
+                .setPropertyType(new PropertyType(propertyDetailsDto.getPropertyType()))
+                .setGuestSpace(new GuestSpace(propertyDetailsDto.getGuestSpace()))
+                .setMaxGuestNumber(propertyDetailsDto.getMaxGuestNumber())
+                .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
+                .setPricePerNight(propertyDetailsDto.getPricePerNight())
+                .setBathNumber(propertyDetailsDto.getBathNumber())
+                .setAddress(new Address()
+                        .setCity(propertyDetailsDto.getCity())
+                        .setCountry(new Country(propertyDetailsDto.getCountry()))
+                        .setPostcode(propertyDetailsDto.getPostCode())
+                        .setStreetName(propertyDetailsDto.getStreetName())
+                        .setStreetNumber(propertyDetailsDto.getStreetNumber())
+                )
+                .setAmenities(propertyDetailsDto.getAmenities().stream().map(AmenitiesMapper::toAmenity).collect(Collectors.toSet()))
+                .setDescription(propertyDetailsDto.getDescription())
+                .setOwner(propertyDetailsDto.getOwnerId().toString())
+                .setImages(images);
     }
 //
 //    public static Property toProperty(PropertyDto propertyDto) {

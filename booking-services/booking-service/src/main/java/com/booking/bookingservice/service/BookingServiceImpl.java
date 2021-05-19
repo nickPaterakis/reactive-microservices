@@ -4,8 +4,10 @@ import com.booking.bookingapi.composite.BookingService;
 import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.composite.request.UserDetailsRequest;
+import com.booking.bookingapi.core.property.Dto.AddressDto;
 import com.booking.bookingapi.core.property.Dto.CountryDto;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
+import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import com.booking.bookingservice.integration.BookingIntegration;
 import lombok.extern.log4j.Log4j2;
@@ -60,7 +62,14 @@ public class BookingServiceImpl implements BookingService {
                             .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
                             .setBathNumber(propertyDetailsDto.getBathNumber())
                             .setPricePerNight(propertyDetailsDto.getPricePerNight())
-                            .setAddress(propertyDetailsDto.getAddress())
+                            .setAddress(new AddressDto(
+                                    propertyDetailsDto.getCity(),
+                                    propertyDetailsDto.getCountry(),
+                                    propertyDetailsDto.getPostCode(),
+                                    propertyDetailsDto.getStreetName(),
+                                    propertyDetailsDto.getStreetNumber()
+                            ))
+                            .setDescription(propertyDetailsDto.getDescription())
                             .setImage(propertyDetailsDto.getImage())
                             .setAmenities(propertyDetailsDto.getAmenities())
                             .setOwnerId(propertyDetailsDto.getOwnerId());
@@ -74,6 +83,18 @@ public class BookingServiceImpl implements BookingService {
                             .setOwnerLastName(userDetailsDto.getLastName());
                     return propertyAggregate;
                 });
+    }
+
+    @Override
+    public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
+        log.info("createProperty: {}", propertyDetailsDto.getTitle());
+        return integration.createProperty(propertyDetailsDto);
+    }
+
+    @Override
+    public void deleteProperty(Long id) {
+        log.info("deleteProperty: {}", id);
+        integration.deleteProperty(id);
     }
 
     @Override
