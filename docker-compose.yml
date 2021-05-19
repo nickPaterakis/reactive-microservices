@@ -20,7 +20,7 @@ services:
       - config-server
     ports:
       - 8761:8761
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   api-gateway:
     image: nicholaspat/api-gateway
@@ -32,7 +32,7 @@ services:
     depends_on:
       - config-server
       - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   property-service:
     links:
@@ -48,7 +48,7 @@ services:
       - mysql
     ports:
       - 8081:8081
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
 #  user-service:
 #    image: nicholaspat/user-service
@@ -62,7 +62,7 @@ services:
 #      - mongodb
 #    ports:
 #    - 8082:8082
-#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 #
 #
   booking-service:
@@ -76,7 +76,7 @@ services:
       #- rabbitmq
     ports:
     - 8083:8083
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
 #
 #  mongodb:
@@ -93,7 +93,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=property_db
     ports:
-      - 3306:3306
+      - 3308:3308
     volumes:
       - "./db:/var/lib/mysql"
 #

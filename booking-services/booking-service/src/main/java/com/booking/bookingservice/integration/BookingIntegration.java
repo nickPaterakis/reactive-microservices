@@ -61,7 +61,10 @@ public class BookingIntegration implements CountryService, PropertyService, User
     @Override
     public Flux<CountryDto> getCountries(String name) {
 
-        var url = "http://localhost:8081"
+//        var url = "http://localhost:8081"
+//                .concat("/countries/")
+//                .concat(name);
+        var url = propertyServiceUrl
                 .concat("/countries/")
                 .concat(name);
 
