@@ -22,17 +22,17 @@ services:
       - 8761:8761
     entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-#  api-gateway:
-#    image: nicholaspat/api-gateway
-#    container_name: api-gateway
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    ports:
-#      - 8765:8765
-#    depends_on:
-#      - config-server
-#      - discovery-server
-#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+  api-gateway:
+    image: nicholaspat/api-gateway
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8765:8765
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
 #  property-service:
 #    links:
