@@ -46,24 +46,24 @@ services:
       - config-server
       #- rabbitmq
       - mysql
-    ports:
-      - 8081:8081
+#    ports:
+#      - 8081:8081
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-#  user-service:
-#    image: nicholaspat/user-service
-#    mem_limit: 700m
-#    container_name: user-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - config-server
-#      - rabbitmq
-#      - mongodb
+  user-service:
+    image: nicholaspat/user-service
+    mem_limit: 700m
+    container_name: user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - config-server
+      - rabbitmq
+      - mongodb
 #    ports:
 #    - 8082:8082
-#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
-#
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
+
 #
   booking-service:
     image: nicholaspat/booking-service
@@ -74,17 +74,17 @@ services:
     depends_on:
       - config-server
       #- rabbitmq
-    ports:
-    - 8083:8083
+#    ports:
+#    - 8083:8083
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-#
-#  mongodb:
-#    container_name: booking-mongo
-#    image: mongo:4.2.6-bionic
-#    ports:
-#      - "27017-27019:27017-27019"
-#
+
+  mongo:
+    container_name: booking-mongo
+    image: mongo:4.2.6-bionic
+    ports:
+      - "27017-27019:27017-27019"
+
   mysql:
     image: mysql
     # restart: always
@@ -96,14 +96,14 @@ services:
       - 3308:3308
     volumes:
       - "./db:/var/lib/mysql"
-#
-#  rabbitmq:
-#    image: rabbitmq:3-management
-#    container_name: booking-rabbitmq
-#    ports:
-#      - 5672:5672
-#      - 15672:15672
-#
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: booking-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
 #  zipkin-server:
 #    image: openzipkin/zipkin
 #    container_name: booking-zipkin

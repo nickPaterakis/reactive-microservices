@@ -79,7 +79,8 @@ public class BookingIntegration implements CountryService, PropertyService, User
     public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
 
         var url = UriComponentsBuilder
-                .fromUriString( "http://localhost:8081"
+                // .fromUriString( "http://localhost:8081"
+                .fromUriString(propertyServiceUrl
                 .concat("/properties/search")
                 .concat("?location={location}&checkIn={checkIn}&checkOut={checkOut}&guestNumber={guestNumber}&currentPage={currentPage}"))
                 .build(location, checkIn, checkOut, guestNumber, currentPage);
@@ -95,7 +96,8 @@ public class BookingIntegration implements CountryService, PropertyService, User
     @Override
     public Mono<PageProperties> getProperties(UUID ownerId) {
         var url = UriComponentsBuilder
-                .fromUriString("http://localhost:8081"
+//                .fromUriString("http://localhost:8081"
+                .fromUriString(propertyServiceUrl
                         .concat("/properties/{ownerId}"))
                 .build(ownerId.toString());
 
@@ -110,7 +112,8 @@ public class BookingIntegration implements CountryService, PropertyService, User
     @Override
     public Mono<PropertyDetailsDto> getProperty(Long propertyId) {
         var url = UriComponentsBuilder
-                .fromUriString("http://localhost:8081"
+//                .fromUriString("http://localhost:8081"
+                .fromUriString(propertyServiceUrl
                         .concat("/properties/property/{propertyId}"))
                 .build(propertyId);
 
@@ -141,7 +144,8 @@ public class BookingIntegration implements CountryService, PropertyService, User
     @Override
     public Mono<UserDetailsDto> getUserDetails(UUID uuid) {
         var url = UriComponentsBuilder
-                .fromUriString("http://localhost:8082"
+//                .fromUriString("http://localhost:8082"
+                .fromUriString(userServiceUrl
                         .concat("/users/me/{uuid}"))
                 .build(uuid.toString());
         System.out.println(uuid.toString());
@@ -156,7 +160,8 @@ public class BookingIntegration implements CountryService, PropertyService, User
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         var url = UriComponentsBuilder
-                .fromUriString("http://localhost:8082"
+//                .fromUriString("http://localhost:8082"
+                .fromUriString(userServiceUrl
                 .concat("/users/{email}"))
                 .build(email);
 
