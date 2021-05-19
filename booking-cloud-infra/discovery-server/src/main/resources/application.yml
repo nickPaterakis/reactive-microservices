@@ -1,6 +1,11 @@
+app:
+  config-server:
+    host: localhost
+    port: 8888
+
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://${app.config-server.host}:${app.config-server.port}
   application:
     name: discovery-server
 
@@ -9,4 +14,7 @@ spring:
   config:
     activate:
       on-profile: docker
-    import: optional:configserver:http://config-server:8888
+app:
+  config-server:
+    host: config-server
+    #import: optional:configserver:http://config-server:8888
