@@ -112,7 +112,7 @@ services:
       - KEYCLOAK_PASSWORD=admin
       - DB_VENDOR=h2
     ports:
-    - 127.0.0.1:8080:8080
+    - 127.0.0.1:8090:8090
 
 #  zipkin-server:
 #    image: openzipkin/zipkin
