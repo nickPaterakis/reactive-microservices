@@ -35,7 +35,7 @@
 <!--		<module>booking-common/booking-utils</module>-->
 <!--		<module>booking-cloud-infra/config-server</module>-->
 <!--		<module>booking-cloud-infra/discovery-server</module>-->
-<!--		<module>booking-cloud-infra/api-gateway</module>-->
+		<module>booking-cloud-infra/api-gateway</module>
 <!--		<module>booking-services/property-service</module>-->
 		<module>booking-services/user-service</module>
 <!--		<module>booking-services/reservation-service</module>-->
