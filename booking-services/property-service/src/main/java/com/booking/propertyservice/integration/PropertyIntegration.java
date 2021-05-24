@@ -24,7 +24,6 @@ public class PropertyIntegration implements UserService {
     private final WebClient.Builder webClientBuilder;
     private final MessageSources messageSources;
     private final ObjectMapper mapper;
-    private final String propertyServiceUrl;
     private final String userServiceUrl;
     private WebClient webClient;
 
@@ -33,7 +32,6 @@ public class PropertyIntegration implements UserService {
             WebClient.Builder webClientBuilder,
             ObjectMapper mapper,
             MessageSources messageSources,
-            @Value("${app.property-service.host}") String productServiceHost,
             @Value("${app.user-service.host}") String userServiceHost) {
 
         this.webClientBuilder = webClientBuilder;
@@ -42,7 +40,6 @@ public class PropertyIntegration implements UserService {
 
         var http = "http://";
 
-        propertyServiceUrl = http.concat(productServiceHost);
         userServiceUrl = http.concat(userServiceHost);
     }
 

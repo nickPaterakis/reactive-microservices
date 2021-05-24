@@ -18,7 +18,7 @@ const Autocomplete = ({ handleLocation }) => {
   useEffect(() => {
     if (state.showOptions && state.userInput) {
       const fetchData = async () => {
-        const result = await axios.get(`http://localhost:8765/booking/api/v1/countries/${state.userInput}`);
+        const result = await axios.get(`http://localhost:8765/countries/${state.userInput}`);
     
         setState({
           ...state,
