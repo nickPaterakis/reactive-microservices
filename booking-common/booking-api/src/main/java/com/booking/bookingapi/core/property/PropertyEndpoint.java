@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 
 @RequestMapping("/properties")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public interface PropertyEndpoint extends PropertyService {
 
     @GetMapping("/search")
