@@ -75,23 +75,23 @@ public class BookingIntegration implements CountryService, PropertyService, User
                 .bodyToFlux(CountryDto.class);
     }
 
-    @Override
-    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
-
-        var url = UriComponentsBuilder
-                // .fromUriString( "http://localhost:8081"
-                .fromUriString(propertyServiceUrl
-                .concat("/properties/search")
-                .concat("?location={location}&checkIn={checkIn}&checkOut={checkOut}&guestNumber={guestNumber}&currentPage={currentPage}"))
-                .build(location, checkIn, checkOut, guestNumber, currentPage);
-        System.out.println(url);
-
-        return getWebClient()
-                .get()
-                .uri(url)
-                .retrieve()
-                .bodyToMono(PageProperties.class);
-    }
+//    @Override
+//    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+//
+//        var url = UriComponentsBuilder
+//                // .fromUriString( "http://localhost:8081"
+//                .fromUriString(propertyServiceUrl
+//                .concat("/properties/search")
+//                .concat("?location={location}&checkIn={checkIn}&checkOut={checkOut}&guestNumber={guestNumber}&currentPage={currentPage}"))
+//                .build(location, checkIn, checkOut, guestNumber, currentPage);
+//        System.out.println(url);
+//
+//        return getWebClient()
+//                .get()
+//                .uri(url)
+//                .retrieve()
+//                .bodyToMono(PageProperties.class);
+//    }
 
     @Override
     public Mono<PageProperties> getProperties(UUID ownerId) {

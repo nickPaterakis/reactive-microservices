@@ -4,8 +4,10 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NamingConventions;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -33,5 +35,23 @@ public class PropertyConfig {
         log.info("Creates a jdbcScheduler with connectionPoolSize = {}", connectionPoolSize);
         return Schedulers.fromExecutor(Executors.newFixedThreadPool(connectionPoolSize));
     }
+
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
+    }
+
+    //    @Bean
+//    WebClient webClient(
+//            ReactiveClientRegistrationRepository clientRegistrationRepository,
+//            ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
+//        ServerOAuth2AuthorizedClientExchangeFilterFunction oauth =
+//                new ServerOAuth2AuthorizedClientExchangeFilterFunction(
+//                        clientRegistrationRepository, authorizedClientRepository);
+//        oauth.setDefaultOAuth2AuthorizedClient(true);
+//        oauth.setDefaultClientRegistrationId("keycloak");
+//        return WebClient.builder().filter(oauth).build();
+//    }
 
 }

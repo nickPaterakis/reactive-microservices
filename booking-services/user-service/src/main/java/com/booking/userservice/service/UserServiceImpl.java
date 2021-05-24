@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {
+    public Mono<UserDetailsDto> saveUserDetails(UserDetailsDto userDetailsDto) {
         log.info("saveUserDetails: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
-        userRepository.save(user).block();;
-        return UserMapper.toUserDetailsDto(user);
+        userRepository.save(user).block();
+        return Mono.just(UserMapper.toUserDetailsDto(user));
     }
 }

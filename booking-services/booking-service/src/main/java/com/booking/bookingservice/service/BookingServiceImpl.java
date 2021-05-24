@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service("BookingServiceImpl")
@@ -37,10 +36,10 @@ public class BookingServiceImpl implements BookingService {
         return integration.getCountries(name);
     }
 
-    @Override
-    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
-        return integration.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
-    }
+//    @Override
+//    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+//        return integration.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
+//    }
 
     @Override
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user) {

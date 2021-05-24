@@ -1,7 +1,7 @@
 import Keycloak from 'keycloak-js';
 
 const keycloakConfig = {
-  url: 'http://localhost:8090/auth', 
+  url: 'http://127.0.0.1:8080/auth', 
   realm: 'booking', 
   clientId: 'booking-react-app-client',
 };

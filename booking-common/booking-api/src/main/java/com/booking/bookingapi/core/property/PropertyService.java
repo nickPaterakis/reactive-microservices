@@ -1,11 +1,14 @@
 package com.booking.bookingapi.core.property;
 
+import com.booking.bookingapi.composite.dto.BookingUser;
+import com.booking.bookingapi.composite.dto.PropertyAggregate;
 import com.booking.bookingapi.core.property.Dto.PageProperties;
 import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
+import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public interface PropertyService {
 
@@ -17,12 +20,15 @@ public interface PropertyService {
             int currentPage
     );
 
-    Mono<PageProperties> getProperties(UUID ownerId);
+    Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user);
 
-    Mono<PropertyDetailsDto> getProperty(Long propertyId);
+    Mono<PropertyAggregate> getProperty(Long propertyId);
 
-    default Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto){return null;};
+    Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto);
 
-    default void deleteProperty(Long id){};
+    Mono<Void> deleteProperty(Long id);
+
+    default Mono<UserDetailsDto> findUserByEmail(String email){return null;};
+
 
 }

@@ -6,10 +6,11 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public interface UserService {
+
     Mono<UserDetailsDto> getUserDetails(UUID uuid);
 
     Mono<UserDetailsDto> findUserByEmail(String email);
 
-    default UserDetailsDto saveUserDetails(UserDetailsDto userDetailsDto) {return null;};
+    default Mono<UserDetailsDto> saveUserDetails(UserDetailsDto userDetailsDto) {return null;};
 
 }

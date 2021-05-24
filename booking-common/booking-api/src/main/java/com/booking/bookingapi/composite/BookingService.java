@@ -12,19 +12,17 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
-
 public interface BookingService {
 
     Flux<CountryDto> getCountries(String name);
-
-    Mono<PageProperties> searchProperties(
-            String location,
-            LocalDate checkIn,
-            LocalDate checkOut,
-            int guestNumber,
-            int currentPage
-    );
+//
+//    Mono<PageProperties> searchProperties(
+//            String location,
+//            LocalDate checkIn,
+//            LocalDate checkOut,
+//            int guestNumber,
+//            int currentPage
+//    );
 
     Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user);
 

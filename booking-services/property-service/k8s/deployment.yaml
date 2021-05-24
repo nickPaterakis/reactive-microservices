@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: property-service
+spec:
+  selector:
+    matchLabels:
+      app: property-service
+  template:
+    metadata:
+      labels:
+        app: property-service
+    spec:
+      containers:
+        - name: property-service
+          image: nicholaspat/property-service
+          ports:
+            - containerPort: 8080
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: property-service
+data:
+  application.yml: |-
+    spring:
+     cloud:
+      kubernetes:
+        discovery:
+          all-namespaces: true
+          service-labels:
+            spring-boot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: property-service
+spec:
+  type: NodePort
+  selector:
+    app: property-service
+  ports:
+    - port: 8080
+      targetPort: 8080

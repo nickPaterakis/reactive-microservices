@@ -1,26 +1,15 @@
 package com.booking.apigateway.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import reactor.core.publisher.Mono;
 
 @EnableWebFluxSecurity
 public class WebSecurity {
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http)  {
-        ReactiveJwtAuthenticationConverter jwtAuthenticationConverter = new ReactiveJwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRuleConverter());
-
         http.cors().disable().csrf().disable()
                 .authorizeExchange()
                 .pathMatchers("/actuator/**").permitAll()
@@ -32,9 +21,7 @@ public class WebSecurity {
                 .anyExchange().authenticated()
                 .and()
                 .oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthenticationConverter);
-
+                .jwt();
 
         return http.build();
     }

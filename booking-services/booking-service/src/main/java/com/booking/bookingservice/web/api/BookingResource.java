@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
-
 @RestController
 @Log4j2
 public class BookingResource implements BookingEndpoint {
@@ -37,10 +35,10 @@ public class BookingResource implements BookingEndpoint {
         return bookingService.getCountries(name);
     }
 
-    @Override
-    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
-        return bookingService.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
-    }
+//    @Override
+//    public Mono<PageProperties> searchProperties(String location, LocalDate checkIn, LocalDate checkOut, int guestNumber, int currentPage) {
+//        return bookingService.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
+//    }
 
     @Override
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user) {
