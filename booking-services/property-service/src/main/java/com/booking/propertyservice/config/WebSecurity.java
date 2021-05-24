@@ -27,7 +27,7 @@ public class WebSecurity {
                 .csrf()
                 .disable()
                 .authorizeExchange()
-                .pathMatchers("countries/**").permitAll()
+                .pathMatchers("/countries/**").permitAll()
                 .pathMatchers("properties/**").permitAll()
                 .anyExchange()
                 .authenticated()
