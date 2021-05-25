@@ -1,7 +1,5 @@
-package com.booking.propertyservice.integration;
+package com.booking.reservationservice.integration;
 
-import com.booking.bookingapi.composite.dto.BookingUser;
-import com.booking.bookingapi.core.reservation.ReservationService;
 import com.booking.bookingapi.core.user.UserService;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,19 +7,15 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDate;
 
 @EnableBinding(MessageSources.class)
 @Component
 @Log4j2
-public class PropertyIntegration implements UserService, ReservationService {
+public class ReservationIntegration implements UserService {
 
     private final WebClient.Builder webClientBuilder;
     private final MessageSources messageSources;
@@ -30,7 +24,7 @@ public class PropertyIntegration implements UserService, ReservationService {
     private WebClient webClient;
 
     @Autowired
-    public PropertyIntegration(
+    public ReservationIntegration(
             WebClient.Builder webClientBuilder,
             ObjectMapper mapper,
             MessageSources messageSources,
@@ -65,39 +59,6 @@ public class PropertyIntegration implements UserService, ReservationService {
                 .retrieve()
                 .bodyToMono(UserDetailsDto.class)
                 .switchIfEmpty(Mono.empty());
-    }
-
-    @Override
-    public Flux<Long> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
-        var url = UriComponentsBuilder
-                .fromUriString("http://reservation-service:8083"
-                        .concat("/reservations/propertyIds?location={location}&checkIn={checkIn}&checkOut={checkOut}"))
-                .build(location, checkIn, checkOut);
-
-        return getWebClient()
-                .get()
-                .uri(url)
-                .retrieve()
-                .bodyToFlux(Long.class)
-                .switchIfEmpty(Flux.empty());
-    }
-
-
-    @Override
-    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
-//        var url = UriComponentsBuilder
-////                .fromUriString("http://localhost:8082"
-//                .fromUriString(userServiceUrl
-//                        .concat("/users/me/{uuid}"))
-//                .build(uuid.toString());
-//        System.out.println(uuid.toString());
-//        return getWebClient()
-//                .get()
-//                .uri(url)
-//                .retrieve()
-//                .bodyToMono(UserDetailsDto.class)
-//                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
-    return Mono.just(new UserDetailsDto());
     }
 
     private WebClient getWebClient() {

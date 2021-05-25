@@ -28,7 +28,7 @@ public class WebSecurity {
                 .disable()
                 .authorizeExchange()
                 .pathMatchers("/countries/**").permitAll()
-                .pathMatchers("properties/**").permitAll()
+                .pathMatchers("/properties/**").permitAll()
                 .anyExchange()
                 .authenticated()
                 .and()

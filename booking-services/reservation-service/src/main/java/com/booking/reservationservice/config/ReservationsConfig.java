@@ -1,12 +1,15 @@
-package com.booking.propertyservice.config;
+package com.booking.reservationservice.config;
 
+import com.mongodb.reactivestreams.client.MongoClient;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.NamingConventions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -15,10 +18,13 @@ import java.util.concurrent.Executors;
 
 @Configuration
 @Log4j2
-public class PropertyConfig {
+public class ReservationsConfig {
 
     @Value("${spring.datasource.hikari.maximum-pool-size:10}")
     Integer connectionPoolSize;
+
+    @Autowired
+    MongoClient mongoClient;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -42,6 +48,10 @@ public class PropertyConfig {
         return WebClient.builder();
     }
 
+    @Bean
+    public ReactiveMongoTemplate reactiveMongoTemplate() {
+        return new ReactiveMongoTemplate(mongoClient, "test");
+    }
 //    @Bean
 //    WebClient webClient(
 //            ReactiveClientRegistrationRepository clientRegistrationRepository,

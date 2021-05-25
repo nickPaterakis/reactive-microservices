@@ -1,15 +1,15 @@
 package com.booking.userservice.web.api;
 
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.core.user.UserEndpoint;
 import com.booking.bookingapi.core.user.UserService;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 @RestController
 @Log4j2
@@ -23,8 +23,8 @@ public class UserResource implements UserEndpoint {
     }
 
     @Override
-    public Mono<UserDetailsDto> getUserDetails(UUID uuid) {
-        return userService.getUserDetails(uuid);
+    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
+        return userService.getUserDetails(user);
     }
 
     @Override

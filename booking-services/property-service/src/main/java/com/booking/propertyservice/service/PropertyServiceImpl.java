@@ -25,6 +25,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -57,12 +59,18 @@ public class PropertyServiceImpl implements PropertyService {
         Pageable pageable;
         pageable = PageRequest.of(currentPage,5);
         PageProperties result = new PageProperties();
-        return asyncMono(() -> Mono.just(propertyRepository.count(location, checkIn, checkOut, guestNumber))
-                .map(totalElements -> {
-                    result.setTotalElements(totalElements);
-                    return totalElements;
+        List<Long> propertyIds = new ArrayList<>();
+
+        return asyncMono(() ->
+                integration.getPropertyIds(location, checkIn, checkOut)
+                .collectList()
+                .map(longs -> {
+                    propertyIds.addAll(longs);
+                    result.setTotalElements(propertyRepository.count(propertyIds, guestNumber));
+                    return result.getTotalElements();
                 })
-                .flatMapMany(el -> Flux.fromIterable(propertyRepository.searchProperties(location, checkIn, checkOut, guestNumber, pageable)
+                .flatMapMany(el ->
+                        Flux.fromIterable(propertyRepository.searchProperties(propertyIds, guestNumber, pageable)
                         .stream()
                         .map(PropertyMapper::toPropertyDto)
                         .collect(Collectors.toList())))
@@ -79,7 +87,8 @@ public class PropertyServiceImpl implements PropertyService {
         Pageable pageable;
         pageable = PageRequest.of(0,5);
         PageProperties result = new PageProperties();
-        return asyncMono(() -> Mono.just(propertyRepository.count(user.getId()))
+        return asyncMono(() -> Mono.just(
+                propertyRepository.count(user.getId()))
                 .map(totalElements -> {
                     result.setTotalElements(totalElements);
                     return totalElements;
@@ -125,13 +134,14 @@ public class PropertyServiceImpl implements PropertyService {
             System.out.println(propertyDetailsDto.getOwnerId());
             return propertyAggregate;
         })
-        .flatMap(pa -> integration.getUserDetails(pa.getOwnerId()))
-        .map(userDetailsDto -> {
-            propertyAggregate
-                    .setOwnerFirstName(userDetailsDto.getFirstName())
-                    .setOwnerLastName(userDetailsDto.getLastName());
-            return propertyAggregate;
-        }));
+//        .flatMap(pa -> integration.getUserDetails(pa.getOwnerId()))
+//        .map(userDetailsDto -> {
+//            propertyAggregate
+//                    .setOwnerFirstName(userDetailsDto.getFirstName())
+//                    .setOwnerLastName(userDetailsDto.getLastName());
+//            return propertyAggregate;
+//        })
+       );
     }
 
     @Override

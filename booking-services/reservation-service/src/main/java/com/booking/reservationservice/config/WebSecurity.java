@@ -1,6 +1,6 @@
-package com.booking.userservice.config;
+package com.booking.reservationservice.config;
 
-import com.booking.userservice.security.BookingReactiveUserDetailsService;
+import com.booking.reservationservice.security.BookingReactiveUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -27,7 +27,7 @@ public class WebSecurity {
                 .csrf()
                 .disable()
                 .authorizeExchange()
-                .pathMatchers("/users/**").permitAll()
+                .pathMatchers("/reservations/**").permitAll()
                 .anyExchange()
                 .authenticated()
                 .and()

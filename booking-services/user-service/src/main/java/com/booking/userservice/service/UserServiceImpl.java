@@ -1,5 +1,6 @@
 package com.booking.userservice.service;
 
+import com.booking.bookingapi.composite.dto.BookingUser;
 import com.booking.bookingapi.core.user.UserService;
 import com.booking.bookingapi.core.user.dto.UserDetailsDto;
 import com.booking.bookingutils.exception.NotFoundException;
@@ -9,6 +10,7 @@ import com.booking.userservice.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -30,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<UserDetailsDto> getUserDetails(UUID uuid) {
-        log.info("getUserDetails: {}", uuid.toString());
-        return userRepository.findById(uuid)
-                .switchIfEmpty(error(new NotFoundException("No user found for user id: " + uuid.toString())))
-                .map(user -> modelMapper.map(user, UserDetailsDto.class));
+    public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
+        log.info("getUserDetails: {}", user.getId());
+        return userRepository.findById(UUID.fromString(user.getId()))
+                .switchIfEmpty(error(new NotFoundException("No user found for user id: " + user.getId())))
+                .map(u -> modelMapper.map(u, UserDetailsDto.class));
 
     }
 
@@ -49,7 +51,8 @@ public class UserServiceImpl implements UserService {
     public Mono<UserDetailsDto> saveUserDetails(UserDetailsDto userDetailsDto) {
         log.info("saveUserDetails: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
-        userRepository.save(user).block();
+        System.out.println(userDetailsDto);
+        userRepository.save(user);
         return Mono.just(UserMapper.toUserDetailsDto(user));
     }
 }

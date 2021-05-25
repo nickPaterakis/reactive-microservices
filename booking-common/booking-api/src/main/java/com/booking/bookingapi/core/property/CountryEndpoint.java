@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Flux;
 
 @RequestMapping("/countries")
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public interface CountryEndpoint extends CountryService {
 
     @GetMapping("/{name}")

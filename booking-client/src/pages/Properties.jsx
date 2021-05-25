@@ -18,7 +18,7 @@ const Properties = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `http://localhost:8765/booking/api/v1/properties/search?location=${ 
+        `http://localhost:8765/properties/search?location=${ 
           location 
         }&checkIn=${ 
           moment(moment(dates.startDate).toDate()).format(DATE_FORMAT)
