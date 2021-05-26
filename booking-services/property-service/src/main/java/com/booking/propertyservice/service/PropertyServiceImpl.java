@@ -66,6 +66,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .collectList()
                 .map(longs -> {
                     propertyIds.addAll(longs);
+                    System.out.println(longs);
                     result.setTotalElements(propertyRepository.count(propertyIds, guestNumber));
                     return result.getTotalElements();
                 })

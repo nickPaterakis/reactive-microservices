@@ -30,7 +30,10 @@ public class BookingUserJwtAuthenticationConverter
     Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
     Mono<AbstractAuthenticationToken> abstractAuthenticationTokenMono =  bookingReactiveUserDetailsService
             .findByUsername(jwt.getClaimAsString("email"))
-            .switchIfEmpty(bookingReactiveUserDetailsService.saveUser(jwt))
+            .onErrorResume(e -> {
+              System.out.println(e);
+              return bookingReactiveUserDetailsService.saveUser(jwt);
+            })
             .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities));
 
     return abstractAuthenticationTokenMono;

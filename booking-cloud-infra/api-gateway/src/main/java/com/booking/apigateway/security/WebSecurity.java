@@ -16,6 +16,7 @@ public class WebSecurity {
                 .pathMatchers("/eureka/**").permitAll()
                 .pathMatchers("/countries/**").permitAll()
                 .pathMatchers("/properties/**").permitAll()
+                .pathMatchers("/reservations/**").permitAll()
                 .pathMatchers("/users/**").permitAll()
                 .anyExchange().authenticated()
                 .and()

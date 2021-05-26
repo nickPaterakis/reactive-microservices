@@ -24,15 +24,22 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
     public Flux<Long> findPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
         final Query query = new Query();
 
-        final List<Criteria> criteria = new ArrayList<>();
-
+        final List<Criteria> criterias = new ArrayList<>();
+        final Criteria criteria = new Criteria();
+        System.out.println(location);
         if (location != null && !location.isEmpty())
-            criteria.add(Criteria.where("location").is(location));
+            criterias.add(Criteria.where("location").is(location));
 
-        criteria.add(Criteria.where("checkIn").gte(checkIn).and("checkIn").gte(checkOut)
-                .orOperator(Criteria.where("checkOut").lt(checkIn).and("checkOut").lt(checkOut)));
+//        criterias.add(criteria.andOperator(
+//                Criteria.where("checkIn").gte(checkIn),
+//                Criteria.where("checkIn").gte(checkOut)
+//        ).orOperator(
+//                Criteria.where("checkOut").lt(checkIn),
+//                Criteria.where("checkOut").lt(checkOut)
+//        ));
+                //.orOperator(Criteria.where("checkOut").lt(checkIn).and("checkOut").lt(checkOut)));
 
-        query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])));
+        query.addCriteria(new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()])));
         query.fields().include("propertyId");
         return reactiveMongoTemplate.find(query, Long.class);
     }
