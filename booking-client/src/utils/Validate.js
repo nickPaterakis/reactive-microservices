@@ -7,6 +7,14 @@
 const minLengthValidator = (value, minLength) => value.length >= minLength;
 
 /**
+ * maxLength Val
+ * @param  value
+ * @param  maxLength
+ * @return
+ */
+const maxLengthValidator = (value, maxLength) => value.length <= maxLength;
+
+/**
  * Age Validator
  * @param  value
  * @return
@@ -82,6 +90,10 @@ const validate = (value, rules) => {
         case 'minLength': {
           if (minLengthValidator(value, rules[rule])) break;
           else return { valid: false, errorMessage: `You need to type ${rules[rule]} characters` };
+        }
+        case 'maxLength': {
+          if (maxLengthValidator(value, rules[rule])) break;
+          else return { valid: false, errorMessage: `You should type until ${rules[rule]} characters` };
         }
         case 'isRequired': {
           if (requiredValidator(value)) break;

@@ -1,8 +1,8 @@
 package com.booking.userservice.security;
 
-import com.booking.bookingapi.composite.dto.BookingUser;
-import com.booking.bookingapi.core.user.UserService;
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.dto.BookingUser;
+import com.booking.bookingapi.user.UserService;
+import com.booking.bookingapi.user.dto.UserDetailsDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;

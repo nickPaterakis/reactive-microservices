@@ -19,4 +19,12 @@ const saveState = (state) => {
   }
 };
 
-export { loadState, saveState };
+const removeState = () => {
+  try {
+    localStorage.removeItem('state');
+  } catch {
+    // ignore write errors
+  }
+};
+
+export { loadState, saveState, removeState };

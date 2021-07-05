@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 import {
-  React, useState, useRef, useMemo, 
+  React, useState, useRef, useMemo,
 } from 'react';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
@@ -15,16 +15,17 @@ import TextArea from '../UI/TextArea';
 import validate from '../../utils/Validate';
 import ErrorIcon from '../../assets/icons/warning.svg';
 import Checkbox from '../UI/Checkbox';
+import SelectedImages from '../UI/SelectedImages';
 
 const CreatePropertyForm = ({ history, loadHandler }) => {
   const [createPropertyForm, setCreatePropertyForm] = useState({
-    formIsValid: false,
+    isFormValid: false,
     formControls: {
       propertyType: {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
@@ -36,11 +37,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbers: true,
         },
         touched: false,
       },
@@ -48,11 +50,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbers: true,
         },
         touched: false,
       },
@@ -60,17 +63,18 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbers: true,
         },
         touched: false,
       },
       amenities: {
         value: [
-          { id: 1, value: 'Essentials (towels, bed, soap, toilet paper, and pillows)', isChecked: false },
+          { id: 1, value: 'Essentials (towels, bed, soap, toilet paper, and pillows)', isChecked: true },
           { id: 2, value: 'Wi-Fi', isChecked: false },
           { id: 3, value: 'TV', isChecked: false },
           { id: 4, value: 'Air Conditioning', isChecked: false },
@@ -89,13 +93,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         validationRules: {
           isRequired: true,
         },
-        touched: false,
       },
       guestSpace: {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
@@ -107,11 +110,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          maxLength: 100,
         },
         touched: false,
       },
@@ -119,11 +123,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          maxLength: 250,
         },
         touched: false,
       },
@@ -131,11 +136,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbersAndDecimalNumbers: true,
         },
         touched: false,
       },
@@ -143,11 +149,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          maxLength: 80,
         },
         touched: false,
       },
@@ -155,11 +162,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          maxLength: 30,
         },
         touched: false,
       },
@@ -167,11 +175,13 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbers: true,
+          maxLength: 30,
         },
         touched: false,
       },
@@ -179,11 +189,12 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          maxLength: 30,
         },
         touched: false,
       },
@@ -191,56 +202,88 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         value: '',
         ref: useRef(null),
         validation: {
-          valid: true,
+          valid: false,
           errorMessage: '',
         },
         validationRules: {
           isRequired: true,
+          onlyNumbers: true,
         },
         touched: false,
       },
-      
+      images: {
+        value: [],
+        validation: {
+          valid: false,
+          errorMessage: '',
+        },
+      },
     },
   });
   const user = useSelector((state) => state.user);
+  const inputEl = useRef(null); 
 
   const propertyTypeOptions = [
-    { 
-      value: 'Apartment', 
-      label: 'Apartment', 
+    {
+      value: { id: 1, name: 'House' },
+      label: 'House',
     },
-    { 
-      value: 'House', 
-      label: 'House', 
+    {
+      value: { id: 2, name: 'Apartment' },
+      label: 'Apartment',
     },
-    { 
-      value: 'Secondary unit', 
-      label: 'Secondary unit', 
+    {
+      value: { id: 3, name: 'Secondary unit' },
+      label: 'Secondary unit',
     },
-    { 
-      value: 'Unique space', 
-      label: 'Unique space', 
+    {
+      value: { id: 4, name: 'Unique space' },
+      label: 'Unique space',
     },
-    { 
-      value: 'Bed and breakfast', 
-      label: 'Bed and breakfast', 
+    {
+      value: { id: 5, name: 'Bed and breakfast' },
+      label: 'Bed and breakfast',
+    },
+  ];
+
+  const guestSpaceOptions = [
+    {
+      value: { id: 1, name: 'Entire place' },
+      label: 'Entire place',
+    },
+    {
+      value: { id: 2, name: 'Private room' },
+      label: 'Private room',
+    },
+    {
+      value: { id: 3, name: 'Shared room' },
+      label: 'Shared room',
     },
   ];
 
   const countryOptions = useMemo(() => countryList().getData(), []);
 
+  const isFormValid = (formData) => {
+    let ifv = true;
+    for (const formElementId in formData) {
+      if (Object.prototype.hasOwnProperty.call(formData, formElementId)) {
+        ifv = formData[formElementId].validation.valid && ifv;
+      }
+    }
+    return ifv;
+  };
+
   const changeHandler = (event, actionMeta) => {
     if (event != null) {
       const { name } = event.target ? event.target : actionMeta;
       let value;
-  
+
       if (event.value) {
-        value = name === 'country' ? event.label : event.value;
+        value = name === 'country' ? { id: event.value, name: event.label } : event.value;
       } else {
         value = event.target.value;
-      } 
-  
-      console.log(value);
+      }
+
       const updatedControls = {
         ...createPropertyForm.formControls,
       };
@@ -249,26 +292,27 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         ...updatedControls[name],
       };
 
+      let val;
+      if ((value !== null) && (typeof value === 'object')) {
+        val = value.name;
+      } else {
+        val = value;
+      }
+ 
       updatedFormElement.value = value;
       updatedFormElement.touched = true;
-      updatedFormElement.validation = validate(value, updatedFormElement.validationRules);
+      updatedFormElement.validation = validate(val, updatedFormElement.validationRules);
 
+      console.log(updatedFormElement.validation);
       updatedControls[name] = updatedFormElement;
-  
-      // if (updatedControls[name]) {
-      //   updatedControls[name].value = value;
-      // }
 
-      let formIsValid = true;
-      for (const formElementId in updatedControls) {
-        if (Object.prototype.hasOwnProperty.call(updatedControls, formElementId)) {
-          formIsValid = updatedControls[formElementId].validation.valid && formIsValid;
-        }
-      } 
-  
+      // if the form is valid the create button will become available
+      const ifv = isFormValid(updatedControls);
+
+      console.log(ifv);
       setCreatePropertyForm({
         formControls: updatedControls,
-        formIsValid,
+        isFormValid: ifv,
       });
     }
   };
@@ -277,9 +321,9 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
     const updatedControls = {
       ...createPropertyForm.formControls,
     };
-
+    
     updatedControls.amenities.value.forEach((amenity) => {
-      if (amenity.value === event.target.value) {
+      if (amenity.value === event.target.value && amenity.id !== 1) {
         amenity.isChecked = event.target.checked;
       }
     });
@@ -289,29 +333,54 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
     });
   };
 
+  const handleSelectedImages = (event) => {
+    const files = Array.from(event.target.files);
+
+    const updatedControls = {
+      ...createPropertyForm.formControls,
+    };
+
+    updatedControls.images.value = files;
+
+    createPropertyForm.formControls
+      .images.validation.valid = updatedControls.images.value.length > 0;
+
+    const ifv = isFormValid(updatedControls);
+
+    setCreatePropertyForm({
+      formControls: updatedControls,
+      isFormValid: ifv,
+    });
+  };
+
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
     const formData = {};
+    const fd = new FormData();
 
     for (const formElementId in createPropertyForm.formControls) {
       if (Object.prototype.hasOwnProperty.call(createPropertyForm.formControls, formElementId)) {
         if (formElementId === 'amenities') {
           formData[formElementId] = createPropertyForm
             .formControls[formElementId].value.filter((amenity) => amenity.isChecked);
-          formData[formElementId] = formData[formElementId].map((amenity) => amenity.value);
+          formData[formElementId] = formData[formElementId]
+            .map((amenity) => ({ id: amenity.id, name: amenity.value }));
+        } else if (formElementId === 'images') {
+          createPropertyForm.formControls[formElementId].value.forEach((file, i) => {
+            fd.append('file', file);
+          });
         } else if (createPropertyForm.formControls[formElementId].value) {
           formData[formElementId] = createPropertyForm.formControls[formElementId].value;
-        } 
+        }
       }
     }
-
     formData.ownerId = user.id;
-    formData.image = 'Greece/athens/1/b3d49bbd-d287-44e3-a938-07a8721263f4.jpg';
-    console.log(formData);
-    loadHandler(true);
 
-    createListing(formData).then(() => {
+    fd.append('property', JSON.stringify(formData));
+
+    loadHandler(true);
+    createListing(fd).then(() => {
       loadHandler(false);
       history.push('/profile/myproperties');
     }).catch(() => {
@@ -322,19 +391,18 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
   return (
     <div className="create-property-form">
       <form className="form" onSubmit={formSubmitHandler}>
-        
+
         <div className="form-group">
           <label className="label">
             What type of property you have?*
           </label>
-          <Select 
-            className="select-input"
-            onChange={changeHandler}
+          <Select
+            className="select-input" 
+            onChange={(changeHandler)}
             ref={createPropertyForm.formControls.propertyType.ref}
-            isClearable={true}
             isSearchable={true}
             name="propertyType"
-            options={propertyTypeOptions} 
+            options={propertyTypeOptions}
             theme={(theme) => ({
               ...theme,
               colors: {
@@ -345,8 +413,8 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
               },
             })}
           />
-          {!createPropertyForm.formControls.propertyType.validation.valid 
-          && createPropertyForm.formControls.propertyType.touched
+          {!createPropertyForm.formControls.propertyType.validation.valid
+            && createPropertyForm.formControls.propertyType.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -354,7 +422,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.propertyType.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
 
@@ -372,46 +440,28 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
         />
 
         <div className="form-group">
-          <label className="label" htmlFor="legend">What type of space your guests will have in your property?*</label>
-          <div className="radio-group">
-            <label className="radio__container">
-              <input
-                type="radio"
-                value="Entire place"
-                name="guestSpace"
-                checked={createPropertyForm.formControls.guestSpace.value === 'Entire place'}
-                ref={createPropertyForm.formControls.guestSpace.ref}
-                onChange={changeHandler}
-              />
-              <span className="checkmark" />
-              Entire place
-            </label>
-            <label className="radio__container">
-              <input
-                type="radio"
-                value="Private room"
-                name="guestSpace"
-                checked={createPropertyForm.formControls.guestSpace.value === 'Private room'}
-                ref={createPropertyForm.formControls.guestSpace.ref}
-                onChange={changeHandler}
-              />
-              <span className="checkmark" />
-              Private room
-            </label>
-            <label className="radio__container">
-              <input
-                type="radio"
-                value="Shared room"
-                name="guestSpace"
-                checked={createPropertyForm.formControls.guestSpace.value === 'Shared room'}
-                ref={createPropertyForm.formControls.guestSpace.ref}
-                onChange={changeHandler}
-              />
-              <span className="checkmark" />
-              Shared room
-            </label>
-          </div>
-          {!createPropertyForm.formControls.guestSpace.validation.valid 
+          <label className="label">
+            What type of space your guests will have in your property?*
+          </label>
+          <Select
+            className="select-input"
+            onChange={changeHandler}
+            ref={createPropertyForm.formControls.guestSpace.ref}
+            isSearchable={true}
+            name="guestSpace"
+            options={guestSpaceOptions}
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                primary25: '#f7f7f7',
+                primary50: '#ffea97',
+                primary: '#ffd52f',
+              },
+            })}
+          />
+          {!createPropertyForm.formControls.guestSpace.validation.valid
+            && createPropertyForm.formControls.guestSpace.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -419,7 +469,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.guestSpace.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
 
@@ -456,8 +506,8 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
             </label>
           </div>
 
-          {!createPropertyForm.formControls.bedroomNumber.validation.valid 
-          && createPropertyForm.formControls.bedroomNumber.touched 
+          {!createPropertyForm.formControls.bedroomNumber.validation.valid
+            && createPropertyForm.formControls.bedroomNumber.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -465,9 +515,10 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.bedroomNumber.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
-          {!createPropertyForm.formControls.bathNumber.validation.valid 
+          {!createPropertyForm.formControls.bathNumber.validation.valid
+          && createPropertyForm.formControls.bathNumber.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -475,7 +526,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.bathNumber.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
 
@@ -488,23 +539,13 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
             {createPropertyForm.formControls.amenities.value.map((amenity) => (
               <Checkbox
                 key={amenity.id}
-                name={amenity.value} 
+                name={amenity.value}
                 value={amenity.value}
-                category="amenity" 
-                onChange={handleCheckbox} 
+                category="amenity"
+                onChange={handleCheckbox}
                 isChecked={amenity.isChecked ? 'true ' : ''}
               />
             ))}
-            {!createPropertyForm.formControls.amenities.validation.valid 
-              ? (
-                <div className="error">
-                  <p className="error-message">
-                    <img className="error-icon" src={ErrorIcon} alt="error" />
-                    {createPropertyForm.formControls.amenities.validation.errorMessage}
-                  </p>
-                </div>
-              ) 
-              : null}
           </div>
         </div>
 
@@ -517,6 +558,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
           value={createPropertyForm.formControls.pricePerNight.value}
           onChange={changeHandler}
           valid={createPropertyForm.formControls.pricePerNight.validation.valid}
+          touched={createPropertyForm.formControls.pricePerNight.touched}
           errorMessage={createPropertyForm.formControls.pricePerNight.validation.errorMessage}
         />
 
@@ -529,6 +571,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
           value={createPropertyForm.formControls.title.value}
           onChange={changeHandler}
           valid={createPropertyForm.formControls.title.validation.valid}
+          touched={createPropertyForm.formControls.title.touched}
           errorMessage={createPropertyForm.formControls.title.validation.errorMessage}
         />
 
@@ -541,21 +584,46 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
           value={createPropertyForm.formControls.description.value}
           onChange={changeHandler}
           valid={createPropertyForm.formControls.description.validation.valid}
+          touched={createPropertyForm.formControls.description.touched}
           errorMessage={createPropertyForm.formControls.description.validation.errorMessage}
         />
+
+        <div className="form-group">
+          <div className="select-images">
+            <div className="select-images__button">
+              <input 
+                style={{ display: 'none' }}
+                type="file" 
+                name="files"
+                id="files"
+                onChange={handleSelectedImages} 
+                ref={inputEl}
+                multiple={true}
+              />
+              <button className="btn btn--select-images" type="button" onClick={() => inputEl.current.click()}>Select Images</button>
+            </div>
+            <div className="select-images__text">
+              You should select at least an image 
+              <br />
+              If you select new images the existings will be removed
+              <br />
+              .jpg .png
+            </div>
+          </div>
+          <SelectedImages images={createPropertyForm.formControls.images.value} />
+        </div>
 
         <div className="form-group">
           <label className="label">
             Country*
           </label>
-          <Select 
+          <Select
             className="select-input"
             onChange={changeHandler}
             ref={createPropertyForm.formControls.country.ref}
-            isClearable={true}
             isSearchable={true}
             name="country"
-            options={countryOptions} 
+            options={countryOptions}
             theme={(theme) => ({
               ...theme,
               colors: {
@@ -566,7 +634,8 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
               },
             })}
           />
-          {!createPropertyForm.formControls.country.validation.valid 
+          {!createPropertyForm.formControls.country.validation.valid
+            && createPropertyForm.formControls.country.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -574,7 +643,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.country.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
 
@@ -583,7 +652,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
           <div className="double-input__left-input">
             <label className="label">
               City*
-              <input
+              <Input
                 className="input input--form"
                 type="text"
                 name="city"
@@ -595,11 +664,11 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
               />
             </label>
           </div>
-          
+
           <div className="double-input__right-input">
             <label className="label">
               Zip Code*
-              <input
+              <Input
                 className="input input--form"
                 type="text"
                 name="postCode"
@@ -612,7 +681,8 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
             </label>
           </div>
 
-          {!createPropertyForm.formControls.city.validation.valid 
+          {!createPropertyForm.formControls.city.validation.valid
+            && createPropertyForm.formControls.city.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -620,9 +690,10 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.city.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
-          {!createPropertyForm.formControls.postCode.validation.valid 
+          {!createPropertyForm.formControls.postCode.validation.valid
+              && createPropertyForm.formControls.postCode.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -630,7 +701,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.postCode.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
 
@@ -651,7 +722,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
               />
             </label>
           </div>
-          
+
           <div className="double-input__right-input">
             <label className="label">
               Number*
@@ -668,7 +739,8 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
             </label>
           </div>
 
-          {!createPropertyForm.formControls.streetName.validation.valid 
+          {!createPropertyForm.formControls.streetName.validation.valid
+            && createPropertyForm.formControls.streetName.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -676,9 +748,10 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.streetName.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
-          {!createPropertyForm.formControls.streetNumber.validation.valid 
+          {!createPropertyForm.formControls.streetNumber.validation.valid
+             && createPropertyForm.formControls.streetNumber.touched
             ? (
               <div className="error">
                 <p className="error-message">
@@ -686,12 +759,11 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
                   {createPropertyForm.formControls.streetNumber.validation.errorMessage}
                 </p>
               </div>
-            ) 
+            )
             : null}
         </div>
-        {/* disabled={!createPropertyForm.formIsValid} */}
-
-        <button className={`btn btn--submit ${createPropertyForm.formIsValid ? null : 'btn--submit-disabled'}`} type="submit">
+        {console.log(createPropertyForm.isFormValid)}
+        <button disabled={!createPropertyForm.isFormValid} className={`btn btn--submit ${createPropertyForm.isFormValid ? null : 'btn--submit-disabled'}`} type="submit">
           <span className="btn__font">Create</span>
         </button>
       </form>

@@ -1,14 +1,12 @@
 package com.booking.propertyservice.service;
 
-import com.booking.bookingapi.composite.dto.BookingUser;
-import com.booking.bookingapi.composite.dto.PropertyAggregate;
-import com.booking.bookingapi.core.property.Dto.AddressDto;
-import com.booking.bookingapi.core.property.Dto.PageProperties;
-import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
-import com.booking.bookingapi.core.property.PropertyService;
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.property.Dto.*;
+import com.booking.bookingapi.property.PropertyService;
+import com.booking.bookingapi.reservation.dto.ReservationDto;
+import com.booking.bookingapi.user.dto.BookingUser;
+import com.booking.bookingapi.user.dto.UserDetailsDto;
 import com.booking.bookingutils.exception.NotFoundException;
-import com.booking.propertyservice.dto.mapper.PropertyMapper;
+import com.booking.propertyservice.mapper.PropertyMapper;
 import com.booking.propertyservice.integration.PropertyIntegration;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.repository.PropertyRepository;
@@ -24,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,18 +59,16 @@ public class PropertyServiceImpl implements PropertyService {
         pageable = PageRequest.of(currentPage,5);
         PageProperties result = new PageProperties();
         List<Long> propertyIds = new ArrayList<>();
-
         return asyncMono(() ->
                 integration.getPropertyIds(location, checkIn, checkOut)
                 .collectList()
                 .map(longs -> {
                     propertyIds.addAll(longs);
-                    System.out.println(longs);
-                    result.setTotalElements(propertyRepository.count(propertyIds, guestNumber));
+                    result.setTotalElements(propertyRepository.count(propertyIds, location, guestNumber));
                     return result.getTotalElements();
                 })
                 .flatMapMany(el ->
-                        Flux.fromIterable(propertyRepository.searchProperties(propertyIds, guestNumber, pageable)
+                        Flux.fromIterable(propertyRepository.searchProperties(propertyIds, location, guestNumber, pageable)
                         .stream()
                         .map(PropertyMapper::toPropertyDto)
                         .collect(Collectors.toList())))
@@ -83,10 +80,10 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user) {
+    public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user, int currentPage) {
         log.info("Get properties by user id: {}", UUID.fromString(user.getId()));
         Pageable pageable;
-        pageable = PageRequest.of(0,5);
+        pageable = PageRequest.of(currentPage,5);
         PageProperties result = new PageProperties();
         return asyncMono(() -> Mono.just(
                 propertyRepository.count(user.getId()))
@@ -107,50 +104,63 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public Mono<PropertyAggregate> getProperty(Long propertyId) {
+        log.info("Get property by id: {}", propertyId);
         PropertyAggregate propertyAggregate = new PropertyAggregate();
         return asyncMono(() -> Mono.just(propertyRepository.findById(propertyId)
                 .map(PropertyMapper::toPropertyDetailsDto)
                 .orElseThrow(() -> new NotFoundException(String.format("Property with id %d not found ", propertyId))))
-        .map(propertyDetailsDto -> {
-            propertyAggregate
-                    .setId(propertyDetailsDto.getId())
-                    .setTitle(propertyDetailsDto.getTitle())
-                    .setPropertyType(propertyDetailsDto.getPropertyType())
-                    .setGuestSpace(propertyDetailsDto.getGuestSpace())
-                    .setMaxGuestNumber(propertyDetailsDto.getMaxGuestNumber())
-                    .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
-                    .setBathNumber(propertyDetailsDto.getBathNumber())
-                    .setPricePerNight(propertyDetailsDto.getPricePerNight())
-                    .setAddress(new AddressDto(
-                            propertyDetailsDto.getCity(),
-                            propertyDetailsDto.getCountry(),
-                            propertyDetailsDto.getPostCode(),
-                            propertyDetailsDto.getStreetName(),
-                            propertyDetailsDto.getStreetNumber()
-                    ))
-                    .setDescription(propertyDetailsDto.getDescription())
-                    .setImage(propertyDetailsDto.getImage())
-                    .setAmenities(propertyDetailsDto.getAmenities())
-                    .setOwnerId(propertyDetailsDto.getOwnerId());
-            System.out.println(propertyDetailsDto.getOwnerId());
-            return propertyAggregate;
-        })
-//        .flatMap(pa -> integration.getUserDetails(pa.getOwnerId()))
-//        .map(userDetailsDto -> {
-//            propertyAggregate
-//                    .setOwnerFirstName(userDetailsDto.getFirstName())
-//                    .setOwnerLastName(userDetailsDto.getLastName());
-//            return propertyAggregate;
-//        })
-       );
+                .map(propertyDetailsDto -> {
+                    propertyAggregate
+                            .setId(propertyDetailsDto.getId())
+                            .setTitle(propertyDetailsDto.getTitle())
+                            .setPropertyType(propertyDetailsDto.getPropertyType().getName())
+                            .setGuestSpace(propertyDetailsDto.getGuestSpace().getName())
+                            .setMaxGuestNumber(propertyDetailsDto.getMaxGuestNumber())
+                            .setBedroomNumber(propertyDetailsDto.getBedroomNumber())
+                            .setBathNumber(propertyDetailsDto.getBathNumber())
+                            .setPricePerNight(propertyDetailsDto.getPricePerNight())
+                            .setAddress(new AddressDto(
+                                    propertyDetailsDto.getCity(),
+                                    propertyDetailsDto.getCountry().getName(),
+                                    propertyDetailsDto.getPostCode(),
+                                    propertyDetailsDto.getStreetName(),
+                                    propertyDetailsDto.getStreetNumber()
+                            ))
+                            .setDescription(propertyDetailsDto.getDescription())
+                            .setImages(propertyDetailsDto.getImages())
+                            .setAmenities(propertyDetailsDto.getAmenities())
+                            .setOwnerId(propertyDetailsDto.getOwnerId());
+                    return propertyAggregate;
+                })
+                .flatMap(property -> integration.getUserById(property.getOwnerId()))
+                .map(userDto -> {
+                    System.out.println(userDto);
+                    propertyAggregate
+                            .setOwnerFirstName(userDto.getFirstName())
+                            .setOwnerLastName(userDto.getLastName())
+                            .setOwnerImage(userDto.getImage());
+                    return propertyAggregate;
+                })
+                );
     }
 
     @Override
     public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
-        log.info("createProperty");
+        log.info("Create Property By User: {}", propertyDetailsDto.getOwnerId());
         Property property = PropertyMapper.toProperty(propertyDetailsDto);
-        System.out.println(property);
+        property.getPropertyType().addProperty(property);
+        property.getGuestSpace().addProperty(property);
+        property.getAddress().getCountry().addAddress(property.getAddress());
         propertyRepository.save(property);
+        Long propertyId = propertyRepository.getLastSavedProperty(property.getOwner());
+        ReservationDto reservationDto = new ReservationDto()
+                .setCheckIn(LocalDate.now())
+                .setCheckOut(LocalDate.now())
+                .setOwnerId(UUID.fromString(property.getOwner()))
+                .setPropertyId(propertyId)
+                .setLocation(property.getAddress().getCountry().getName())
+                .setPrice(BigDecimal.valueOf(0));
+        integration.createReservation(reservationDto);
         return Mono.empty();
     }
 
@@ -160,12 +170,18 @@ public class PropertyServiceImpl implements PropertyService {
         return integration.findUserByEmail(email);
     }
 
-
     @Override
     public Mono<Void> deleteProperty(Long id) {
         log.info("deleteProperty");
         propertyRepository.deleteById(id);
+        integration.deleteAllReservationsByPropertyId(id);
         return Mono.empty();
+    }
+
+    @Override
+    public Mono<PropertyReservationDataDto> getPropertyById(Long propertyId) {
+        log.info("Get properties by id: {}", propertyId);
+        return asyncMono(() -> Mono.just(propertyRepository.getPropertyById(propertyId)).map(PropertyMapper::toPropertyReservationDataDto));
     }
 
     private <T> Flux<T> asyncFlux(Supplier<Publisher<T>> publisherSupplier) {

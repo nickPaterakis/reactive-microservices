@@ -7,6 +7,11 @@
   height: 22rem;
   background-color: white;
 
+  &__image-container {
+    height: 22rem;
+    width: 100%;
+  }
+
   &__image {
     display: flex;
     width: 100%;
@@ -55,9 +60,8 @@
 
   &__operations {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-top: 1rem;
-    width: 18rem;
   }
 
   &__price {

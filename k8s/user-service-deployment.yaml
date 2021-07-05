@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: user-service
+  name: user-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+  selector:
+    app: user-service
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service
+data:
+  database-name: users
+  SPRING_PROFILES_ACTIVE: kubernetes
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb
+type: Opaque
+data:
+  database-password: cm9vdA==
+  database-user: cm9vdA==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: user-service
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_PROFILES_ACTIVE
+                  name: user-service
+          image: nicholaspat/user-service
+          name: user-service
+          ports:
+            - containerPort: 8082
+      restartPolicy: Always

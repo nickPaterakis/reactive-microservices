@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
+import { useSelector } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import { Link, withRouter } from 'react-router-dom';
 import AccountDropdown from '../UI/AccountDropdown';
-import ProfileImage from '../../assets/images/i.jpg';
+import noImageProfile from '../../assets/images/no-image-profile.png';
 
 const Header = ({ location }) => {
   const { keycloak } = useKeycloak();
   const [open, setOpen] = useState(false);
+  const user = useSelector((state) => state.user);
   let navStyle = '';
   let logoStyle = '';
+  
   const handleLogIn = () => {
     keycloak.login();
   };
 
   const handleOpen = () => setOpen(!open);
 
-  if (location.pathname !== '/') {
-    navStyle = 'header';
+  if (location.pathname === '/reservation') {
+    navStyle = 'header--display-none';
     logoStyle = 'link logo logo--header';
   } else {
     navStyle = 'header';
@@ -42,8 +45,8 @@ const Header = ({ location }) => {
                 && (
                   <div className="dropdown">
                     <div role="button" tabIndex={0} className="btn btn--account-dropdown prevent-selection" onClick={() => handleOpen()} onKeyPress={handleOpen}>
-                      <span className="btn__image"><img src={ProfileImage} alt="profile" /></span>
-                      <span className="btn__text">{keycloak.tokenParsed.given_name}</span>
+                      <span className="btn__image"><img src={user.profileImage ? user.profileImage : noImageProfile} alt="profile" /></span>
+                      <span className="btn__text">{user.firstName}</span>
                     </div>
                     <AccountDropdown 
                       open={open}
@@ -57,7 +60,7 @@ const Header = ({ location }) => {
 };
 
 Header.propTypes = {
-  location: PropTypes.arrayOf.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
 };
 
 export default withRouter(Header);

@@ -1,38 +1,38 @@
 version: '3.9'
 
 services:
-  config-server:
-    image: nicholaspat/config-server
-    container_name: config-server
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    volumes:
-      - ./config/repo:/config/repo
-    ports:
-      - 8888:8888
-
-  discovery-server:
-    image: nicholaspat/discovery-server
-    container_name: discovery-server
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - config-server
-    ports:
-      - 8761:8761
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
-
-  api-gateway:
-    image: nicholaspat/api-gateway
-    container_name: api-gateway
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    ports:
-      - 8765:8765
-    depends_on:
-      - config-server
-      - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#  config-server:
+#    image: nicholaspat/config-server
+#    container_name: config-server
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    volumes:
+#      - ./config/repo:/config/repo
+#    ports:
+#      - 8888:8888
+#
+#  discovery-server:
+#    image: nicholaspat/discovery-server
+#    container_name: discovery-server
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - config-server
+#    ports:
+#      - 8761:8761
+#    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
+#
+#  api-gateway:
+#    image: nicholaspat/api-gateway
+#    container_name: api-gateway
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    ports:
+#      - 8765:8765
+#    depends_on:
+#      - config-server
+#      - discovery-server
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   property-service:
     links:
@@ -46,38 +46,23 @@ services:
       - config-server
       #- rabbitmq
       - mysql
-#    ports:
-#      - 8081:8081
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - 8081:8081
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
-  user-service:
-    image: nicholaspat/user-service
-    mem_limit: 700m
-    container_name: user-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - config-server
-      - rabbitmq
-      - mongo
-#    ports:
-#    - 8082:8082
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
-
-#
-  booking-service:
-    image: nicholaspat/booking-service
-    mem_limit: 700m
-    container_name: booking-service
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - config-server
-      #- rabbitmq
-#    ports:
-#    - 8083:8083
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
-
+#  user-service:
+#    image: nicholaspat/user-service
+#    mem_limit: 700m
+#    container_name: user-service
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - config-server
+#      - rabbitmq
+#      - mongo
+##    ports:
+##    - 8082:8082
+#    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=120s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   mongo:
     container_name: booking-mongo

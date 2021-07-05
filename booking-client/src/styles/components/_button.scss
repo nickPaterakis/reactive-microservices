@@ -14,6 +14,7 @@
       align-self: center;
       border-radius: 50%;
       width: 3.4rem;
+      height: 3.4rem;
     }
   }
 
@@ -42,6 +43,41 @@
     &:hover {
       background-color: rgb(247, 247, 247);
     }
+  }
+
+  &--home-page {
+    width: 15rem;
+    padding: 1rem 0rem;
+    border: 1px solid #02b602;
+    border-radius: 0.5rem;
+    color: #02b602;
+    background-color: white;
+  }
+
+  &--change-image {
+    margin: 1rem 0;
+    padding: 1rem 1rem;
+    border: 1px solid #f3a53f;
+    border-radius: 0.5rem;
+    color: #f3a53f;
+    background-color: white;
+  }
+
+  &--select-images {
+    margin: 1rem 0;
+    padding: 0.8rem 0.8rem;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    background-color: #ffd52f;
+  }
+
+  &--upload-image {
+    margin: 1rem 0;
+    padding: 1rem 1rem;
+    border: 1px solid #02b602;
+    border-radius: 0.5rem;
+    color: #02b602;
+    background-color: white;
   }
 
   &--search {
@@ -134,9 +170,9 @@
     }
   }
 
-  &--delete-property {
+  &--delete {
     background-color: transparent;
-    width: 5rem;
+    padding: 0 1rem;
     height: 3rem;
     border: 1px solid rgb(250, 89, 61);
     color: rgb(250, 89, 61);
@@ -151,7 +187,7 @@
 
   &--view-property {
     background-color: transparent;
-    width: 5rem;
+    padding: 0 1rem;
     height: 3rem;
     border: 1px solid rgb(255, 175, 56);
     color: rgb(255, 175, 56);

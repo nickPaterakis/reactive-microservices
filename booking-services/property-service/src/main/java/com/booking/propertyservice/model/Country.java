@@ -2,18 +2,34 @@ package com.booking.propertyservice.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "countries")
-public class Country extends NameEntity {
+public class Country {
 
-    public Country(String name) {
-        super(name);
+    @Id
+    private String id;
+
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+    private List<Address> addresses = new ArrayList<>();
+
+    public Country(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+        address.setCountry(this);
     }
 }

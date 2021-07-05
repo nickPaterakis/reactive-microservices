@@ -12,12 +12,54 @@ import java.util.List;
 @Repository
 public interface PropertyRepository extends PagingAndSortingRepository<Property, Long> {
 
+
     @Query(nativeQuery = true, value = "SELECT * FROM properties p" +
+            " inner join addresses c on p.address_id = c.id" +
             " WHERE" +
             " p.max_guest_number >= :guestNumber" +
             " and" +
-            " p.id not in :propertyIds"
-//            " and" +
+            " p.address_id in" +
+            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
+            " and" +
+            " p.id in :propertyIds")
+    List<Property> searchProperties(
+            @Param("propertyIds") List<Long> propertyIds,
+            @Param("location") String location,
+            @Param("guestNumber") int guestNumber,
+            Pageable pageable
+            );
+
+    @Query(nativeQuery = true, value = "SELECT count(*) FROM properties p" +
+            " inner join addresses c on p.address_id = c.id" +
+            " WHERE" +
+            " p.max_guest_number >= :guestNumber" +
+            " and" +
+            " p.address_id in" +
+            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
+            " and" +
+            " p.id in :propertyIds")
+    Long count(
+            @Param("propertyIds") List<Long> propertyIds,
+            @Param("location") String location,
+            @Param("guestNumber") int guestNumber
+    );
+
+    @Query(nativeQuery = true, value = "SELECT MAX(id) FROM properties where owner = :ownerId")
+    Long getLastSavedProperty(@Param("ownerId") String ownerId);
+
+    @Query(nativeQuery = true, value = "SELECT * from properties where owner = :ownerId")
+    List<Property> findByOwner(@Param("ownerId") String ownerId, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT count(*) from properties where owner = :ownerId")
+    Long count(String ownerId);
+
+    //@Query(nativeQuery = true, value = "SELECT * from properties where id = :propertyId")
+    Property getPropertyById(Long propertyId);
+
+//    @Query(nativeQuery = true, value = "SELECT * FROM properties p inner join users u on p.user_id = u.id where p.user_id = :id")
+//    Set<Property> findByUser(@Param("id") Long id);
+
+    //            " and" +
 //            " p.address_id in" +
 //            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
 //            " and" +
@@ -28,31 +70,6 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
 //            " (r.check_in not between DATE(:checkIn)  and DATE(:checkOut)" +
 //            " or" +
 //            " r.check_out not between DATE(:checkIn)  and DATE(:checkOut))"
-    )
-    List<Property> searchProperties(
-            @Param("propertyIds") List<Long> propertyIds,
-            @Param("guestNumber") int guestNumber,
-            Pageable pageable
-            );
-
-    @Query(nativeQuery = true, value = "SELECT count(*) FROM properties p" +
-            " WHERE" +
-            " p.max_guest_number >= :guestNumber" +
-            " and" +
-            " p.id in :propertyIds")
-    Long count(
-            @Param("propertyIds") List<Long> propertyIds,
-            @Param("guestNumber") int guestNumber
-    );
-
-    @Query(nativeQuery = true, value = "SELECT * from properties where owner = :ownerId")
-    List<Property> findByOwner(@Param("ownerId") String ownerId, Pageable pageable);
-
-    @Query(nativeQuery = true, value = "SELECT count(*) from properties where owner = :ownerId")
-    Long count(String ownerId);
-
-//    @Query(nativeQuery = true, value = "SELECT * FROM properties p inner join users u on p.user_id = u.id where p.user_id = :id")
-//    Set<Property> findByUser(@Param("id") Long id);
 
 }
 

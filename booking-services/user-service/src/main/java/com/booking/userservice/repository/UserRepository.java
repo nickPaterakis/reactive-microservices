@@ -6,7 +6,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-public interface UserRepository extends ReactiveMongoRepository<User, UUID> {
-
+public interface UserRepository extends ReactiveMongoRepository<User, UUID>,
+UserCustomRepository {
     Mono<User> findByEmail(String email);
+
+    Mono<User> findById(UUID userId);
 }

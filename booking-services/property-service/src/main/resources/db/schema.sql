@@ -7,7 +7,7 @@ create database if not exists property_db;
 use property_db;
 
 CREATE TABLE IF NOT EXISTS countries (
-    id INT NOT NULL AUTO_INCREMENT,
+    id VARCHAR(2) NOT NULL,
     name VARCHAR(80),
     CONSTRAINT PK_Country PRIMARY KEY (id)
 );
@@ -24,17 +24,10 @@ CREATE TABLE IF NOT EXISTS guest_spaces (
     CONSTRAINT PK_Guest_Space PRIMARY KEY (id)
 );
 
--- CREATE TABLE IF NOT EXISTS owners (
---     id INT NOT NULL,
---     first_name VARCHAR(30),
---     last_name VARCHAR(30),
---     CONSTRAINT PK_Owner PRIMARY KEY (id)
--- );
-
 create table if not exists addresses (
 	id int not null auto_increment,
     city varchar(30),
-    country_id int,
+    country_id varchar(2),
     postcode varchar(30),
     street_name varchar(30),
     street_number int,
@@ -45,8 +38,8 @@ create table if not exists addresses (
 
 CREATE TABLE IF NOT EXISTS properties (
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(200),
-    description VARCHAR(500),
+    title VARCHAR(100),
+    description VARCHAR(250),
     property_type_id int not null,
     guest_space_id int not null,
     max_guest_number INT,
@@ -67,22 +60,22 @@ CREATE TABLE IF NOT EXISTS properties (
 
 CREATE TABLE IF NOT EXISTS images (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(200),
+    name VARCHAR(300),
     property_id INT NOT NULL,
     CONSTRAINT PK_Image PRIMARY KEY (id),
     CONSTRAINT FK_Property_Image FOREIGN KEY (property_id)
         REFERENCES properties (id)
 );
 
-CREATE TABLE IF NOT EXISTS reservations (
-    id INT NOT NULL AUTO_INCREMENT,
-    check_in DATE NOT NULL,
-    check_out DATE NOT NULL,
-    property_id INT NOT NULL,
-    CONSTRAINT PK_Reservation PRIMARY KEY (id),
-    CONSTRAINT FK_Property_Reservation FOREIGN KEY (property_id)
-        REFERENCES properties (id)
-);
+# CREATE TABLE IF NOT EXISTS reservations (
+#     id INT NOT NULL AUTO_INCREMENT,
+#     check_in DATE NOT NULL,
+#     check_out DATE NOT NULL,
+#     property_id INT NOT NULL,
+#     CONSTRAINT PK_Reservation PRIMARY KEY (id),
+#     CONSTRAINT FK_Property_Reservation FOREIGN KEY (property_id)
+#         REFERENCES properties (id)
+# );
 
 CREATE TABLE IF NOT EXISTS amenities (
     id INT NOT NULL AUTO_INCREMENT,
@@ -99,23 +92,3 @@ CREATE TABLE IF NOT EXISTS property_amenities (
     CONSTRAINT FK_Amenity FOREIGN KEY (amenity_id)
         REFERENCES amenities (id)
 );
-
--- SET FOREIGN_KEY_CHECKS=1;
-
-select * from addresses a inner join countries c on a.country_id = c.id where c.name = 'Spain';
-
-SELECT * FROM properties p
-			 -- inner join addresses c on p.address_id = c.id
-             inner join reservations r on p.id = r.property_id
-             WHERE
-             p.max_guest_number >= 1
-             and
-             p.address_id in (select a.id from addresses a inner join countries c on a.country_id = c.id where c.name = 'spain')
-             and
-             (DATE('2021-3-3') not between r.check_in and r.check_out
-             or
-             DATE('2021-3-5') not between r.check_in and r.check_out)
-             and
-             (r.check_in not between DATE('2021-3-3')  and DATE('2021-3-5')
-             or
-             r.check_out not between DATE('2021-3-3')  and DATE('2021-3-5'));

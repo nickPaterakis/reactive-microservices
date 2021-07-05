@@ -1,8 +1,8 @@
 package com.booking.propertyservice.web.api;
 
-import com.booking.bookingapi.core.property.CountryEndpoint;
-import com.booking.bookingapi.core.property.CountryService;
-import com.booking.bookingapi.core.property.Dto.CountryDto;
+import com.booking.bookingapi.property.CountryEndpoint;
+import com.booking.bookingapi.property.CountryService;
+import com.booking.bookingapi.property.Dto.CountryDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

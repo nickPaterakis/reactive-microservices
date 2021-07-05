@@ -1,13 +1,70 @@
+#spring:
+#  config:
+#    import: optional:configserver:http://localhost:8888
+#  application:
+#    name: reservation-service
+#
+#---
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: docker
+#    import: optional:configserver:http://config-server:8888
+
+server:
+  port: 8082
+
+app:
+  auth-server:
+    host: 34.123.156.85
+    port: 8080
+  database:
+    mongo:
+      host: localhost
+      port: 27017
+
 spring:
-  config:
-    import: optional:configserver:http://localhost:8888
   application:
     name: user-service
+  data:
+    mongodb:
+      host: ${app.database.mongo.host}
+      port: ${app.database.mongo.port}
+      database: users
+  cloud:
+    config:
+      enabled: false
+    stream:
+      defaultBinder: rabbit
+      default.contentType: application/json
+      bindings.input:
+        destination: users
+        group: usersGroup
+        consumer:
+          maxAttempts: 3
+          backOffInitialInterval: 500
+          backOffMaxInterval: 1000
+          backOffMultiplier: 2.0
+      rabbit.bindings.input.consumer:
+        autoBindDlq: true
+        republishToDlq: true
+  security.oauth2.resourceserver:
+    jwt:
+      jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
+      issuer-uri: http://localhost:8090/auth/realms/booking
 
 ---
-
 spring:
   config:
     activate:
-      on-profile: docker
-    import: optional:configserver:http://config-server:8888
+      on-profile: kubernetes
+  zipkin:
+    baseUrl: http://zipkin-server:9411
+
+app:
+  auth-server:
+    host: 34.123.156.85
+  database:
+    mongo:
+      host: mongo

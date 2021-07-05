@@ -1,7 +1,7 @@
 package com.booking.userservice.infra;
 
-import com.booking.bookingapi.core.user.UserService;
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.UserService;
+import com.booking.bookingapi.user.dto.UserDetailsDto;
 import com.booking.bookingapi.event.Event;
 import com.booking.bookingutils.exception.EventProcessingException;
 import lombok.extern.log4j.Log4j2;

@@ -25,6 +25,9 @@
         "no-useless-escape": "warn",
         "no-restricted-syntax": "off",
         "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/anchor-is-valid": "warn",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
         "react/prop-types": "warn",
         "react/destructuring-assignment": "warn",
         "react/jsx-props-no-spreading": "warn",
@@ -39,7 +42,6 @@
         "no-trailing-spaces": "off",
         "no-undef": "warn",
         "no-unused-vars": "warn",
-        "jsx-a11y/anchor-is-valid": "warn",
         "import/no-unresolved": "warn"
     }
     

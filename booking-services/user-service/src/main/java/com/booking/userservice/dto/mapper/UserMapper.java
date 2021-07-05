@@ -1,6 +1,7 @@
 package com.booking.userservice.dto.mapper;
 
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.dto.UserDto;
 import com.booking.userservice.model.User;
 
 import java.util.UUID;
@@ -12,7 +13,9 @@ public class UserMapper {
                 .setId(UUID.fromString(userDetailsDto.getId()))
                 .setFirstName(userDetailsDto.getFirstName())
                 .setLastName(userDetailsDto.getLastName())
-                .setEmail(userDetailsDto.getEmail());
+                .setEmail(userDetailsDto.getEmail())
+                .setPhone(userDetailsDto.getPhone())
+                .setProfileImage(userDetailsDto.getProfileImage());
                 //.setRoles(userDetailsDto.getRoles());
     }
 
@@ -23,5 +26,13 @@ public class UserMapper {
                 .setLastName(user.getLastName())
                 .setEmail(user.getEmail())
                 .setRoles(user.getRoles());
+    }
+
+    public static UserDto toUserDto(User user) {
+        return new UserDto()
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName())
+                .setEmail(user.getEmail())
+                .setImage(user.getProfileImage());
     }
 }

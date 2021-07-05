@@ -7,36 +7,17 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import image from '../../assets/images/Properties/Hungary/budapest/1/72301aa8-696d-4a61-8f97-850da90e0042.jpg';
-import aux from '../../hoc/Auxiliary';
+import { config } from '../../constants/systemConstants';
 
 const PropertyCard = ({ property }) => {
   const dates = useSelector((state) => state.searchParameters.dates);
   const days = moment(dates.endDate).diff(dates.startDate, 'days');
-  // const [dynamicImage, setImage] = useState();
-  // const images = require(`../../assets/images/Properties/${property.image}`);
-  // const dynamicImage = images(`./${property.image}`);
-  // eslint-disable-next-line import/no-dynamic-require
-  // const image = require(`../../assets/images/Properties/${property.image}`);
-
-  // import(`../../assets/images/Properties/${property.image}`).
-  // then((imageg) => console.log(imageg));
-  // const loadImage = (imageName) => {
-  //   import('../../assets/images/Properties/Hungary/
-  // budapest/1/5e7de441-9971-4cd7-a4ac-9aedd594debd.jpg').then(({ image }) => {
-  //     console.log(image);
-  //     setImage({
-  //       image,
-  //     });
-  //   });
-  // };
-
-  // loadImage(property.image);
 
   return (
     <Link to={`/property/${property.id}`} className="link card_link">
       <div className="property-card">
         <div className="property-card__image-container">
-          <img className="property-card__image" src={image} alt={property.title} />
+          <img className="property-card__image" src={property.image ? config.url.IMAGES_URL + property.image : image} alt={property.title} />
         </div>
         <div className="property-card__description">
           <h1 className="property-card__title">{property.title}</h1>
@@ -73,11 +54,19 @@ const PropertyCard = ({ property }) => {
 };
 
 PropertyCard.propTypes = {
-  property: PropTypes.objectOf,
-};
-
-PropertyCard.defaultProps = {
-  property: {},
+  property: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    amenities: PropTypes.arrayOf,
+    bathNumber: PropTypes.number.isRequired,
+    bedroomNumber: PropTypes.number.isRequired,
+    maxGuestNumber: PropTypes.number.isRequired,
+    pricePerNight: PropTypes.number.isRequired,
+    propertyType: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+    guestSpace: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default PropertyCard;

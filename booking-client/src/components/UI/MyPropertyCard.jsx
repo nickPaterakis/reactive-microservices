@@ -2,40 +2,25 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { deleteListing } from '../../api/PropertyService';
 import image from '../../assets/images/Properties/Hungary/budapest/1/72301aa8-696d-4a61-8f97-850da90e0042.jpg';
+import { config } from '../../constants/systemConstants';
 
 const MyPropertyCard = ({ property, history }) => {
-  // const images = require.context('../../assets/images/Properties/', true);
-  // const dynamicImage = images(`./${property.image}`);
-
-  // const requestImageFile = require.context('../../images', true);
-  // const dynamicImage = requestImageFile(`./${property.image}`);
-  // <img className="card__image" src={requestImageFile(`./${image}`)} alt={property.title} />
-
-  // <Link to={`/property/${property.id}`} className="card card--property">
-  //     <img classNpame="card__image" src={image} alt={property.title} />
-  //   </Link>
-  // console.log(dynamicImage);
-  // const image = '3.jpg';
-
-  const handleEdit = () => {
-    history.push(`/profile/myproperties/${property.id}`);
-  };
-
   const handleView = () => {
-    history.push(`/property/${property.id}`);
+    history.push(`/view-property/${property.id}`);
   };
 
-  const handleDelete = () => {
-    deleteListing(property.id);
+  const handleDelete = async () => {
+    await deleteListing(property.id);
     window.location.reload();
   };
 
   return (
     <div className="my-property-card">
       <div className="my-property-card__image-container">
-        <img className="my-property-card__image" src={image} alt={property.title} />
+        <img className="my-property-card__image" src={property.image ? config.url.IMAGES_URL + property.image : image} alt={property.title} />
       </div>
       <div className="my-property-card__description">
         <h1 className="my-property-card__title">{property.title}</h1>
@@ -56,18 +41,13 @@ const MyPropertyCard = ({ property, history }) => {
           ))}
         </div>
         <div className="my-property-card__operations">
-          <button type="button" exact={true} className="btn btn--edit-property" onClick={handleEdit}>
-            <div className="edit-property__text">
-              Edit
-            </div>
-          </button>
-          <button type="button" exact={true} className="btn btn--view-property" onClick={handleView}>
+          <button type="button" exact={true} className="btn btn--view-property margin-right-small" onClick={handleView}>
             <div className="delete-property__text">
               View
             </div>
           </button>
-          <button type="button" exact={true} className="btn btn--delete-property" onClick={handleDelete}>
-            <div className="delete-property__text">
+          <button type="button" exact={true} className="btn btn--delete" onClick={handleDelete}>
+            <div className="delete__text">
               Delete
             </div>
           </button>
@@ -83,12 +63,20 @@ const MyPropertyCard = ({ property, history }) => {
 };
 
 MyPropertyCard.propTypes = {
-  property: PropTypes.objectOf,
-  history: PropTypes.func.isRequired,
-};
-
-MyPropertyCard.defaultProps = {
-  property: {},
+  property: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    amenities: PropTypes.arrayOf,
+    bathNumber: PropTypes.number.isRequired,
+    bedroomNumber: PropTypes.number.isRequired,
+    maxGuestNumber: PropTypes.number.isRequired,
+    pricePerNight: PropTypes.number.isRequired,
+    propertyType: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
+    guestSpace: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default withRouter(MyPropertyCard);

@@ -1,8 +1,9 @@
 package com.booking.userservice.service;
 
-import com.booking.bookingapi.composite.dto.BookingUser;
-import com.booking.bookingapi.core.user.UserService;
-import com.booking.bookingapi.core.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.UserService;
+import com.booking.bookingapi.user.dto.BookingUser;
+import com.booking.bookingapi.user.dto.UserDetailsDto;
+import com.booking.bookingapi.user.dto.UserDto;
 import com.booking.bookingutils.exception.NotFoundException;
 import com.booking.userservice.dto.mapper.UserMapper;
 import com.booking.userservice.model.User;
@@ -10,6 +11,7 @@ import com.booking.userservice.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    public final String storageDirectoryPath = "http://127.0.0.1:8887/";
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
@@ -37,7 +41,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(UUID.fromString(user.getId()))
                 .switchIfEmpty(error(new NotFoundException("No user found for user id: " + user.getId())))
                 .map(u -> modelMapper.map(u, UserDetailsDto.class));
+    }
 
+    @Override
+    public Mono<UserDto> getUserById(UUID userId) {
+        log.info("getUserById: {}", userId);
+        return userRepository.findById(userId).map(UserMapper::toUserDto);
     }
 
     @Override
@@ -51,8 +60,21 @@ public class UserServiceImpl implements UserService {
     public Mono<UserDetailsDto> saveUserDetails(UserDetailsDto userDetailsDto) {
         log.info("saveUserDetails: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
-        System.out.println(userDetailsDto);
-        userRepository.save(user);
-        return Mono.just(UserMapper.toUserDetailsDto(user));
+        return userRepository.save(user)
+                .map(UserMapper::toUserDetailsDto)
+                .onErrorReturn(new UserDetailsDto());
+    }
+
+    @Override
+    public Mono<Void> updateUser(UserDetailsDto userDetailsDto) {
+        log.info("Update User: {}", userDetailsDto.getId());
+        userRepository.updateUser(userDetailsDto);
+        return null;
+    }
+
+    public ResponseEntity uploadImage(String userId, String path) {
+        System.out.println(path);
+        userRepository.updateProfileImage(UUID.fromString(userId), path);
+        return ResponseEntity.ok().build();
     }
 }

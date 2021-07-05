@@ -27,6 +27,9 @@
 @import 'components/radio';
 @import 'components/checkbox';
 @import 'components/react-select';
+@import 'components/reservation-card';
+@import 'components/select-images';
+@import 'components/property-slider';
 
 @import 'layout/header';
 
@@ -37,4 +40,7 @@
 @import 'pages/profile';
 @import 'pages/account';
 @import 'pages/my-properties';
+@import 'pages/my-reservations';
 @import 'pages/create-property';
+@import 'pages/booking-confirmation';
+@import 'pages/no-match';

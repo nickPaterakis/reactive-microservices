@@ -8,6 +8,7 @@ const Input = React.forwardRef(({
   label, 
   ref, 
   labelStyle, 
+  touched,
   value, 
   onChange, 
   valid, 
@@ -25,7 +26,7 @@ const Input = React.forwardRef(({
         onChange={onChange}
       />
     </label>
-    {!valid
+    {!valid && touched
       ? (
         <div className="error">
           <p className="error-message">
@@ -50,6 +51,7 @@ Input.propTypes = {
   ]).isRequired,
   onChange: PropTypes.func.isRequired,
   valid: PropTypes.bool.isRequired,
+  touched: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
 };
 

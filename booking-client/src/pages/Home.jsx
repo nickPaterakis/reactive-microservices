@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SearchBar from '../components/HomeComponents/SearchBar';
-import background from '../assets/images/backgrounds/pexels-nextvoyage.jpg';
+import { removeState } from '../utils/localStorage';
 
-const home = () => (
-  <main className="home">
-    <SearchBar />
-  </main>
-);
+const home = () => {
+  useEffect(() => {
+    removeState();
+  });
+  return (
+    <main className="home">
+      <SearchBar />
+    </main>
+  );
+};
 
 export default home;

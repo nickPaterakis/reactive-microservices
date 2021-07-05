@@ -1,7 +1,8 @@
 import Keycloak from 'keycloak-js';
+import { config } from '../constants/systemConstants';
 
 const keycloakConfig = {
-  url: 'http://localhost:8080/auth', 
+  url: `${config.url.KEYCLOAK_BASE_URL}/auth/`, 
   realm: 'booking', 
   clientId: 'booking-react-app-client',
 };

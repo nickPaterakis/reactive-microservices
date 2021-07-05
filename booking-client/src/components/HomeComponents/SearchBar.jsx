@@ -12,46 +12,28 @@ import {
   setGuests,
   setLocation,
 } from '../../store/actions/propertyActions';
-import {
-  DATE_FORMAT, MAX_ADULT_NUMBER, MAX_CHILD_NUMBER, MAX_ROOM_NUMBER, 
-} from '../../constants/systemConstants';
+import { MAX_GUEST_NUMBER } from '../../constants/systemConstants';
 
 const SearchBar = ({ history }) => {
   const dispatch = useDispatch();
   const [focused, setFocusedInput] = useState();
   const [open, setOpen] = useState(false);
-  const [children, setChild] = useState(0);
-  const [rooms, setRooms] = useState(0);
   const location = useSelector((state) => state.searchParameters.location);
   const dates = useSelector((state) => state.searchParameters.dates);
   const guests = useSelector((state) => state.searchParameters.guests);
-
-  // dates.startDate = '';
-  // dates.endDate = '';
-  console.log(dates);
 
   const handleOpen = () => setOpen(!open);
 
   const handleSearch = () => {
     if (location && dates.startDate && dates.endDate && guests > 0) {
-      // dispatch(listProperties(
-      //   location,
-      //   moment(moment(dates.startDate).toDate()).format(DATE_FORMAT),
-      //   moment(moment(dates.endDate).toDate()).format(DATE_FORMAT),
-      //   guests,
-      // ));
       history.push('/properties');
     }
   };
 
   const handleLoaction = (loc) => dispatch(setLocation(loc));
-
-  const removeAdult = () => dispatch(setGuests(guests >= 1 ? guests - 1 : guests));
-  const addAdult = () => dispatch(setGuests(guests <= MAX_ADULT_NUMBER ? guests + 1 : guests));
-  const removeChild = () => setChild(children >= 1 ? children - 1 : children);
-  const addChild = () => setChild(children <= MAX_CHILD_NUMBER ? children + 1 : children);
-  const removeRoom = () => setRooms(rooms >= 1 ? rooms - 1 : rooms);
-  const addRoom = () => setRooms(rooms <= MAX_ROOM_NUMBER ? rooms + 1 : rooms);
+  
+  const removeGuest = () => dispatch(setGuests(guests >= 1 ? guests - 1 : guests));
+  const addGuest = () => dispatch(setGuests(guests <= MAX_GUEST_NUMBER ? guests + 1 : guests));
 
   return (
     <div className="search-bar">
@@ -67,9 +49,9 @@ const SearchBar = ({ history }) => {
         <p className="search-bar__label check-in">Check in</p>
         <p className="search-bar__label check-out">Check out</p>
         <DateRangePicker
-          startDate={moment(dates.startDate)}
+          startDate={dates.startDate ? moment(dates.startDate) : dates.startDate}
           startDateId="start-date"
-          endDate={moment(dates.endDate)}
+          endDate={dates.endDate ? moment(dates.endDate) : dates.endDate}
           endDateId="end-date"
           small={true}
           onDatesChange={({ startDate, endDate }) => dispatch(setDates({ startDate, endDate }))}
@@ -78,6 +60,7 @@ const SearchBar = ({ history }) => {
           onFocusChange={(focusedInput) => setFocusedInput(focusedInput)}
         />
       </div>
+
       <div className="search-bar__dropdown-menu">
         <div role="button" tabIndex={0} className="btn btn--guests-dropdown btn--white prevent-selection" onClick={() => handleOpen()} onKeyPress={handleOpen}>
           <div className="search-bar__label">Guests</div>
@@ -86,17 +69,12 @@ const SearchBar = ({ history }) => {
         <GuestsDropdown
           open={open}
           handleOpen={() => setOpen(false)}
-          adults={guests}
-          removeAdult={removeAdult}
-          addAdult={addAdult}
-          childrenNumber={children}
-          removeChild={removeChild}
-          addChild={addChild}
-          rooms={rooms}
-          removeRoom={removeRoom}
-          addRoom={addRoom}
+          guests={guests}
+          removeGuest={removeGuest}
+          addGuest={addGuest}
         />
       </div>
+
       <div className="search-bar__button">
         <button type="button" className="btn btn--search" onClick={handleSearch}>
           <BsSearch size={20} />

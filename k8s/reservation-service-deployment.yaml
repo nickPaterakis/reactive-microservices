@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: reservation-service
+  name: reservation-service
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "8083"
+      port: 8083
+      targetPort: 8083
+  selector:
+    app: reservation-service
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reservation-service
+data:
+  database-name: reservations
+  SPRING_PROFILES_ACTIVE: docker
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb
+type: Opaque
+data:
+  database-password: cm9vdA==
+  database-user: cm9vdA==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reservation-service
+  name: reservation-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservation-service
+  template:
+    metadata:
+      labels:
+        app: reservation-service
+    spec:
+      containers:
+        - env:
+          - name: SPRING_PROFILES_ACTIVE
+            valueFrom:
+              configMapKeyRef:
+                key: SPRING_PROFILES_ACTIVE
+                name: reservation-service
+          image: nicholaspat/reservation-service
+          name: reservation-service
+          ports:
+            - containerPort: 8083
+      restartPolicy: Always

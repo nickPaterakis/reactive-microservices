@@ -1,15 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DATE_FORMAT_1 } from '../../constants/systemConstants';
-import { loadState } from '../../utils/localStorage';
 
-function SummaryCard({ pricePerNight }) {
-  const dates = useSelector((state) => state.searchParameters.dates);
-  const guests = useSelector((state) => state.searchParameters.guests);
-  const days = moment(dates.endDate).diff(dates.startDate, 'days');
+function SummaryCard({
+  pricePerNight, handleReservation, checkIn, checkOut, guests,
+}) {
+  const days = moment(checkOut).diff(checkIn, 'days');
 
-  // console.log(useSelector((state) => state));
   return (
     <div className="summary-card">
       <div className="summary-card__price">
@@ -23,7 +21,7 @@ function SummaryCard({ pricePerNight }) {
             Check-in
           </div>
           <div className="summary-card__check-in__date">
-            {moment(moment(dates.startDate).toDate()).format(DATE_FORMAT_1)}
+            {moment(moment(checkIn).toDate()).format(DATE_FORMAT_1)}
           </div>
         </div>
 
@@ -32,7 +30,7 @@ function SummaryCard({ pricePerNight }) {
             Check-out
           </div>
           <div className="summary-card__check-out__date">
-            {moment(moment(dates.endDate).toDate()).format(DATE_FORMAT_1)}
+            {moment(moment(checkOut).toDate()).format(DATE_FORMAT_1)}
           </div>
         </div>
       </div>
@@ -42,7 +40,7 @@ function SummaryCard({ pricePerNight }) {
         <span className="summary-card__guests__number">{` ${guests} ${guests === 1 ? 'guest' : 'guests'}`}</span>
       </div>
 
-      <button type="button" className="btn btn--reserve" aria-label="remove-adult">Reserve</button>
+      <button type="button" className="btn btn--reserve" aria-label="reserve" onClick={handleReservation}>Reserve</button>
 
       <div className="summary-card__warn">You won&apos;t be charged yet</div>
 
@@ -64,5 +62,13 @@ function SummaryCard({ pricePerNight }) {
     </div>
   );
 }
+
+SummaryCard.propTypes = {
+  handleReservation: PropTypes.func.isRequired,
+  pricePerNight: PropTypes.number.isRequired,
+  checkIn: PropTypes.string.isRequired,
+  checkOut: PropTypes.string.isRequired,
+  guests: PropTypes.number.isRequired,
+};
 
 export default SummaryCard;

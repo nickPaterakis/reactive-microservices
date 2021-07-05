@@ -1,7 +1,7 @@
 //package com.booking.propertyservice.infra;
 //
-//import com.booking.bookingapi.core.property.Dto.PropertyDetailsDto;
-//import com.booking.bookingapi.core.property.PropertyService;
+//import com.booking.bookingapi.property.Dto.PropertyDetailsDto;
+//import com.booking.bookingapi.property.PropertyService;
 //import com.booking.bookingapi.event.Event;
 //import com.booking.bookingutils.exception.EventProcessingException;
 //import lombok.extern.log4j.Log4j2;

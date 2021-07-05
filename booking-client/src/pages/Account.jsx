@@ -1,51 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useKeycloak } from '@react-keycloak/web';
 import EdiText from 'react-editext';
-import ProfileImage from '../assets/images/i.jpg';
-import { setFirstName } from '../store/actions/userActions';
+import noImageProfile from '../assets/images/no-image-profile.png';
+import { setFirstName, setLastName, setPhone } from '../store/actions/userActions';
+import { imageUpload, updateUser } from '../api/UserService';
 
 function Account() {
   const dispatch = useDispatch();
+  const { keycloak } = useKeycloak();
   const user = useSelector((state) => state.user);
-  const [firstNameMode, SetFirstNameMode] = useState('view-container');
-  const [lastNameMode, SetLastNameMode] = useState('view-container');
-  const [emailAddressMode, SetEmailAddressMode] = useState('view-container');
-  const [phoneMode, SetPhoneMode] = useState('view-container');
-
-  const handleSave = (firstName) => {
-    dispatch(setFirstName(firstName));
-  };
+  const [firstNameMode, setFirstNameMode] = useState('view-container');
+  const [lastNameMode, setLastNameMode] = useState('view-container');
+  const [phoneMode, setPhoneMode] = useState('view-container');
+  const [selectedImage, setSelectedImage] = useState();
+  const inputEl = useRef(null);
 
   const changeFirstNameFieldToEditMode = () => {
-    SetFirstNameMode('edit-container');
+    setFirstNameMode('edit-container');
   };
 
   const changeFirstNameFieldToViewMode = () => {
-    SetFirstNameMode('view-container');
+    setFirstNameMode('view-container');
   };
 
   const changeLastNameFieldToEditMode = () => {
-    SetLastNameMode('edit-container');
+    setLastNameMode('edit-container');
   };
 
   const changeLastNameFieldToViewMode = () => {
-    SetLastNameMode('view-container');
-  };
-
-  const changeEmailAddressFieldToEditMode = () => {
-    SetEmailAddressMode('edit-container');
-  };
-
-  const changeEmailAddressFieldToViewMode = () => {
-    SetEmailAddressMode('view-container');
+    setLastNameMode('view-container');
   };
 
   const changePhoneFieldToEditMode = () => {
-    SetPhoneMode('edit-container');
+    setPhoneMode('edit-container');
   };
 
   const changePhoneFieldToViewMode = () => {
-    SetPhoneMode('view-container');
+    setPhoneMode('view-container');
+  };
+
+  const handleFirstNameSave = async (firstName) => {
+    await updateUser(keycloak.token, {
+      id: user.id,
+      firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+    });
+    dispatch(setFirstName(firstName));
+    changeFirstNameFieldToViewMode();
+  };
+
+  const handleLastNameSave = async (lastName) => {
+    await updateUser(keycloak.token, {
+      id: user.id,
+      firstName: user.firstName,
+      lastName,
+      phone: user.phone,
+    });
+    dispatch(setLastName(lastName));
+    changeLastNameFieldToViewMode();
+  };
+
+  const handlePhoneSave = async (phone) => {
+    await updateUser(keycloak.token, {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone,
+    });
+    dispatch(setPhone(phone));
+    changePhoneFieldToViewMode();
+  };
+
+  const imageSelectedHandler = (event) => {
+    user.profileImage = URL.createObjectURL(event.target.files[0]);
+    setSelectedImage(event.target.files[0]);
+  };
+
+  const imageUploadHandler = async () => {
+    const formData = new FormData();
+    formData.append('file', selectedImage);
+    formData.append('userId', user.id);
+    await imageUpload(formData);
+    window.location.reload();
   };
 
   return (
@@ -57,7 +95,19 @@ function Account() {
         <div className="account__wrapper">
           <div className="account__left-column">
             <div className="account__profile-image">
-              <img src={ProfileImage} alt="profile" />
+              <img src={user.profileImage ? user.profileImage : noImageProfile} alt="profile" />
+            </div>
+            <div>
+              <input 
+                style={{ display: 'none' }}
+                type="file" 
+                name="file"
+                onChange={imageSelectedHandler} 
+                ref={inputEl}
+              />
+              {selectedImage
+                ? <button className="btn btn--upload-image" type="button" onClick={imageUploadHandler}>Upload</button>
+                : <button className="btn btn--change-image" type="button" onClick={() => inputEl.current.click()}>Change Image</button>}
             </div>
             <div className="account__welcome-message">
               Welcome back, 
@@ -77,7 +127,7 @@ function Account() {
               <EdiText 
                 type="text" 
                 value={user.firstName ? user.firstName : 'None'} 
-                onSave={handleSave}
+                onSave={handleFirstNameSave}
                 onCancel={changeFirstNameFieldToViewMode}
                 onEditingStart={changeFirstNameFieldToEditMode}
                 editButtonContent="edit"
@@ -97,7 +147,7 @@ function Account() {
               <EdiText 
                 type="text" 
                 value={user.lastName ? user.lastName : 'None'} 
-                onSave={handleSave}
+                onSave={handleLastNameSave}
                 onCancel={changeLastNameFieldToViewMode}
                 onEditingStart={changeLastNameFieldToEditMode}
                 editButtonContent="edit"
@@ -110,25 +160,13 @@ function Account() {
                 editOnViewClick={true}
               />
             </div>
-            <div className="edit-text">
+            <div className="edit-text">  
               <div className="edit-text__title">
-                First name
+                Email
               </div>
-              <EdiText 
-                type="text" 
-                value={user.email ? user.email : 'None'} 
-                onSave={handleSave}
-                onCancel={changeEmailAddressFieldToViewMode}
-                onEditingStart={changeEmailAddressFieldToEditMode}
-                editButtonContent="edit"
-                cancelButtonContent="Cancel"
-                saveButtonContent="Save"
-                editButtonClassName="edit-button"
-                cancelButtonClassName="cancel-button"
-                saveButtonClassName="save-button"
-                viewContainerClassName={emailAddressMode}
-                editOnViewClick={true}
-              />
+              <div className="edit-text__value">
+                {user.email ? user.email : 'None'} 
+              </div>
             </div>
             <div className="edit-text">
               <div className="edit-text__title">
@@ -137,7 +175,7 @@ function Account() {
               <EdiText 
                 type="text" 
                 value={user.phone ? user.phone : 'None'} 
-                onSave={handleSave}
+                onSave={handlePhoneSave}
                 onCancel={changePhoneFieldToViewMode}
                 onEditingStart={changePhoneFieldToEditMode}
                 editButtonContent="edit"

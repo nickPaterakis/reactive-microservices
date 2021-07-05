@@ -1,16 +1,29 @@
 package com.booking.reservationservice.web.api;
 
-import com.booking.bookingapi.core.reservation.ReservationEndpoint;
-import com.booking.bookingapi.core.reservation.ReservationService;
+import com.booking.bookingapi.reservation.ReservationService;
+import com.booking.bookingapi.reservation.dto.ReservationDetailsDto;
+import com.booking.bookingapi.reservation.dto.ReservationDto;
+import com.booking.bookingapi.user.dto.BookingUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.UUID;
 
+@CrossOrigin("*")
+@RequestMapping("reservations")
 @RestController
-public class ReservationResource implements ReservationEndpoint {
+@Validated
+public class ReservationResource {
 
     private final ReservationService reservationService;
 
@@ -19,8 +32,29 @@ public class ReservationResource implements ReservationEndpoint {
         this.reservationService = reservationService;
     }
 
-    @Override
-    public Flux<Long> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
+
+    @GetMapping("/propertyIds")
+    Flux<Long> getPropertyIds(
+            @NotEmpty @RequestParam(value = "location") String location,
+            @NotNull @RequestParam(value = "checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+            @NotNull @RequestParam(value = "checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut) {
         return reservationService.getPropertyIds(location, checkIn, checkOut);
+    }
+
+    @GetMapping("/my-reservations")
+    Flux<ReservationDetailsDto> getReservationsByUserId(@AuthenticationPrincipal BookingUser user) {
+        return reservationService.getReservationsByUserId(user);
+    }
+
+    @PostMapping("/create")
+    public Mono<Void> createReservation(@Valid @RequestBody ReservationDto reservationDto) {
+        reservationService.createReservation(reservationDto);
+        return Mono.empty();
+    }
+
+    @DeleteMapping("/delete/{reservationId}")
+    public Mono<Void> deleteReservation(@PathVariable UUID reservationId) {
+        reservationService.deleteReservation(reservationId);
+        return Mono.empty();
     }
 }

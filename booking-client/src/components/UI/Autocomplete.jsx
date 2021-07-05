@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import Aux from '../../hoc/Auxiliary';
+import { getCountries } from '../../api/CountriesService';
 
 const Autocomplete = ({ handleLocation }) => {
   const [state, setState] = useState({
@@ -18,7 +18,7 @@ const Autocomplete = ({ handleLocation }) => {
   useEffect(() => {
     if (state.showOptions && state.userInput) {
       const fetchData = async () => {
-        const result = await axios.get(`http://localhost:8765/countries/${state.userInput}`);
+        const result = await getCountries(state.userInput);
     
         setState({
           ...state,

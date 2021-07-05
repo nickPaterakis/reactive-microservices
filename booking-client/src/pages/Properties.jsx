@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import moment from 'moment';
-import axios from 'axios';
 import { DATE_FORMAT, PER_PAGE } from '../constants/systemConstants';
 import PropertyCard from '../components/UI/PropertyCard';
 import Spinner from '../components/UI/Spinner';
+import { searchProperties } from '../api/PropertyService';
 
 const Properties = () => {
   const [propertiesPage, setPropertiesPage] = useState();
@@ -17,19 +17,14 @@ const Properties = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(
-        `http://localhost:8765/properties/search?location=${ 
-          location 
-        }&checkIn=${ 
-          moment(moment(dates.startDate).toDate()).format(DATE_FORMAT)
-        }&checkOut=${ 
-          moment(moment(dates.endDate).toDate()).format(DATE_FORMAT)
-        }&guestNumber=${  
-          guests
-        }&currentPage=${  
-          currentPage}`,
+      const { data } = await searchProperties(
+        location,
+        moment(moment(dates.startDate).toDate()).format(DATE_FORMAT),
+        moment(moment(dates.endDate).toDate()).format(DATE_FORMAT),
+        guests,
+        currentPage,
       );
-
+      
       setPropertiesPage({
         data,
       });

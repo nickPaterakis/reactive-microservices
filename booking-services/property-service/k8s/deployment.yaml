@@ -15,7 +15,7 @@ spec:
         - name: property-service
           image: nicholaspat/property-service
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -34,11 +34,15 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    app: property-service
   name: property-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: property-service
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+  sessionAffinity: ClientIP

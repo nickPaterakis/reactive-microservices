@@ -1,6 +1,6 @@
 package com.booking.userservice.model;
 
-import com.booking.bookingapi.core.user.Role;
+import com.booking.bookingapi.user.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -31,6 +31,8 @@ public class User {
     private String phone;
 
     private List<Role> roles;
+
+    private String profileImage;
 
     public User(User user) {
         this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getPhone(), user.getRoles());

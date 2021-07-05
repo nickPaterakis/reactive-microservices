@@ -1,4 +1,4 @@
-import { React, useState, useRef } from 'react';
+import { React, useState } from 'react';
 import CreatePropertyForm from '../components/CreatePropertyComponents/CreatePropertyForm';
 import Spinner from '../components/UI/Spinner';
 

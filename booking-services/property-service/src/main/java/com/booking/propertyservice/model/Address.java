@@ -18,7 +18,7 @@ public class Address extends BaseEntity{
     @Column(name = "city")
     private String city;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
 

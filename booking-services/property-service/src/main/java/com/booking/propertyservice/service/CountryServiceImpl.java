@@ -1,7 +1,7 @@
 package com.booking.propertyservice.service;
 
-import com.booking.bookingapi.core.property.Dto.CountryDto;
-import com.booking.bookingapi.core.property.CountryService;
+import com.booking.bookingapi.property.Dto.CountryDto;
+import com.booking.bookingapi.property.CountryService;
 import com.booking.propertyservice.repository.CountryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;

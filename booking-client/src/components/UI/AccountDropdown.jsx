@@ -1,13 +1,16 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { VscAccount, VscSignOut, VscHome } from 'react-icons/vsc';
+import ReactRouterPropTypes from 'react-router-prop-types';
+import {
+  VscAccount, VscSignOut, VscHome, VscRepo, 
+} from 'react-icons/vsc';
 import { useKeycloak } from '@react-keycloak/web';
 import { Link, withRouter } from 'react-router-dom';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import Aux from '../../hoc/Auxiliary';
 
 function AccountDropdown({ open, handleOpen, history }) {
-  const { keycloak, initialized } = useKeycloak();
+  const { keycloak } = useKeycloak();
   const wrapperRef = useRef(null);
   useOutsideClick(wrapperRef, handleOpen);
 
@@ -33,6 +36,12 @@ function AccountDropdown({ open, handleOpen, history }) {
               Manage account
             </div>
           </Link>
+          <Link onClick={() => handleLink('/profile/my-reservations')} className="link dropdown__item dropdown__item--account">
+            <span className="dropdown__item__icon"><VscRepo /></span>
+            <div className="dropdown__item__text">
+              My reservations
+            </div>
+          </Link>
           <Link onClick={() => handleLink('/profile/myproperties')} className="link dropdown__item dropdown__item--account">
             <span className="dropdown__item__icon"><VscHome /></span>
             <div className="dropdown__item__text">
@@ -55,7 +64,7 @@ function AccountDropdown({ open, handleOpen, history }) {
 AccountDropdown.propTypes = {
   open: PropTypes.bool,
   handleOpen: PropTypes.func.isRequired,
-  history: PropTypes.func.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 AccountDropdown.defaultProps = {

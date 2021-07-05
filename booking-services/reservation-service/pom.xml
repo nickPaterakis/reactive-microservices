@@ -10,7 +10,7 @@
 	</parent>
 
 	<properties>
-		<docker.exposed.port>8084</docker.exposed.port>
+		<docker.exposed.port>8083</docker.exposed.port>
 		<docker.image.dockerfile.dir>${basedir}/../../docker</docker.image.dockerfile.dir>
 	</properties>
 
@@ -32,7 +32,6 @@
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>3.2.0</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.modelmapper</groupId>

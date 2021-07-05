@@ -11,6 +11,7 @@ const TextArea = React.forwardRef(({
   value, 
   onChange, 
   valid, 
+  touched,
   errorMessage,
 }) => (
   <div className="form-group">
@@ -25,7 +26,7 @@ const TextArea = React.forwardRef(({
         onChange={onChange}
       />
     </label>
-    {!valid 
+    {!valid && touched
       ? (
         <div className="error">
           <p className="error-message">
@@ -50,6 +51,7 @@ TextArea.propTypes = {
   ]).isRequired,
   onChange: PropTypes.func.isRequired,
   valid: PropTypes.bool.isRequired,
+  touched: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
 };
 
