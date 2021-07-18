@@ -1,0 +1,22 @@
+.property-slider {
+  width: 100.2rem;
+  height: 60rem;
+  border-radius: 1rem !important;
+
+  &__image {
+    max-width: 1200px;
+    height: 600px;
+    margin: 0 auto;
+  }
+}
+
+.slick-slide,
+.slick-slide * {
+  outline: none !important;
+}
+
+.slick-prev,
+.slick-next {
+  //color: black;
+  //background: black;
+}

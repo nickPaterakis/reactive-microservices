@@ -1,0 +1,89 @@
+.reservation-card {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.248);
+  border-radius: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  max-width: 65rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-weight: 400;
+  }
+
+  &__price {
+    font-size: 1.7rem;
+    align-self: flex-end;
+  }
+
+  &__price-number {
+  }
+
+  &__informations {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-radius: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  &__check-in {
+    border-right: 1px solid black;
+    padding: 0.7rem;
+    &__text {
+      font-size: 1.5rem;
+    }
+
+    &__date {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__check-out {
+    padding: 0.7rem;
+
+    &__text {
+      font-size: 1.5rem;
+    }
+
+    &__date {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__left-column {
+    padding-right: 0.5rem;
+  }
+
+  &__right-column {
+    font-size: 1.3rem;
+    padding-left: 0.5rem;
+  }
+
+  &__owner-name {
+  }
+
+  &__owner-email {
+  }
+
+  &__location {
+  }
+
+  &__operations {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
