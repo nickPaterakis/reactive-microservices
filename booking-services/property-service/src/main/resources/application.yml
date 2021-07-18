@@ -1,23 +1,10 @@
-#spring:
-#  config:
-#    import: optional:configserver:http://localhost:8888
-#  application:
-#    name: property-service
-#
-#---
-#spring:
-#  config:
-#    activate:
-#      on-profile: docker
-#    import: optional:configserver:http://config-server:8888
-
 server:
   port: 8081
 
 app:
   user-service:
     host: localhost
-    port: 8082
+    port: 8084
   reservation-service:
     host: localhost
     port: 8083
@@ -28,14 +15,27 @@ app:
     mysql:
       host: localhost
       port: 3306
+  rabbitmq:
+    host: localhost
+    port: 5672
 
+bucketname: bookinguniwa
+subdirectory: images
 
 spring:
   application:
     name: property-service
+  rabbitmq:
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
+    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
   cloud:
     config:
       enabled: false
+    gcp:
+      credentials:
+        location: classpath:key.json
     stream:
       defaultBinder: rabbit
       default.contentType: application/json
@@ -63,7 +63,7 @@ spring:
   datasource:
     platform: mysql
     schema: classpath*:db/schema.sql
-    data: classpath*:db/data.sql
+    #data: classpath*:db/data.sql
     url: jdbc:mysql://${app.database.mysql.host}:${app.database.mysql.port}/property_db?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: root
@@ -76,10 +76,27 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8090/auth/realms/booking
-#          jwk-set-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/certs
-#          issuer-uri: http://34.123.156.85:8080/auth/realms/booking
+#          jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
+#          issuer-uri: http://localhost:8090/auth/realms/booking
+          jwk-set-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://34.123.156.85:8080/auth/realms/booking
+      client:
+        registration:
+          keycloak:
+            client-id: 'booking-spring-boot-app-client'
+            client-secret: '64fbd0f5-4faf-49ac-99a7-518c72b7b327'
+#            authorizationGrantType: client_credentials
+            clientName: Keycloak
+            authorizationGrantType: authorization_code
+            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          keycloak:
+            issuerUri: http://34.123.156.85:8080/auth/realms/booking
+            user-name-attribute: name
 
 #      jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
 #      issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
@@ -102,3 +119,5 @@ app:
   database:
     mysql:
       host: mysql
+  rabbitmq:
+    host: rabbitmq

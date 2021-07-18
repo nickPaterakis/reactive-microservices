@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-//@EnableEurekaClient
+
 @SpringBootApplication(exclude={MongoAutoConfiguration.class})
 @EnableReactiveMongoRepositories
 public class UserServiceApplication {

@@ -17,7 +17,7 @@ function PropertySlider({ images }) {
     <Slider {...settings}>
       {images ? images.map((image) => (
         <div>
-          <img className="property-slider__image" src={config.url.IMAGES_URL + image} alt="" />
+          <img className="property-slider__image" src={config.url.PROPERTY_IMAGES_URL + image} alt="" />
         </div>
       )) : null}
     </Slider>

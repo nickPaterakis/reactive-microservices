@@ -15,4 +15,6 @@ ReservationCustomRepository {
     Flux<Reservation> findByUserId(UUID userId);
 
     Mono<Void> deleteAllByPropertyId(Long propertyId);
+
+    Flux<Reservation> findAllByPropertyId(Long propertyId);
 }

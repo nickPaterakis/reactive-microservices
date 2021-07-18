@@ -6,8 +6,8 @@ import com.booking.bookingapi.reservation.dto.ReservationDto;
 import com.booking.bookingapi.user.dto.BookingUser;
 import com.booking.bookingapi.user.dto.UserDetailsDto;
 import com.booking.bookingutils.exception.NotFoundException;
-import com.booking.propertyservice.mapper.PropertyMapper;
 import com.booking.propertyservice.integration.PropertyIntegration;
+import com.booking.propertyservice.mapper.PropertyMapper;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.repository.PropertyRepository;
 import lombok.extern.log4j.Log4j2;
@@ -79,6 +79,7 @@ public class PropertyServiceImpl implements PropertyService {
                 }));
     }
 
+
     @Override
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user, int currentPage) {
         log.info("Get properties by user id: {}", UUID.fromString(user.getId()));
@@ -134,7 +135,6 @@ public class PropertyServiceImpl implements PropertyService {
                 })
                 .flatMap(property -> integration.getUserById(property.getOwnerId()))
                 .map(userDto -> {
-                    System.out.println(userDto);
                     propertyAggregate
                             .setOwnerFirstName(userDto.getFirstName())
                             .setOwnerLastName(userDto.getLastName())
@@ -161,6 +161,7 @@ public class PropertyServiceImpl implements PropertyService {
                 .setLocation(property.getAddress().getCountry().getName())
                 .setPrice(BigDecimal.valueOf(0));
         integration.createReservation(reservationDto);
+
         return Mono.empty();
     }
 

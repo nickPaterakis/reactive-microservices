@@ -1,23 +1,10 @@
-#spring:
-#  config:
-#    import: optional:configserver:http://localhost:8888
-#  application:
-#    name: reservation-service
-#
-#---
-#
-#spring:
-#  config:
-#    activate:
-#      on-profile: docker
-#    import: optional:configserver:http://config-server:8888
 server:
   port: 8083
 
 app:
   user-service:
     host: localhost
-    port: 8082
+    port: 8084
   property-service:
     host: localhost
     port: 8081
@@ -28,37 +15,83 @@ app:
     mongo:
       host: localhost
       port: 27017
+  rabbitmq:
+    host: localhost
+    port: 5672
 
 spring:
   application:
     name: reservation-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bookinguniwa@gmail.com
+    password: hjfdcfmjypkhzcgf
+    properties:
+      mail.smtp:
+        auth: true
+        starttls.enable: true
   data:
     mongodb:
-#      uri: mongodb://localhost:27017/reservations
       host: ${app.database.mongo.host}
       port: ${app.database.mongo.port}
       database: reservations
+  rabbitmq:
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
+    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
   cloud:
     config:
       enabled: false
     stream:
       defaultBinder: rabbit
       default.contentType: application/json
-      bindings.input:
-        destination: reservations
-        group: reservationsGroup
-        consumer:
-          maxAttempts: 3
-          backOffInitialInterval: 500
-          backOffMaxInterval: 1000
-          backOffMultiplier: 2.0
+      bindings:
+        input:
+          destination: reservations
+          group: reservationsGroup
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 500
+            backOffMaxInterval: 1000
+            backOffMultiplier: 2.0
+        output-users:
+          destination: users
+          producer.required-groups: auditGroup
+        output-properties:
+          destination: properties
+          producer.required-groups: auditGroup
       rabbit.bindings.input.consumer:
         autoBindDlq: true
         republishToDlq: true
-  security.oauth2.resourceserver:
-    jwt:
-      jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
-      issuer-uri: http://localhost:8090/auth/realms/booking
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+    #      jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
+    #      issuer-uri: http://localhost:8090/auth/realms/booking
+          jwk-set-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://34.123.156.85:8080/auth/realms/booking
+      client:
+        registration:
+          keycloak:
+            client-id: 'reservation-service-client'
+            client-secret: '89c08d54-201c-405b-9581-13a1ad6dc76b'
+            client-name: keycloak
+            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          keycloak:
+            issuerUri: http://34.123.156.85:8080/auth/realms/booking
+            token-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/token
+#            authorization-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/auth
+#            user-info-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/userinfo
+#            user-name-attribute: name
+
 
 #      jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
 #      issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
@@ -79,3 +112,5 @@ app:
   database:
     mongo:
       host: mongo
+  rabbitmq:
+    host: rabbitmq

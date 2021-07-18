@@ -1,6 +1,6 @@
 package com.booking.bookingapi.property.Dto;
 
-import com.booking.bookingapi.property.validationgroup.CreateProperty;
+import com.booking.bookingapi.validationgroup.CreateProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -78,7 +78,4 @@ public class PropertyDetailsDto {
 
     @NotNull
     private UUID ownerId;
-
-
-
 }

@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateRangePicker } from 'react-dates';
 import { BsSearch } from 'react-icons/bs';
@@ -85,7 +85,7 @@ const SearchBar = ({ history }) => {
 };
 
 SearchBar.propTypes = {
-  history: PropTypes.func.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default withRouter(SearchBar);

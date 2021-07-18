@@ -4,6 +4,7 @@ import {
   React, useState, useRef, useMemo,
 } from 'react';
 import Select from 'react-select';
+import { useKeycloak } from '@react-keycloak/web';
 import countryList from 'react-select-country-list';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useSelector } from 'react-redux';
@@ -222,6 +223,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
   });
   const user = useSelector((state) => state.user);
   const inputEl = useRef(null); 
+  const { keycloak } = useKeycloak();
 
   const propertyTypeOptions = [
     {
@@ -309,7 +311,6 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
       // if the form is valid the create button will become available
       const ifv = isFormValid(updatedControls);
 
-      console.log(ifv);
       setCreatePropertyForm({
         formControls: updatedControls,
         isFormValid: ifv,
@@ -380,7 +381,7 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
     fd.append('property', JSON.stringify(formData));
 
     loadHandler(true);
-    createListing(fd).then(() => {
+    createListing(fd, keycloak.token).then(() => {
       loadHandler(false);
       history.push('/profile/myproperties');
     }).catch(() => {

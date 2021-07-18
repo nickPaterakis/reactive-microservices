@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import image from '../../assets/images/Properties/Hungary/budapest/1/72301aa8-696d-4a61-8f97-850da90e0042.jpg';
 import { config } from '../../constants/systemConstants';
 
 const PropertyCard = ({ property }) => {
@@ -17,7 +16,7 @@ const PropertyCard = ({ property }) => {
     <Link to={`/property/${property.id}`} className="link card_link">
       <div className="property-card">
         <div className="property-card__image-container">
-          <img className="property-card__image" src={property.image ? config.url.IMAGES_URL + property.image : image} alt={property.title} />
+          <img className="property-card__image" src={property.image ? config.url.PROPERTY_IMAGES_URL + property.image : image} alt={property.title} />
         </div>
         <div className="property-card__description">
           <h1 className="property-card__title">{property.title}</h1>

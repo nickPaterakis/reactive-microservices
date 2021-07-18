@@ -53,18 +53,7 @@
     color: rgb(223, 26, 26);
   }
 }
-div:last-child
-// .styles-module_Editext__editing_container__1C4d6 {
-//   flex-direction: column;
-//   align-items: flex-start !important;
-// }
-
-// .styles-module_Editext__buttons_after_aligned__2ZHQz {
-//   margin-top: 1rem;
-//   margin-left: 0 !important;
-// }
-
-.view-container {
+div:last-child .view-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

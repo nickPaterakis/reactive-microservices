@@ -1,26 +1,30 @@
 /* eslint-disable arrow-body-style */
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { deleteListing } from '../../api/PropertyService';
-import image from '../../assets/images/Properties/Hungary/budapest/1/72301aa8-696d-4a61-8f97-850da90e0042.jpg';
 import { config } from '../../constants/systemConstants';
 
 const MyPropertyCard = ({ property, history }) => {
+  const { keycloak } = useKeycloak();
+
   const handleView = () => {
     history.push(`/view-property/${property.id}`);
   };
 
   const handleDelete = async () => {
-    await deleteListing(property.id);
+    await deleteListing(property.id, keycloak.token);
     window.location.reload();
   };
+
+  console.log(property);
 
   return (
     <div className="my-property-card">
       <div className="my-property-card__image-container">
-        <img className="my-property-card__image" src={property.image ? config.url.IMAGES_URL + property.image : image} alt={property.title} />
+        <img className="my-property-card__image" src={property.image ? config.url.PROPERTY_IMAGES_URL + property.image : image} alt={property.title} />
       </div>
       <div className="my-property-card__description">
         <h1 className="my-property-card__title">{property.title}</h1>

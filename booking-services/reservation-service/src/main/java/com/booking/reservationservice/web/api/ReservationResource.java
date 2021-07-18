@@ -7,6 +7,7 @@ import com.booking.bookingapi.user.dto.BookingUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,6 @@ public class ReservationResource {
         this.reservationService = reservationService;
     }
 
-
     @GetMapping("/propertyIds")
     Flux<Long> getPropertyIds(
             @NotEmpty @RequestParam(value = "location") String location,
@@ -41,17 +41,20 @@ public class ReservationResource {
         return reservationService.getPropertyIds(location, checkIn, checkOut);
     }
 
+    @PreAuthorize("hasRole('BOOKING_USER')")
     @GetMapping("/my-reservations")
     Flux<ReservationDetailsDto> getReservationsByUserId(@AuthenticationPrincipal BookingUser user) {
         return reservationService.getReservationsByUserId(user);
     }
 
+    @PreAuthorize("hasRole('BOOKING_USER')")
     @PostMapping("/create")
     public Mono<Void> createReservation(@Valid @RequestBody ReservationDto reservationDto) {
         reservationService.createReservation(reservationDto);
         return Mono.empty();
     }
 
+    @PreAuthorize("hasRole('BOOKING_USER')")
     @DeleteMapping("/delete/{reservationId}")
     public Mono<Void> deleteReservation(@PathVariable UUID reservationId) {
         reservationService.deleteReservation(reservationId);

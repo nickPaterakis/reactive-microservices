@@ -32,7 +32,6 @@ function App() {
       if (keycloak.authenticated) {
         try {
           const response = await getUserDetailsMe(keycloak.token);
-          console.log(response);
           dispatch(setUser(response.data));
         } catch (er) {
           console.log(er);

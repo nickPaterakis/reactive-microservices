@@ -5,6 +5,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Link, withRouter } from 'react-router-dom';
 import AccountDropdown from '../UI/AccountDropdown';
 import noImageProfile from '../../assets/images/no-image-profile.png';
+import { config } from '../../constants/systemConstants';
 
 const Header = ({ location }) => {
   const { keycloak } = useKeycloak();
@@ -45,7 +46,7 @@ const Header = ({ location }) => {
                 && (
                   <div className="dropdown">
                     <div role="button" tabIndex={0} className="btn btn--account-dropdown prevent-selection" onClick={() => handleOpen()} onKeyPress={handleOpen}>
-                      <span className="btn__image"><img src={user.profileImage ? user.profileImage : noImageProfile} alt="profile" /></span>
+                      <span className="btn__image"><img src={user.profileImage ? config.url.USER_IMAGES_URL + user.profileImage : noImageProfile} alt="profile" /></span>
                       <span className="btn__text">{user.firstName}</span>
                     </div>
                     <AccountDropdown 

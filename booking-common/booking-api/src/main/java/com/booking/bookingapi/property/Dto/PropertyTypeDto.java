@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 public class PropertyTypeDto {
 
     @NotNull
-    @Min(value = 0)
+    @Positive
     private Long id;
 
     @NotEmpty

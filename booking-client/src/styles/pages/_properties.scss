@@ -3,7 +3,32 @@
   display: flex;
   justify-content: center;
   padding-top: 10rem;
+  min-height: calc(100vh - 11rem);
   padding-bottom: 20rem;
+
+  &__empty-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: auto 0;
+    width: 90%;
+  }
+
+  &__search-icon {
+    width: 10rem;
+  }
+
+  &__empty-title {
+    font-weight: bold;
+    font-size: 2.3rem;
+  }
+
+  &__empty-text {
+    font-size: 1.3rem;
+    width: 50%;
+    text-align: center;
+  }
 }
 
 .results-section {

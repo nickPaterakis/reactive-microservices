@@ -8,6 +8,7 @@ const home = () => {
   });
   return (
     <main className="home">
+      <img className="home__background" src="https://storage.cloud.google.com/bookinguniwa/images/backgrounds/john-towner-UO02gAW3c0c-unsplash.jpg?authuser=1" alt="background" />
       <SearchBar />
     </main>
   );

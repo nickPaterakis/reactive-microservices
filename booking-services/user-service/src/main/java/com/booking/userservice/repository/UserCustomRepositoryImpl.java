@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -46,5 +47,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                             .setLastName(userDetailsDto.getLastName())
                             .setPhone(userDetailsDto.getPhone()))
                 .flatMap(user -> reactiveMongoTemplate.save(user)).subscribe();
+    }
+
+    @Override
+    public Mono<User> findUserByEmail(String email) {
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("email").is(email));
+        return reactiveMongoTemplate.findOne(query, User.class);
     }
 }

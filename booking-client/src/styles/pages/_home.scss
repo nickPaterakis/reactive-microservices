@@ -5,7 +5,13 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  background-image: url('../../assets/images/backgrounds/john-towner-UO02gAW3c0c-unsplash.jpg');
+  // background-image: url('https://storage.cloud.google.com/bookinguniwa/images/backgrounds/john-towner-UO02gAW3c0c-unsplash.jpg?authuser=1');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+
+  &__background {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+  }
 }

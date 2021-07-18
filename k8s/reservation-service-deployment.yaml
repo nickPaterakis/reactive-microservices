@@ -5,9 +5,10 @@ metadata:
     app: reservation-service
   name: reservation-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-    - name: "8083"
+    - protocol: TCP
+      name: "8083"
       port: 8083
       targetPort: 8083
   selector:
@@ -19,7 +20,7 @@ metadata:
   name: reservation-service
 data:
   database-name: reservations
-  SPRING_PROFILES_ACTIVE: docker
+  SPRING_PROFILES_ACTIVE: kubernetes
 ---
 apiVersion: v1
 kind: Secret
@@ -47,14 +48,14 @@ spec:
         app: reservation-service
     spec:
       containers:
-        - env:
-          - name: SPRING_PROFILES_ACTIVE
-            valueFrom:
-              configMapKeyRef:
-                key: SPRING_PROFILES_ACTIVE
-                name: reservation-service
-          image: nicholaspat/reservation-service
+        - image: nicholaspat/reservation-service
           name: reservation-service
           ports:
             - containerPort: 8083
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_PROFILES_ACTIVE
+                  name: reservation-service
       restartPolicy: Always

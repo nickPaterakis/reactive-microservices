@@ -7,7 +7,6 @@ import com.booking.bookingapi.user.UserService;
 import com.booking.bookingapi.user.dto.UserDetailsDto;
 import com.booking.bookingapi.user.dto.UserDto;
 import com.booking.bookingutils.exception.NotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,25 +31,21 @@ import static com.booking.bookingapi.event.Event.Type.DELETE;
 @Log4j2
 public class PropertyIntegration implements UserService, ReservationService {
 
-    private final WebClient.Builder webClientBuilder;
     private final MessageSources messageSources;
-    private final ObjectMapper mapper;
     private final String userServiceUrl;
     private final String reservationServiceUrl;
-    private WebClient webClient;
+    private final WebClient webClient;
 
     @Autowired
     public PropertyIntegration(
-            WebClient.Builder webClientBuilder,
-            ObjectMapper mapper,
+            WebClient webClient,
             MessageSources messageSources,
             @Value("${app.user-service.host}") String userServiceHost,
             @Value("${app.user-service.port}") String userServicePort,
             @Value("${app.reservation-service.host}") String reservationServiceHost,
             @Value("${app.reservation-service.port}") String reservationServicePort) {
 
-        this.webClientBuilder = webClientBuilder;
-        this.mapper = mapper;
+        this.webClient = webClient;
         this.messageSources = messageSources;
 
         var http = "http://";
@@ -66,12 +61,27 @@ public class PropertyIntegration implements UserService, ReservationService {
                         .concat("/users/{email}"))
                 .build(email);
 
-        return getWebClient()
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
                 .bodyToMono(UserDetailsDto.class)
                 .switchIfEmpty(Mono.empty());
+    }
+
+    @Override
+    public Mono<UserDto> getUserById(UUID userId) {
+        var url = UriComponentsBuilder
+                .fromUriString(userServiceUrl
+                        .concat("/users/user-id/{userId}"))
+                .build(userId.toString());
+
+        return webClient
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(UserDto.class)
+                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
     }
 
     @Override
@@ -81,7 +91,7 @@ public class PropertyIntegration implements UserService, ReservationService {
                         .concat("/reservations/propertyIds?location={location}&checkIn={checkIn}&checkOut={checkOut}"))
                 .build(location, checkIn, checkOut);
 
-        return getWebClient()
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
@@ -115,27 +125,5 @@ public class PropertyIntegration implements UserService, ReservationService {
                 .send(message);
 
         return Mono.empty();
-    }
-
-    @Override
-    public Mono<UserDto> getUserById(UUID userId) {
-        var url = UriComponentsBuilder
-                .fromUriString(userServiceUrl
-                        .concat("/users/user-id/{userId}"))
-                .build(userId.toString());
-
-        return getWebClient()
-                .get()
-                .uri(url)
-                .retrieve()
-                .bodyToMono(UserDto.class)
-                .onErrorMap(WebClientResponseException.class, ex -> new NotFoundException(ex.getMessage()));
-    }
-
-    private WebClient getWebClient() {
-        if (webClient == null) {
-            webClient = webClientBuilder.build();
-        }
-        return webClient;
     }
 }

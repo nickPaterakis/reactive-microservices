@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "spring-base-314916",
+  "private_key_id": "6afe0bba0b78c2a282f43451f88e194df07d1c1d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7/vsQPzwQTiyP\nbQNtSO85f3Trtw8m6BKylnz25lDuG3WLW2ymqDUWrFJcqo3FAw3qbOWl9PtrWvx4\n/8Oy5W0FwE83vaeALjboAVyGC3hWa2qZucAPN5EKDcIq1blxTMeIk0I1R4z+LKrd\nLgDkUCLaGzkihNWgsMz4jvCMnHyQUnw8+C51ci6P39N3I/BJ9fxiva4Z69ia5stW\n715XyhOPSQRzxwXTkLgAR/x20UVqAuD1dBP/M+iaODd8uQa7zvuQEL/ctMpevN3t\nwe4Ci+m8Wd8S+Y/4oaqnNrgxuQP6nZckgA2G3MO/JS4XpXbwtQcxORECb9XIwUBi\nXBE5fSaFAgMBAAECggEABK42J/27DBjg081TWYQzAzZ2KGw4AgWjJDPKTAdd78pa\njyv+ii5ZQVrsTgb9B/D/MV1MC762smyN0/a3iPEHWYOj3++73N10W9W0162EwyS3\nfw5N3Ch2VvloDShMY/1qYQRxkIwF1EozvX/+C7EnElESh2vROcf3wnR57rZIBPvN\n03w6fk8Cu8aOaCDZxUBCBfd+9uV6oZMCs527XduflNSKEf/jn8Uw23RDXxln7Y/M\nXeOCFX/D/UEzLDR1h3C7DPjRsQbrFjEAV1DY4bxi2y9DgAmHVqk+1CwwV6ZuD7m3\nrh45gdMiwBolJ4qQc88yPilBRcBDvbL3Js2tWHxiwQKBgQDgcN5RzxwjCH5MoAPL\nT8L1pEhBl3dcdzcnHef0XO1XqBbqi7qcp1km7CkbtQQrEe17BGiCpPwLy9gGJl0H\n8j6IphU+Jw9OjMJ6Bwbuaq3NQsV3/VqxvDCskp2zdZRKQE6hx2SsZYrWv/ojuNUH\nkiTntUW5RDGFKd97j5LuFFk9MQKBgQDWbjeSF76HxU8W0IxCxXpsODtvlf9ObB+E\nOPYAWXiruV0NvbF4jK8gbnkerHI0SgGJPV40DRoUmu/XX4Rb5OAgbxoaBre3ygPT\nMc0dapZsCR6fx+adW0IOb8A2tH3IS2siyM3T3WNoYiIBRHKc6jPBjX85kOvQzzMC\n8AwbpA7ZlQKBgBwj6qwFNLjrwrImyfL+4CneXDTlIdEVHXQpGsEXuaZo696igFZN\n4S6xI4JW0tv3lnf7GINw3i04dLBotPdfFxoZAMbXLOMjYOrd4K+Z7oqy2YFu4aUx\nPEUW6PDsSBh7MaC1GFlJLfw4+8rozMTzPO9UWhadhzv0ARJD8R8qq/mxAoGBAL0S\nxEc6TpMzBHDOhM6fiDoCP04+CbdhmUyiWS+ntMJemNFz8RelnQnQv1Wvoqe+laoo\nhXcKEnQWxeK3Y2MP5hxTOsW2JKqXI1ZGtGD6yhYK2Ij038DiZdWK7gaOkdZZwecS\n/oKQ1IWG+gr6CsGXtPk2xfbBdV1SRd2SQmrg9wMdAoGAUh8wwNm2kIAnJBn6QiZr\n1AiEiDOJJqMxEr157uk8d5fPrTmVV+SVsVbCmDdgTFKWzkCI9qsYHR1eee4JGqrR\nOyE9PiRENGmY5e7fnbKLXwS8LO+PgERAdS3RDXwrusry+9q+TsQ21q6/4d/daN0d\n3s5/Ty90Huw4vnm0JzWrPw4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "booking-service-account@spring-base-314916.iam.gserviceaccount.com",
+  "client_id": "110552534961399568024",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/booking-service-account%40spring-base-314916.iam.gserviceaccount.com"
+}

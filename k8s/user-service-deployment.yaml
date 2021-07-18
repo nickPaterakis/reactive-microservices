@@ -5,11 +5,13 @@ metadata:
     app: user-service
   name: user-service
 spec:
-  type: LoadBalancer
+#  type: LoadBalancer
+  type: NodePort
   ports:
-    - name: "8082"
-      port: 8082
-      targetPort: 8082
+    - name: "8084"
+      port: 8084
+      targetPort: 8084
+#      protocol: TCP
   selector:
     app: user-service
 ---
@@ -37,7 +39,7 @@ metadata:
     app: user-service
   name: user-service
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: user-service
@@ -47,14 +49,14 @@ spec:
         app: user-service
     spec:
       containers:
-        - env:
+        - image: nicholaspat/user-service
+          name: user-service
+          ports:
+            - containerPort: 8084
+          env:
             - name: SPRING_PROFILES_ACTIVE
               valueFrom:
                 configMapKeyRef:
                   key: SPRING_PROFILES_ACTIVE
                   name: user-service
-          image: nicholaspat/user-service
-          name: user-service
-          ports:
-            - containerPort: 8082
       restartPolicy: Always

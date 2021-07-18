@@ -30,18 +30,19 @@ const Autocomplete = ({ handleLocation }) => {
     }
   }, [state.userInput]);
 
-  const onChange = (e) => {
+  const onChange = async (e) => {
     handleLocation(e.currentTarget.value);
-
+    
     setState({
       ...state,
       showOptions: true,
-      userInput: e.currentTarget.value,
+      userInput: e.target.value,
     });
   };
 
   const onClick = (e) => {
     handleLocation(e.currentTarget.innerText);
+   
     setState({
       activeOption: 0,
       filteredOptions: [],
@@ -52,7 +53,7 @@ const Autocomplete = ({ handleLocation }) => {
 
   const onKeyDown = (e) => {
     const { activeOption, filteredOptions } = state;
-
+    console.log('onKeyDown');
     if (e.keyCode === 13) {
       handleLocation(filteredOptions[activeOption]);
       setState({
@@ -73,9 +74,12 @@ const Autocomplete = ({ handleLocation }) => {
     }
   };
 
+  console.log(state.userInput);
+
   const {
     activeOption, filteredOptions, showOptions, userInput,
   } = state;
+  console.log(userInput);
 
   let optionList;
   if (showOptions && userInput) {
@@ -109,6 +113,7 @@ const Autocomplete = ({ handleLocation }) => {
           onChange={onChange}
           onKeyDown={onKeyDown}
           value={userInput}
+         // onKeyPress={onKeyUp}
         />
       </div>
       {optionList}

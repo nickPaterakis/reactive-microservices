@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-service-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: client-service
+    spec:
+      containers:
+        - name: client-service
+          image: nicholaspat/client-service
+          ports:
+            - containerPort: 80
+              name: http-port
+  selector:
+    matchLabels:
+      app: client-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http-port
+  selector:
+    app: client-service
+  type: LoadBalancer

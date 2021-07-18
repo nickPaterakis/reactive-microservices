@@ -1,39 +1,38 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: "gce"
 spec:
   rules:
     - http:
-      paths:
-      - path: /properties
-        pathType: Prefix
-        backend:
-          service:
-            name: property-service
-            port:
-              number: 8081
-      - path: /countries
-        pathType: Prefix
-        backend:
-          service:
-            name: property-service
-            port:
-              number: 8081
-      - path: /reservations
-        pathType: Prefix
-        backend:
-          service:
-            name: reservation-service
-            port:
-              number: 8083
-      - path: /users
-        pathType: Prefix
-        backend:
-          service:
-            name: user-service
-            port:
-              number: 8082
+        paths:
+#        - path: /properties
+#          pathType: ImplementationSpecific
+#          backend:
+#            service:
+#              name: property-service
+#              port:
+#                number: 8081
+#        - path: /countries
+#          pathType: ImplementationSpecific
+#          backend:
+#            service:
+#              name: property-service
+#              port:
+#                number: 8081
+        - path: /users
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: user-service
+              port:
+                number: 8082
+        - path: /reservations/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: reservation-service
+              port:
+                number: 8083

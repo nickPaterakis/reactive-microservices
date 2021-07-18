@@ -27,8 +27,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public final String storageDirectoryPath = "http://127.0.0.1:8887/";
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
@@ -52,13 +50,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         log.info("findUserByEmail: {}", email);
-        return userRepository.findByEmail(email)
-                .map(user-> modelMapper.map(user, UserDetailsDto.class));
+        return userRepository.findUserByEmail(email).map(UserMapper::toUserDetailsDto);
     }
 
     @Override
     public Mono<UserDetailsDto> saveUserDetails(UserDetailsDto userDetailsDto) {
-        log.info("saveUserDetails: {}", userDetailsDto.getId());
+        log.info("Create user with ID: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
         return userRepository.save(user)
                 .map(UserMapper::toUserDetailsDto)

@@ -27,18 +27,19 @@ public class ReservationIntegration implements UserService, PropertyService {
     private final ObjectMapper mapper;
     private final String userServiceUrl;
     private final String propertyServiceUrl;
-    private WebClient webClient;
+    private final WebClient webClient;
 
     @Autowired
     public ReservationIntegration(
             WebClient.Builder webClientBuilder,
+            WebClient webClient,
             ObjectMapper mapper,
             MessageSources messageSources,
             @Value("${app.user-service.host}") String userServiceHost,
             @Value("${app.user-service.port}") String userServicePort,
             @Value("${app.property-service.host}") String propertyServiceHost,
             @Value("${app.property-service.port}") String propertyServicePort) {
-
+        this.webClient = webClient;
         this.webClientBuilder = webClientBuilder;
         this.mapper = mapper;
         this.messageSources = messageSources;
@@ -56,7 +57,7 @@ public class ReservationIntegration implements UserService, PropertyService {
                         .concat("/users/{email}"))
                 .build(email);
 
-        return getWebClient()
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
@@ -71,7 +72,7 @@ public class ReservationIntegration implements UserService, PropertyService {
                         .concat("/users/user-id/{userId}"))
                 .build(userId.toString());
 
-        return getWebClient()
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
@@ -86,7 +87,7 @@ public class ReservationIntegration implements UserService, PropertyService {
                         .concat("/properties/property-reservation/{propertyId}"))
                 .build(propertyId);
 
-        return getWebClient()
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
@@ -94,10 +95,10 @@ public class ReservationIntegration implements UserService, PropertyService {
                 .switchIfEmpty(Mono.empty());
     }
 
-    private WebClient getWebClient() {
-        if (webClient == null) {
-            webClient = webClientBuilder.build();
-        }
-        return webClient;
-    }
+//    private WebClient getWebClient() {
+//        if (webClient == null) {
+//            webClient = webClientBuilder.build();
+//        }
+//        return webClient;
+//    }
 }

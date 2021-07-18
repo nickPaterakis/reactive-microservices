@@ -11,6 +11,7 @@ import Spinner from '../components/UI/Spinner';
 import SummaryCard from '../components/UI/SummaryCard';
 import { createReservation } from '../api/ReservationService';
 import noImageProfile from '../assets/images/no-image-profile.png';
+import { config } from '../constants/systemConstants';
 
 function Property({ type, history }) {
   const { id } = useParams();
@@ -34,7 +35,7 @@ function Property({ type, history }) {
         ownerId: property.ownerId,
         price: reservationPrice,
       };
-      await createReservation(reservation);
+      await createReservation(reservation, keycloak.token);
       history.push('/reservation');
     }
   };
@@ -82,7 +83,7 @@ function Property({ type, history }) {
             </div>
             <div className="property-overview__right-column">
               <div className="property-overview__host-image">
-                <img src={property.ownerImage ? property.ownerImage : noImageProfile} alt="profile" />
+                <img src={property.ownerImage ? config.url.USER_IMAGES_URL + property.ownerImage : noImageProfile} alt="profile" />
               </div>
             </div>
           </div>

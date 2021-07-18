@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -13,7 +13,7 @@
 	<artifactId>property-service</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<name>property-service</name>
-	<description>Booking Property Service</description>
+	<description>Property Service</description>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -22,10 +22,15 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-storage</artifactId>
+			<version>1.2.8.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -50,7 +55,6 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.8</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -58,17 +62,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.booking.propertyservice.PropertyServiceApplication</mainClass>
-				</configuration>
+<!--				<configuration>-->
+<!--					<mainClass>com.booking.propertyservice.PropertyServiceApplication</mainClass>-->
+<!--				</configuration>-->
 
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<goals>-->
+<!--							<goal>repackage</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
 
 			</plugin>
 		</plugins>

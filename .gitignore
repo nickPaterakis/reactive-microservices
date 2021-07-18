@@ -5,6 +5,8 @@ target/
 !**/src/test/**/target/
 db
 config/repo
+booking-client/src/images/backgrounds
+
 
 ### STS ###
 .apt_generated

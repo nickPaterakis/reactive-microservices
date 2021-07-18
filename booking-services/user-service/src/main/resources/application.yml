@@ -1,19 +1,5 @@
-#spring:
-#  config:
-#    import: optional:configserver:http://localhost:8888
-#  application:
-#    name: reservation-service
-#
-#---
-#
-#spring:
-#  config:
-#    activate:
-#      on-profile: docker
-#    import: optional:configserver:http://config-server:8888
-
 server:
-  port: 8082
+  port: 8084
 
 app:
   auth-server:
@@ -23,6 +9,9 @@ app:
     mongo:
       host: localhost
       port: 27017
+  rabbitmq:
+    host: localhost
+    port: 5672
 
 spring:
   application:
@@ -32,28 +21,38 @@ spring:
       host: ${app.database.mongo.host}
       port: ${app.database.mongo.port}
       database: users
+  rabbitmq:
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
+    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
   cloud:
+    gcp:
+      credentials:
+        location: classpath:key.json
     config:
       enabled: false
     stream:
       defaultBinder: rabbit
       default.contentType: application/json
-      bindings.input:
-        destination: users
-        group: usersGroup
-        consumer:
-          maxAttempts: 3
-          backOffInitialInterval: 500
-          backOffMaxInterval: 1000
-          backOffMultiplier: 2.0
+      bindings:
+        input:
+          destination: users
+          group: usersGroup
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 500
+            backOffMaxInterval: 1000
+            backOffMultiplier: 2.0
       rabbit.bindings.input.consumer:
         autoBindDlq: true
         republishToDlq: true
-  security.oauth2.resourceserver:
-    jwt:
-      jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
-      issuer-uri: http://localhost:8090/auth/realms/booking
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://34.123.156.85:8080/auth/realms/booking
 ---
 spring:
   config:
@@ -68,3 +67,5 @@ app:
   database:
     mongo:
       host: mongo
+  rabbitmq:
+    host: rabbitmq

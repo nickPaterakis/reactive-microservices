@@ -1,9 +1,6 @@
 import React from 'react';
 import {
   Switch,
-  Route,
-  Link,
-  useParams,
   useRouteMatch,
 } from 'react-router-dom';
 import PrivateRoute from '../components/auth/PrivateRoute';

@@ -1,17 +1,18 @@
 package com.booking.propertyservice.web.api;
 
-import com.booking.bookingapi.property.CountryEndpoint;
 import com.booking.bookingapi.property.CountryService;
 import com.booking.bookingapi.property.Dto.CountryDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+@CrossOrigin("*")
+@RequestMapping("/countries")
 @RestController
 @Log4j2
-public class CountryResource implements CountryEndpoint {
+public class CountryResource {
 
 
     private final CountryService countryService;
@@ -21,8 +22,8 @@ public class CountryResource implements CountryEndpoint {
         this.countryService = countryService;
     }
 
-    @Override
-    public Flux<CountryDto> getCountries(String name) {
+    @GetMapping("/{name}")
+    public Flux<CountryDto> getCountries(@PathVariable String name) {
         log.info(String.format("Country.findCountryByName(%s)", name));
         return countryService.getCountries(name);
     }

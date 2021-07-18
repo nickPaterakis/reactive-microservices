@@ -3,6 +3,7 @@ package com.booking.reservationservice.infra;
 import com.booking.bookingapi.event.Event;
 import com.booking.bookingapi.reservation.ReservationService;
 import com.booking.bookingapi.reservation.dto.ReservationDto;
+import com.booking.bookingapi.validationgroup.CreateDefaultReservation;
 import com.booking.bookingutils.exception.EventProcessingException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class MessageProcessor {
 
         if (event.getEventType() == Event.Type.CREATE) {
             ReservationDto reservationDto = event.getData();
-            Set<ConstraintViolation<ReservationDto>> violations = validator.validate(reservationDto);
-            System.out.println(reservationDto);
+            Set<ConstraintViolation<ReservationDto>> violations = validator.validate(reservationDto, CreateDefaultReservation.class);
+
             if (!violations.isEmpty()) {
                 throw new ConstraintViolationException(violations);
             }
@@ -61,6 +62,7 @@ public class MessageProcessor {
 
         if (event.getEventType() == Event.Type.DELETE) {
             Long propertyId = event.getData();
+
             reservationService.deleteAllReservationsByPropertyId(propertyId);
         } else {
             String errorMessage =

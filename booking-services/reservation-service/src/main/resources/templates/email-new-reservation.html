@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>New Reservation</title>
+</head>
+<body>
+<h3>You have a new reservation at <span th:text="${title}"></span></h3>
+<hr>
+<h3>Customer's Details</h3>
+<p> <b>Name:</b> <span th:text="${firstName}"></span> <span th:text="${lastName}"></span></p>
+<p> <b>Email:</b> <span th:text="${email}"></span></p>
+<h3>Reservation's Details</h3>
+<p> <b>Check In:</b> <span th:text="${checkIn}"></span></p>
+<p> <b>Check Out:</b> <span th:text="${checkOut}"></span></p>
+<p> <b>Price:</b> <span th:text="${price}"></span>€</p>
+<h3>Property's Information</h3>
+<p> <b>Title:</b> <span th:text="${title}"></span></p>
+<p> <b>Location:</b> <span th:text="${location}"></span></p>
+<p> <b>Property Type:</b> <span th:text="${propertyType}"></span></p>
+<p> <b>Price Per Night:</b> <span th:text="${pricePerNight}"></span>€</p>
+</body>
+</html>

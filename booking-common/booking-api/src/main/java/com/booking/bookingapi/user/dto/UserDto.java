@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -14,10 +17,14 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
+    @NotEmpty
     private String firstName;
 
+    @NotEmpty
     private String lastName;
 
+    @Email
+    @NotEmpty
     private String email;
 
     private String image;

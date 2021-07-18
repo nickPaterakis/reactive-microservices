@@ -5,6 +5,7 @@ import EdiText from 'react-editext';
 import noImageProfile from '../assets/images/no-image-profile.png';
 import { setFirstName, setLastName, setPhone } from '../store/actions/userActions';
 import { imageUpload, updateUser } from '../api/UserService';
+import { config } from '../constants/systemConstants';
 
 function Account() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function Account() {
   const [lastNameMode, setLastNameMode] = useState('view-container');
   const [phoneMode, setPhoneMode] = useState('view-container');
   const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage1, setSelectedImage1] = useState();
   const inputEl = useRef(null);
 
   const changeFirstNameFieldToEditMode = () => {
@@ -41,6 +43,7 @@ function Account() {
   };
 
   const handleFirstNameSave = async (firstName) => {
+    changeFirstNameFieldToViewMode();
     await updateUser(keycloak.token, {
       id: user.id,
       firstName,
@@ -48,10 +51,10 @@ function Account() {
       phone: user.phone,
     });
     dispatch(setFirstName(firstName));
-    changeFirstNameFieldToViewMode();
   };
 
   const handleLastNameSave = async (lastName) => {
+    changeLastNameFieldToViewMode();
     await updateUser(keycloak.token, {
       id: user.id,
       firstName: user.firstName,
@@ -59,10 +62,10 @@ function Account() {
       phone: user.phone,
     });
     dispatch(setLastName(lastName));
-    changeLastNameFieldToViewMode();
   };
 
   const handlePhoneSave = async (phone) => {
+    changePhoneFieldToViewMode();
     await updateUser(keycloak.token, {
       id: user.id,
       firstName: user.firstName,
@@ -70,11 +73,9 @@ function Account() {
       phone,
     });
     dispatch(setPhone(phone));
-    changePhoneFieldToViewMode();
   };
 
   const imageSelectedHandler = (event) => {
-    user.profileImage = URL.createObjectURL(event.target.files[0]);
     setSelectedImage(event.target.files[0]);
   };
 
@@ -82,9 +83,18 @@ function Account() {
     const formData = new FormData();
     formData.append('file', selectedImage);
     formData.append('userId', user.id);
-    await imageUpload(formData);
+    await imageUpload(formData, keycloak.token);
     window.location.reload();
   };
+
+  let image;
+  if (selectedImage) {
+    image = URL.createObjectURL(selectedImage);
+  } else if (user.profileImage) {
+    image = config.url.USER_IMAGES_URL + user.profileImage;
+  } else {
+    image = noImageProfile;
+  }
 
   return (
     <main className="account">
@@ -95,7 +105,7 @@ function Account() {
         <div className="account__wrapper">
           <div className="account__left-column">
             <div className="account__profile-image">
-              <img src={user.profileImage ? user.profileImage : noImageProfile} alt="profile" />
+              <img src={image} alt="profile" />
             </div>
             <div>
               <input 
