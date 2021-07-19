@@ -69,36 +69,37 @@ public class ReservationServiceImpl implements ReservationService {
         log.info("createReservation");
         Reservation reservation = ReservationMapper.toReservation(reservationDto);
         reservationRepository.save(reservation).subscribe();
+        if (reservation.getUserId() != null) {
+            Mono<ReservationDetailsDto> reservationDetailsDtoMono = Mono.zip(
+                    integration.getPropertyById(reservation.getPropertyId()),
+                    integration.getUserById(reservation.getOwnerId()),
+                    (propertyReservationDataDto, userDto) -> new ReservationDetailsDto()
+                            .setId(reservation.getId().toString())
+                            .setCheckIn(reservation.getCheckIn())
+                            .setCheckOut(reservation.getCheckOut())
+                            .setPropertyReservationDataDto(propertyReservationDataDto)
+                            .setUserDto(userDto)
+                            .setPropertyId(reservation.getPropertyId())
+                            .setPrice(reservation.getPrice())
+            );
 
-        Mono<ReservationDetailsDto> reservationDetailsDtoMono = Mono.zip(
-                integration.getPropertyById(reservation.getPropertyId()),
-                integration.getUserById(reservation.getOwnerId()),
-                (propertyReservationDataDto, userDto) -> new ReservationDetailsDto()
-                        .setId(reservation.getId().toString())
-                        .setCheckIn(reservation.getCheckIn())
-                        .setCheckOut(reservation.getCheckOut())
-                        .setPropertyReservationDataDto(propertyReservationDataDto)
-                        .setUserDto(userDto)
-                        .setPropertyId(reservation.getPropertyId())
-                        .setPrice(reservation.getPrice())
-        );
+            Mono<UserDto> userDtoMono = integration.getUserById(reservation.getUserId());
 
-        Mono<UserDto> userDtoMono = integration.getUserById(reservation.getUserId());
-
-        Mono.zip(
-                (data) -> {
-                    ReservationDetailsDto reservationDetailsDto = (ReservationDetailsDto) data[0];
-                    UserDto customer = (UserDto) data[1];
-                    try {
-                        emailService.sendReservationDetailsToOwner(reservationDetailsDto, customer);
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    }
-                    return Mono.empty();
-                },
-                reservationDetailsDtoMono,
-                userDtoMono
-                ).subscribe();
+            Mono.zip(
+                    (data) -> {
+                        ReservationDetailsDto reservationDetailsDto = (ReservationDetailsDto) data[0];
+                        UserDto customer = (UserDto) data[1];
+                        try {
+                            emailService.sendReservationDetailsToOwner(reservationDetailsDto, customer);
+                        } catch (MessagingException e) {
+                            e.printStackTrace();
+                        }
+                        return Mono.empty();
+                    },
+                    reservationDetailsDtoMono,
+                    userDtoMono
+            ).subscribe();
+        }
 
         return Mono.empty();
     }

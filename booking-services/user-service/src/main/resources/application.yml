@@ -12,6 +12,8 @@ app:
   rabbitmq:
     host: localhost
     port: 5672
+    username: guest
+    password: guest
 
 spring:
   application:
@@ -24,8 +26,8 @@ spring:
   rabbitmq:
     host: ${app.rabbitmq.host}
     port: ${app.rabbitmq.port}
-    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
-    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
   cloud:
     gcp:
       credentials:
@@ -69,3 +71,5 @@ app:
       host: mongo
   rabbitmq:
     host: rabbitmq
+    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
+    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl

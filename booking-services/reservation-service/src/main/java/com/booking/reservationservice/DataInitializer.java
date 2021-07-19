@@ -9,10 +9,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Log4j2
@@ -50,48 +47,48 @@ public class DataInitializer implements CommandLineRunner {
                 log()
                 .then(reservationRepository.count())
                 .subscribe(c -> log.info("{} reservations created", c));
-        reservationRepository.saveAll(
-            Flux.just(
-                new Reservation(
-                        UUID.randomUUID(),
-                        LocalDate.of(2021,5,1),
-                        LocalDate.of( 2021, 5, 10),
-                        1L,
-                        "Greece",
-                        BigDecimal.valueOf(270),
-                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
-                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
-                ),
-                new Reservation(
-                        UUID.randomUUID(),
-                        LocalDate.of(2021,5,1),
-                        LocalDate.of( 2021, 5, 10),
-                        2L,
-                        "Germany",
-                        BigDecimal.valueOf(270),
-                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
-                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
-                ),
-                new Reservation(
-                        UUID.randomUUID(),
-                        LocalDate.of(2021,5,1),
-                        LocalDate.of( 2021, 5, 10),
-                        3L,
-                        "Hungary",
-                        BigDecimal.valueOf(270),
-                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
-                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
-                ),
-                new Reservation(
-                        UUID.randomUUID(),
-                        LocalDate.of(2021,5,1),
-                        LocalDate.of( 2021, 5, 10),
-                        4L,
-                        "Spain",
-                        BigDecimal.valueOf(270),
-                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
-                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
-                )
+//        reservationRepository.saveAll(
+//            Flux.just(
+//                new Reservation(
+//                        UUID.randomUUID(),
+//                        LocalDate.of(2021,5,1),
+//                        LocalDate.of( 2021, 5, 10),
+//                        1L,
+//                        "Greece",
+//                        BigDecimal.valueOf(270),
+//                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
+//                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
+//                ),
+//                new Reservation(
+//                        UUID.randomUUID(),
+//                        LocalDate.of(2021,5,1),
+//                        LocalDate.of( 2021, 5, 10),
+//                        2L,
+//                        "Germany",
+//                        BigDecimal.valueOf(270),
+//                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
+//                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
+//                ),
+//                new Reservation(
+//                        UUID.randomUUID(),
+//                        LocalDate.of(2021,5,1),
+//                        LocalDate.of( 2021, 5, 10),
+//                        3L,
+//                        "Hungary",
+//                        BigDecimal.valueOf(270),
+//                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
+//                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
+//                ),
+//                new Reservation(
+//                        UUID.randomUUID(),
+//                        LocalDate.of(2021,5,1),
+//                        LocalDate.of( 2021, 5, 10),
+//                        4L,
+//                        "Spain",
+//                        BigDecimal.valueOf(270),
+//                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
+//                        UUID.fromString("79a4375e-386a-4352-8667-3c6007a6e6a4")
+//                )
 //                new Reservation(
 //                        UUID.randomUUID(),
 //                        LocalDate.of(2021,5,1),
@@ -192,11 +189,11 @@ public class DataInitializer implements CommandLineRunner {
 //                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a"),
 //                        UUID.fromString("18f31b63-8db7-4b5e-bf32-783bae54376a")
 //                )
-            )
-        )
-        .log()
-        .then(reservationRepository.count())
-        .subscribe(c -> log.info("{} reservations created", c));
+//            )
+//        )
+//        .log()
+//        .then(reservationRepository.count())
+//        .subscribe(c -> log.info("{} reservations created", c));
 
     }
 

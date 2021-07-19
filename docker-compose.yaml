@@ -12,6 +12,7 @@ services:
       - mysql
     ports:
       - 8081:8081
+
   reservation-service:
     links:
       - mongo
@@ -44,9 +45,6 @@ services:
   client:
     container_name: booking-client
     image: nicholaspat/client-service
-#    volumes:
-#      - '.:/app'
-#      - '/app/node_modules'
     ports:
       - 80:80
     depends_on:

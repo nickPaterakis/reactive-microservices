@@ -1,5 +1,5 @@
 # grant all privileges on booking.* to 'nick'@'localhost';
-drop database if exists property_db;
+#drop database if exists property_db;
 
 -- SET FOREIGN_KEY_CHECKS=0;
 

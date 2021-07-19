@@ -47,6 +47,7 @@ const Properties = () => {
   const { totalElements } = propertiesPage.data;
   const pageCount = Math.ceil(totalElements / PER_PAGE);
 
+  console.log(properties);
   return (
     <div className="properties">
       {Array.isArray(properties) && properties.length

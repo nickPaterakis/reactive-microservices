@@ -18,6 +18,8 @@ app:
   rabbitmq:
     host: localhost
     port: 5672
+    username: guest
+    password: guest
 
 spring:
   application:
@@ -39,8 +41,8 @@ spring:
   rabbitmq:
     host: ${app.rabbitmq.host}
     port: ${app.rabbitmq.port}
-    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
-    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
   cloud:
     config:
       enabled: false
@@ -78,6 +80,7 @@ spring:
           keycloak:
             client-id: 'reservation-service-client'
             client-secret: '89c08d54-201c-405b-9581-13a1ad6dc76b'
+            authorizationGrantType: client_credentials
             client-name: keycloak
             redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope:
@@ -88,11 +91,6 @@ spring:
           keycloak:
             issuerUri: http://34.123.156.85:8080/auth/realms/booking
             token-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/token
-#            authorization-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/auth
-#            user-info-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/userinfo
-#            user-name-attribute: name
-
-
 #      jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
 #      issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
 
@@ -114,3 +112,5 @@ app:
       host: mongo
   rabbitmq:
     host: rabbitmq
+    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
+    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
