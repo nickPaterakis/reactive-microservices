@@ -35,7 +35,6 @@ public class BookingReactiveUserDetailsService implements ReactiveUserDetailsSer
                 .setFirstName(jwt.getClaimAsString("given_name"))
                 .setLastName(jwt.getClaimAsString("family_name"));
 
-        System.out.println(userDetailsDto);
         return userService.saveUserDetails(userDetailsDto).map(BookingUser::new);
     }
 }

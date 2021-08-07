@@ -12,7 +12,6 @@ import java.util.UUID;
 
 public class UserCustomRepositoryImpl implements UserCustomRepository {
 
-
     ReactiveMongoTemplate reactiveMongoTemplate;
 
     @Autowired
@@ -20,13 +19,11 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         this.reactiveMongoTemplate = reactiveMongoTemplate;
     }
 
-
     @Override
     public void updateProfileImage(UUID userId, String profileImagePath) {
         final Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(userId));
 
-        System.out.println(userId.toString());
         reactiveMongoTemplate.findOne(query, User.class)
                 .doOnNext(user -> {
                     user.setProfileImage(profileImagePath);
@@ -39,7 +36,6 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     public void updateUser(UserDetailsDto userDetailsDto) {
         final Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(UUID.fromString(userDetailsDto.getId())));
-
 
         reactiveMongoTemplate.findOne(query, User.class)
                 .doOnNext(user -> user

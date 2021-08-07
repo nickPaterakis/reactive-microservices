@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** JWT converter that takes the roles from 'groups' claim of JWT token. */
+/** JWT converter that takes the roles from 'realm_access' claim of JWT token. */
 public class BookingUserJwtAuthenticationConverter
     implements Converter<Jwt, Mono<AbstractAuthenticationToken>> {
   private static final String REALM_ACCESS = "realm_access";

@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public ResponseEntity uploadImage(String userId, String path) {
-        System.out.println(path);
+        log.info("Update User Image: {}", userId);
         userRepository.updateProfileImage(UUID.fromString(userId), path);
         return ResponseEntity.ok().build();
     }

@@ -7,6 +7,8 @@ db
 config/repo
 booking-client/src/images/backgrounds
 
+k8s/ingress.yaml
+
 
 ### STS ###
 .apt_generated

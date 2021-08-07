@@ -14,7 +14,6 @@ import reactor.core.publisher.Flux;
 @Log4j2
 public class CountryResource {
 
-
     private final CountryService countryService;
 
     @Autowired

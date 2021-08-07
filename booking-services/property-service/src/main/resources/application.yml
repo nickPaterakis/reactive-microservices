@@ -78,28 +78,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://34.123.156.85:8080/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://34.123.156.85:8080/auth/realms/booking
-      client:
-        registration:
-          keycloak:
-            client-id: 'booking-spring-boot-app-client'
-            client-secret: '64fbd0f5-4faf-49ac-99a7-518c72b7b327'
-#            authorizationGrantType: client_credentials
-            clientName: Keycloak
-            authorizationGrantType: authorization_code
-            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
-            scope:
-              - openid
-              - profile
-              - email
-        provider:
-          keycloak:
-            issuerUri: http://34.123.156.85:8080/auth/realms/booking
-            user-name-attribute: name
-
-#      jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
-#      issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
+          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}auth/realms/booking
 
 ---
 spring:

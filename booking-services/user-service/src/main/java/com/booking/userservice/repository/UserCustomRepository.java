@@ -13,5 +13,4 @@ public interface UserCustomRepository {
     void updateUser(UserDetailsDto userDetailsDto);
 
     Mono<User> findUserByEmail(String email);
-
 }

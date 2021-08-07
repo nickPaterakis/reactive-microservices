@@ -5,13 +5,11 @@ metadata:
     app: user-service
   name: user-service
 spec:
-#  type: LoadBalancer
   type: NodePort
   ports:
     - name: "8084"
       port: 8084
       targetPort: 8084
-#      protocol: TCP
   selector:
     app: user-service
 ---

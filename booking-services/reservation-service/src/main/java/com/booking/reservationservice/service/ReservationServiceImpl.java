@@ -154,8 +154,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Mono<Void> deleteAllReservationsByPropertyId(Long propertyId) {
         log.info("Delete All Reservations By property Id: {}", propertyId);
-//        reservationRepository.findAllByPropertyId(propertyId)
-//                .map(reservation -> reservation.getCheckIn().isAfter(LocalDate.now()) ? reservation : Mono.empty())
         reservationRepository.deleteAllByPropertyId(propertyId).subscribe();
         return Mono.empty();
     }

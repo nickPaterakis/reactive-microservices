@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface PropertyRepository extends PagingAndSortingRepository<Property, Long> {
 
-
     @Query(nativeQuery = true, value = "SELECT * FROM properties p" +
             " inner join addresses c on p.address_id = c.id" +
             " WHERE" +
@@ -53,23 +52,6 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
     @Query(nativeQuery = true, value = "SELECT count(*) from properties where owner = :ownerId")
     Long count(String ownerId);
 
-    //@Query(nativeQuery = true, value = "SELECT * from properties where id = :propertyId")
     Property getPropertyById(Long propertyId);
-
-//    @Query(nativeQuery = true, value = "SELECT * FROM properties p inner join users u on p.user_id = u.id where p.user_id = :id")
-//    Set<Property> findByUser(@Param("id") Long id);
-
-    //            " and" +
-//            " p.address_id in" +
-//            " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
-//            " and" +
-//            " (DATE(:checkIn) not between r.check_in and r.check_out" +
-//            " or" +
-//            " DATE(:checkOut) not between r.check_in and r.check_out)" +
-//            " and" +
-//            " (r.check_in not between DATE(:checkIn)  and DATE(:checkOut)" +
-//            " or" +
-//            " r.check_out not between DATE(:checkIn)  and DATE(:checkOut))"
-
 }
 

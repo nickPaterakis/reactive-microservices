@@ -31,12 +31,6 @@ public class WebSecurity {
 
         return http.build();
     }
-//
-//    @Bean
-//    SecurityWebFilterChain configure(ServerHttpSecurity http) {
-//        http.authorizeExchange().anyExchange().authenticated().and().oauth2Client().and().oauth2Login();
-//        return http.build();
-//    }
 
     @Bean
     public BookingUserJwtAuthenticationConverter bookingUserJwtAuthenticationConverter() {

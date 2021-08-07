@@ -10,19 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-//    @Bean
-//    WebClient webClient(
-//            ReactiveClientRegistrationRepository clientRegistrationRepository,
-//            ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
-//        ServerOAuth2AuthorizedClientExchangeFilterFunction oauth =
-//                new ServerOAuth2AuthorizedClientExchangeFilterFunction(
-//                        clientRegistrationRepository,
-//                        authorizedClientRepository);
-//        oauth.setDefaultOAuth2AuthorizedClient(true);
-//        //oauth.setDefaultClientRegistrationId("keycloak");
-//        return WebClient.builder().filter(oauth).build();
-//    }
-
     @Bean
     WebClient webClient(ReactiveClientRegistrationRepository clientRegistrations) {
         ServerOAuth2AuthorizedClientExchangeFilterFunction oauth =

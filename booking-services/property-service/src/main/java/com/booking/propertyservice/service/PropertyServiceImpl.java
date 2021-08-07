@@ -79,7 +79,6 @@ public class PropertyServiceImpl implements PropertyService {
                 }));
     }
 
-
     @Override
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user, int currentPage) {
         log.info("Get properties by user id: {}", UUID.fromString(user.getId()));

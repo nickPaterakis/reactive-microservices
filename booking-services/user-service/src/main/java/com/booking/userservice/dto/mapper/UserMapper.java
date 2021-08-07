@@ -16,7 +16,6 @@ public class UserMapper {
                 .setEmail(userDetailsDto.getEmail())
                 .setPhone(userDetailsDto.getPhone())
                 .setProfileImage(userDetailsDto.getProfileImage());
-                //.setRoles(userDetailsDto.getRoles());
     }
 
     public static UserDetailsDto toUserDetailsDto(User user) {
