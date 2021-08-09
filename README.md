@@ -1,5 +1,5 @@
 # Booking-Microservices
-
+<img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
 # Introduction
 Booking solves common use cases that concern applications like Airbnb, using microservices architecture. This project implements
 reactive programming, Event-driven architecture, microservices design patterns like Choreography-based saga and Database per Service, OAuth 2.0 authorization, and Container Orchestration.
