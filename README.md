@@ -2,7 +2,7 @@
 
 # Introduction
 Booking solves common use cases that concern applications like Airbnb, using microservices architecture. This project implements
-reactive programming, Message-Driven, Microservices design patterns, OAuth 2.0 authorization, Container Orchestration 
+reactive programming, Event-driven architecture, microservices design patterns like Choreography-based saga and Database per Service, OAuth 2.0 authorization, and Container Orchestration.
 
 
 ![main_diagram_2 (10)](https://user-images.githubusercontent.com/36018286/128594607-e6ee3b75-0098-4a9e-a94f-8ce463284ee2.png)
