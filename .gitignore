@@ -6,6 +6,8 @@ target/
 db
 config/repo
 booking-client/src/images/backgrounds
+booking-services/property-service/src/main/resources/key.json
+booking-services/user-service/src/main/resources/key.json
 
 k8s/ingress.yaml
 
