@@ -11,5 +11,10 @@ This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Sprin
 
 ![main_diagram_2 (10)](https://user-images.githubusercontent.com/36018286/128594607-e6ee3b75-0098-4a9e-a94f-8ce463284ee2.png)
 
+# Property Service Database Schema
 
-Booking is a project that a user can search for a house that want to reserve or can take his own houses in order to rent them on other people around the world.
+![property_db_shema](https://user-images.githubusercontent.com/36018286/128721034-60c23a0a-9003-44aa-8afd-cfd7f5f94c38.png)
+
+
+<!-- 
+Booking is a project that a user can search for a house that want to reserve or can take his own houses in order to rent them on other people around the world. -->
