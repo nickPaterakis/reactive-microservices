@@ -17,7 +17,11 @@ This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Sprin
 
 # Operations
 
+<h3>View and Delete Property</h3>
+
 ![view-delete property](https://user-images.githubusercontent.com/36018286/129580087-b5eb2dd9-2214-4063-9761-19bafe66e3bd.gif)
+
+<h3>Edit User</h3>
 
 ![user-edit](https://user-images.githubusercontent.com/36018286/129580112-1f0b8f9c-ffb2-4a14-9d5a-a05139ac093d.gif)
 
