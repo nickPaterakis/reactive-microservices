@@ -15,6 +15,11 @@ This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Sprin
 
 ![property_db_shema](https://user-images.githubusercontent.com/36018286/128721034-60c23a0a-9003-44aa-8afd-cfd7f5f94c38.png)
 
+# Operations
+
+![view-delete property](https://user-images.githubusercontent.com/36018286/129580087-b5eb2dd9-2214-4063-9761-19bafe66e3bd.gif)
+
+![user-edit](https://user-images.githubusercontent.com/36018286/129580112-1f0b8f9c-ffb2-4a14-9d5a-a05139ac093d.gif)
 
 <!-- 
 Booking is a project that a user can search for a house that want to reserve or can take his own houses in order to rent them on other people around the world. -->
