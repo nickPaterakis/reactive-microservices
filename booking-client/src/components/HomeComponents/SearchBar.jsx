@@ -1,10 +1,11 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateRangePicker } from 'react-dates';
 import { BsSearch } from 'react-icons/bs';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import { getAllCountries } from '../../api/CountriesService';
 import GuestsDropdown from '../UI/GuestsDropdown';
 import Autocomplete from '../UI/Autocomplete';
 import { 
@@ -21,7 +22,7 @@ const SearchBar = ({ history }) => {
   const location = useSelector((state) => state.searchParameters.location);
   const dates = useSelector((state) => state.searchParameters.dates);
   const guests = useSelector((state) => state.searchParameters.guests);
-
+  const [countries, setCountries] = useState([]);
   const handleOpen = () => setOpen(!open);
 
   const handleSearch = () => {
@@ -30,18 +31,31 @@ const SearchBar = ({ history }) => {
     }
   };
 
-  const handleLoaction = (loc) => dispatch(setLocation(loc));
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllCountries();
+      setCountries(
+        result.data.map((country) => country.name),
+      );
+    };
+  
+    fetchData();
+  }, []);
+
+  const handleLocation = (loc) => dispatch(setLocation(loc));
   
   const removeGuest = () => dispatch(setGuests(guests >= 1 ? guests - 1 : guests));
   const addGuest = () => dispatch(setGuests(guests <= MAX_GUEST_NUMBER ? guests + 1 : guests));
 
+  console.log(countries);
   return (
     <div className="search-bar">
 
       <div className="search-bar__input">
         <p className="search-bar__label"> Location </p>
         <Autocomplete 
-          handleLocation={handleLoaction}
+          handleLocation={handleLocation}
+          countries={countries}
         />
       </div>
 

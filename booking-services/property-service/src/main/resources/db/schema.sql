@@ -67,16 +67,6 @@ CREATE TABLE IF NOT EXISTS images (
         REFERENCES properties (id)
 );
 
-# CREATE TABLE IF NOT EXISTS reservations (
-#     id INT NOT NULL AUTO_INCREMENT,
-#     check_in DATE NOT NULL,
-#     check_out DATE NOT NULL,
-#     property_id INT NOT NULL,
-#     CONSTRAINT PK_Reservation PRIMARY KEY (id),
-#     CONSTRAINT FK_Property_Reservation FOREIGN KEY (property_id)
-#         REFERENCES properties (id)
-# );
-
 CREATE TABLE IF NOT EXISTS amenities (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(80),

@@ -21,7 +21,6 @@ public class BookingReactiveUserDetailsService implements ReactiveUserDetailsSer
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        log.info("Finding user for user name {}", username);
         return reservationService.findUserByEmail(username).switchIfEmpty(Mono.empty()).map(BookingUser::new);
     }
 }

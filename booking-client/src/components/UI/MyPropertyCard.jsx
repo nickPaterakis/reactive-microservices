@@ -19,8 +19,6 @@ const MyPropertyCard = ({ property, history }) => {
     window.location.reload();
   };
 
-  console.log(property);
-
   return (
     <div className="my-property-card">
       <div className="my-property-card__image-container">

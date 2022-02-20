@@ -56,7 +56,7 @@ public class ReservationResource {
 
     @PreAuthorize("hasRole('BOOKING_USER')")
     @DeleteMapping("/delete/{reservationId}")
-    public Mono<Void> deleteReservation(@PathVariable UUID reservationId) {
+    public Mono<Void> deleteReservation(@PathVariable String reservationId) {
         reservationService.deleteReservation(reservationId);
         return Mono.empty();
     }

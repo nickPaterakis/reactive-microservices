@@ -54,7 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
                             integration.getPropertyById(reservation.getPropertyId()),
                             integration.getUserById(reservation.getOwnerId()),
                             (propertyReservationDataDto, userDto) -> new ReservationDetailsDto()
-                                    .setId(reservation.getId().toString())
+                                    .setId(reservation.getId())
                                     .setCheckIn(reservation.getCheckIn())
                                     .setCheckOut(reservation.getCheckOut())
                                     .setPropertyReservationDataDto(propertyReservationDataDto)
@@ -67,14 +67,16 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Mono<Void> createReservation(ReservationDto reservationDto) {
         log.info("createReservation");
+
         Reservation reservation = ReservationMapper.toReservation(reservationDto);
         reservationRepository.save(reservation).subscribe();
+
         if (reservation.getUserId() != null) {
             Mono<ReservationDetailsDto> reservationDetailsDtoMono = Mono.zip(
                     integration.getPropertyById(reservation.getPropertyId()),
                     integration.getUserById(reservation.getOwnerId()),
                     (propertyReservationDataDto, userDto) -> new ReservationDetailsDto()
-                            .setId(reservation.getId().toString())
+                            .setId(reservation.getId())
                             .setCheckIn(reservation.getCheckIn())
                             .setCheckOut(reservation.getCheckOut())
                             .setPropertyReservationDataDto(propertyReservationDataDto)
@@ -84,6 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
             );
 
             Mono<UserDto> userDtoMono = integration.getUserById(reservation.getUserId());
+            //Mono<UserDto> userDtoMono = reservationDetailsDtoMono.map(ReservationDetailsDto::getUserDto);
 
             Mono.zip(
                     (data) -> {
@@ -105,8 +108,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Mono<Void> deleteReservation(UUID reservationId) {
-        log.info("deleteReservation: {}", reservationId.toString());
+    public Mono<Void> deleteReservation(String reservationId) {
+        log.info("deleteReservation: {}", reservationId);
 
         Mono<Reservation> reservationMono = reservationRepository.findById(reservationId);
 
@@ -116,7 +119,7 @@ public class ReservationServiceImpl implements ReservationService {
                                     PropertyReservationDataDto propertyReservationDataDto = (PropertyReservationDataDto) data[0];
                                     UserDto userDto = (UserDto) data[1];
                                      return new ReservationDetailsDto()
-                                            .setId(reservation.getId().toString())
+                                            .setId(reservation.getId())
                                             .setCheckIn(reservation.getCheckIn())
                                             .setCheckOut(reservation.getCheckOut())
                                             .setPropertyReservationDataDto(propertyReservationDataDto)

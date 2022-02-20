@@ -27,4 +27,10 @@ public class CountryResource {
         return countryService.getCountries(name);
     }
 
+    @GetMapping("/all")
+    public Flux<CountryDto> getCountries() {
+        log.info(String.format("Country.getCountries()"));
+        return countryService.getCountries();
+    }
+
 }

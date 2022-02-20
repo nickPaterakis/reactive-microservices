@@ -15,7 +15,6 @@ function Account() {
   const [lastNameMode, setLastNameMode] = useState('view-container');
   const [phoneMode, setPhoneMode] = useState('view-container');
   const [selectedImage, setSelectedImage] = useState();
-  const [selectedImage1, setSelectedImage1] = useState();
   const inputEl = useRef(null);
 
   const changeFirstNameFieldToEditMode = () => {

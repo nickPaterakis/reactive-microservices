@@ -1,7 +1,7 @@
 package com.booking.propertyservice.service;
 
-import com.booking.bookingapi.property.Dto.CountryDto;
 import com.booking.bookingapi.property.CountryService;
+import com.booking.bookingapi.property.Dto.CountryDto;
 import com.booking.propertyservice.repository.CountryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -14,6 +14,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service("CountryServiceImpl")
 @Log4j2
@@ -38,6 +39,16 @@ public class CountryServiceImpl implements CountryService {
                 countryRepository.findCountryByName(name).stream()
                 .map(country -> modelMapper.map(country, CountryDto.class))
                 .collect(Collectors.toList())));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<CountryDto> getCountries() {
+        log.info("GetCountries");
+        return asyncFlux(() -> Flux.fromIterable(
+                StreamSupport.stream(countryRepository.findAll().spliterator(), false)
+                        .map(country -> modelMapper.map(country, CountryDto.class))
+                        .collect(Collectors.toList())));
     }
 
     private <T> Flux<T> asyncFlux(Supplier<Publisher<T>> publisherSupplier) {

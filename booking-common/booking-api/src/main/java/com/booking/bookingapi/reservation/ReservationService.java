@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public interface ReservationService {
 
@@ -19,7 +18,7 @@ public interface ReservationService {
 
     default Mono<Void> createReservation(ReservationDto reservationDto){return Mono.empty();}
 
-    default Mono<Void> deleteReservation(UUID reservationId){return Mono.empty();}
+    default Mono<Void> deleteReservation(String reservationId){return Mono.empty();}
 
     default Flux<ReservationDetailsDto> getReservationsByUserId(@AuthenticationPrincipal BookingUser user){return null;}
 

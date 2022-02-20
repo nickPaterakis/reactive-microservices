@@ -16,13 +16,13 @@ function Profile() {
     <main className="profile">
       <AccountNavbar />
       <Switch>
-        <PrivateRoute roles={['user']} path={`${path}/account`}>
+        <PrivateRoute roles={['BOOKING_USER']} path={`${path}/account`}>
           <Account />
         </PrivateRoute>
-        <PrivateRoute roles={['user']} path={`${path}/myproperties`}>
+        <PrivateRoute roles={['BOOKING_USER']} path={`${path}/myproperties`}>
           <MyProperties />
         </PrivateRoute>
-        <PrivateRoute roles={['user']} path={`${path}/my-reservations`}>
+        <PrivateRoute roles={['BOOKING_USER']} path={`${path}/my-reservations`}>
           <MyReservations />
         </PrivateRoute>
       </Switch>

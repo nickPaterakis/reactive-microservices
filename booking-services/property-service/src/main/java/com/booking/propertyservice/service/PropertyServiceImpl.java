@@ -2,7 +2,6 @@ package com.booking.propertyservice.service;
 
 import com.booking.bookingapi.property.Dto.*;
 import com.booking.bookingapi.property.PropertyService;
-import com.booking.bookingapi.reservation.dto.ReservationDto;
 import com.booking.bookingapi.user.dto.BookingUser;
 import com.booking.bookingapi.user.dto.UserDetailsDto;
 import com.booking.bookingutils.exception.NotFoundException;
@@ -22,7 +21,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +61,9 @@ public class PropertyServiceImpl implements PropertyService {
                 integration.getPropertyIds(location, checkIn, checkOut)
                 .collectList()
                 .map(longs -> {
+                    System.out.println(propertyIds);
+                    if (propertyIds.isEmpty())
+                        propertyIds.add(0L);
                     propertyIds.addAll(longs);
                     result.setTotalElements(propertyRepository.count(propertyIds, location, guestNumber));
                     return result.getTotalElements();
@@ -107,9 +108,9 @@ public class PropertyServiceImpl implements PropertyService {
         log.info("Get property by id: {}", propertyId);
         PropertyAggregate propertyAggregate = new PropertyAggregate();
         return asyncMono(() -> Mono.just(propertyRepository.findById(propertyId)
-                .map(PropertyMapper::toPropertyDetailsDto)
-                .orElseThrow(() -> new NotFoundException(String.format("Property with id %d not found ", propertyId))))
-                .map(propertyDetailsDto -> {
+                        .orElseThrow(() -> new NotFoundException(String.format("Property with id %d not found ", propertyId)))
+                ).map(property -> {
+                    PropertyDetailsDto propertyDetailsDto = PropertyMapper.toPropertyDetailsDto(property);
                     propertyAggregate
                             .setId(propertyDetailsDto.getId())
                             .setTitle(propertyDetailsDto.getTitle())
@@ -151,16 +152,17 @@ public class PropertyServiceImpl implements PropertyService {
         property.getGuestSpace().addProperty(property);
         property.getAddress().getCountry().addAddress(property.getAddress());
         propertyRepository.save(property);
-        Long propertyId = propertyRepository.getLastSavedProperty(property.getOwner());
-        ReservationDto reservationDto = new ReservationDto()
-                .setCheckIn(LocalDate.now())
-                .setCheckOut(LocalDate.now())
-                .setOwnerId(UUID.fromString(property.getOwner()))
-                .setPropertyId(propertyId)
-                .setLocation(property.getAddress().getCountry().getName())
-                .setPrice(BigDecimal.valueOf(0));
-        integration.createReservation(reservationDto);
 
+//        Long propertyId = propertyRepository.getLastSavedProperty(property.getOwner());
+//        ReservationDto reservationDto = new ReservationDto()
+//                .setCheckIn(LocalDate.now())
+//                .setCheckOut(LocalDate.now())
+//                .setOwnerId(UUID.fromString(property.getOwner()))
+//                .setPropertyId(propertyId)
+//                .setLocation(property.getAddress().getCountry().getName())
+//                .setPrice(BigDecimal.valueOf(0));
+//
+//        integration.createReservation(reservationDto);
         return Mono.empty();
     }
 

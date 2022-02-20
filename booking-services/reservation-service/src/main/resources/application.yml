@@ -9,8 +9,8 @@ app:
     host: localhost
     port: 8081
   auth-server:
-    host: 34.123.156.85
-    port: 8080
+    host: localhost
+    port: 8090
   database:
     mongo:
       host: localhost
@@ -77,7 +77,7 @@ spring:
         registration:
           keycloak:
             client-id: 'reservation-service-client'
-            client-secret: '89c08d54-201c-405b-9581-13a1ad6dc76b'
+            client-secret: '947169c8-515f-4403-8eed-4708f36c90f0'
             authorizationGrantType: client_credentials
             client-name: keycloak
             redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'

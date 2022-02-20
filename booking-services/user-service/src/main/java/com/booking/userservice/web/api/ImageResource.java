@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequestMapping("/users")
 public class ImageResource {
 
-    @Value("gs://bookinguniwa/")
+    @Value("gs://booking-uniwa/")
     Resource gcsFile;
 
     @GetMapping(

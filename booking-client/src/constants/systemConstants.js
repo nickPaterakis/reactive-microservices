@@ -17,8 +17,7 @@ const prod = {
 
 const dev = {
   url: {
-    // KEYCLOAK_BASE_URL: 'http://localhost:8090',
-    KEYCLOAK_BASE_URL: 'http://34.123.156.85:8080',
+    KEYCLOAK_BASE_URL: 'http://localhost:8090',
     API_BASE_URL: 'http://localhost:8765',
     API_PROPERTY_URL: 'http://localhost:8081',
     API_RESERVATION_URL: 'http://localhost:8083',

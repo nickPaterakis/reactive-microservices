@@ -38,14 +38,14 @@ public class PropertyIntegration implements UserService, ReservationService {
 
     @Autowired
     public PropertyIntegration(
-            WebClient webClient,
+            WebClient.Builder webClientBuilder,
             MessageSources messageSources,
             @Value("${app.user-service.host}") String userServiceHost,
             @Value("${app.user-service.port}") String userServicePort,
             @Value("${app.reservation-service.host}") String reservationServiceHost,
             @Value("${app.reservation-service.port}") String reservationServicePort) {
 
-        this.webClient = webClient;
+        this.webClient = webClientBuilder.build();
         this.messageSources = messageSources;
 
         var http = "http://";
@@ -66,7 +66,8 @@ public class PropertyIntegration implements UserService, ReservationService {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(UserDetailsDto.class)
-                .switchIfEmpty(Mono.empty());
+                .onErrorMap(WebClientResponseException.class,
+                        ex -> new NotFoundException("User with email: " + email + " doesn't exist"));
     }
 
     @Override

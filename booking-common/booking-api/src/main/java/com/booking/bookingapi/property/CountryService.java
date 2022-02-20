@@ -7,4 +7,5 @@ public interface CountryService {
 
     Flux<CountryDto> getCountries(String name);
 
+    Flux<CountryDto> getCountries();
 }

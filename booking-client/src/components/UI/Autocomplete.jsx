@@ -5,36 +5,43 @@ import useOutsideClick from '../../hooks/useOutsideClick';
 import Aux from '../../hoc/Auxiliary';
 import { getCountries } from '../../api/CountriesService';
 
-const Autocomplete = ({ handleLocation }) => {
+const Autocomplete = ({ handleLocation, countries }) => {
   const [state, setState] = useState({
     activeOption: 0,
     filteredOptions: [''],
     showOptions: false,
-    userInput: '',
   });
   const wrapperRef = useRef(null);
   useOutsideClick(wrapperRef, () => setState({ ...state, showOptions: false }));
+  console.log(state);
 
-  useEffect(() => {
-    if (state.showOptions && state.userInput) {
-      const fetchData = async () => {
-        const result = await getCountries(state.userInput);
+  // useEffect(() => {
+  //   if (state.showOptions && state.userInput) {
+  //     const fetchData = async () => {
+  //       const result = await getCountries(state.userInput);
     
-        setState({
-          ...state,
-          filteredOptions: result.data.map((country) => country.name),
-        });
-      };
+  //       setState({
+  //         ...state,
+  //         filteredOptions: result.data.map((country) => country.name),
+  //       });
+  //     };
     
-      fetchData();
-    }
-  }, [state.userInput]);
+  //     fetchData();
+  //   }
+  // }, [state.userInput]);
 
-  const onChange = async (e) => {
-    handleLocation(e.currentTarget.value);
-    
+  const onChange = (e) => {
+    console.log('onChange');
+    handleLocation(e.target.value);
+    const userInput = e.currentTarget.value;
+ 
+    const filteredOptions = countries.filter(
+      (country) => country.substr(0, userInput.length).toLowerCase() === userInput.toLowerCase(),
+    );
+    console.log(filteredOptions);
     setState({
       ...state,
+      filteredOptions,
       showOptions: true,
       userInput: e.target.value,
     });
@@ -42,7 +49,7 @@ const Autocomplete = ({ handleLocation }) => {
 
   const onClick = (e) => {
     handleLocation(e.currentTarget.innerText);
-   
+    console.log('onClick');
     setState({
       activeOption: 0,
       filteredOptions: [],
@@ -53,20 +60,20 @@ const Autocomplete = ({ handleLocation }) => {
 
   const onKeyDown = (e) => {
     const { activeOption, filteredOptions } = state;
-    console.log('onKeyDown');
-    if (e.keyCode === 13) {
+    console.log('onkeydown');
+    if (e.keyCode === 13) { // Enter
       handleLocation(filteredOptions[activeOption]);
       setState({
         activeOption: 0,
         showOptions: false,
         userInput: filteredOptions[activeOption],
       });
-    } else if (e.keyCode === 38) {
+    } else if (e.keyCode === 38) { // ArrowUp
       if (activeOption === 0) {
         return;
       }
       setState({ ...state, activeOption: activeOption - 1 });
-    } else if (e.keyCode === 40) {
+    } else if (e.keyCode === 40) { // ArrowDown
       if (activeOption === filteredOptions?.length - 1) {
         return;
       }
@@ -79,7 +86,6 @@ const Autocomplete = ({ handleLocation }) => {
   const {
     activeOption, filteredOptions, showOptions, userInput,
   } = state;
-  console.log(userInput);
 
   let optionList;
   if (showOptions && userInput) {

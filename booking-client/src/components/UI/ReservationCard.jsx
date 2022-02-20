@@ -81,7 +81,7 @@ function ReservationCard({ reservation, history }) {
             View Property
           </div>
         </button>
-        {moment(today).isAfter(reservation.checkIn)
+        {moment(today).isAfter(reservation.checkOut)
           ? null
           : (
             <button type="button" exact={true} className="btn btn--delete margin-left-small" onClick={handleDelete}>

@@ -36,7 +36,6 @@ public class BookingUserJwtAuthenticationConverter
   }
 
   private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-    System.out.println("hello");
     return this.getRules(jwt).stream()
             .map(authority -> ROLE_PREFIX + authority.toUpperCase())
             .map(SimpleGrantedAuthority::new)

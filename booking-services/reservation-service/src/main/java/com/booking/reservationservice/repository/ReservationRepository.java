@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @Repository
-public interface ReservationRepository extends ReactiveMongoRepository<Reservation, UUID>,
+public interface ReservationRepository extends ReactiveMongoRepository<Reservation, String>,
 ReservationCustomRepository {
 
     Flux<Reservation> findByUserId(UUID userId);

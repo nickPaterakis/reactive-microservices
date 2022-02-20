@@ -53,13 +53,13 @@ function App() {
       <Route path="/property/:id">
         <Property type="reserve" />
       </Route>
-      <PrivateRoute roles={['user']} path="/profile">
+      <PrivateRoute roles={['BOOKING_USER']} path="/profile">
         <Profile />
       </PrivateRoute>
-      <PrivateRoute roles={['user']} path="/create-property">
+      <PrivateRoute roles={['BOOKING_USER']} path="/create-property">
         <CreateProperty />
       </PrivateRoute>
-      <PrivateRoute roles={['user']} path="/reservation">
+      <PrivateRoute roles={['BOOKING_USER']} path="/reservation">
         <BookingConfirmation />
       </PrivateRoute>
       <Route exact={true} path="/">

@@ -20,18 +20,21 @@ public class WebSecurity {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http)  {
-        http.csrf()
+        http.cors()
             .disable()
+            .csrf()
+            .disable()
+                .authorizeExchange()
+                .pathMatchers("/properties/**").permitAll()
+                .pathMatchers("/countries/**").permitAll()
+                .pathMatchers("/image/**").permitAll()
+                .anyExchange()
+                .authenticated()
+                .and()
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(bookingUserJwtAuthenticationConverter());
 
-        return http.build();
-    }
-
-    @Bean
-    SecurityWebFilterChain configure(ServerHttpSecurity http) {
-        http.authorizeExchange().anyExchange().authenticated().and().oauth2Client().and().oauth2Login();
         return http.build();
     }
 

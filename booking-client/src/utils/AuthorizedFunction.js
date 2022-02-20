@@ -1,4 +1,3 @@
-import React from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 
 const AuthorizedFunction = (roles) => {

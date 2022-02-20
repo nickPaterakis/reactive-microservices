@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Reservation {
     @Id
-    private UUID id;
+    private String id;
 
     private LocalDate checkIn;
 

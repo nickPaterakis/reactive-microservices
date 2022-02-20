@@ -1,6 +1,7 @@
 package com.booking.bookingutils.exception;
 
 public class EventProcessingException extends RuntimeException {
+
     public EventProcessingException() {
     }
 

@@ -27,29 +27,30 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
         final Query query = new Query();
         final List<Criteria> criterias = new ArrayList<>();
 
-        criterias.add(Criteria.where("location").is(location));
-
-        criterias.add(new Criteria().orOperator(
-                Criteria.where("checkIn").gt(checkIn),
-                Criteria.where("checkOut").lt(checkIn)
+        criterias.add(new Criteria().andOperator(
+                Criteria.where("checkIn").lte(checkIn),
+                Criteria.where("checkOut").gte(checkIn)
         ));
 
-        criterias.add(new Criteria().orOperator(
-                Criteria.where("checkIn").lt(checkOut),
-                Criteria.where("checkOut").gt(checkOut)
+        criterias.add(new Criteria().andOperator(
+                Criteria.where("checkIn").gte(checkIn),
+                Criteria.where("checkIn").lte(checkOut)
         ));
 
-        criterias.add(new Criteria().orOperator(
-                Criteria.where("checkIn").lt(checkIn),
-                Criteria.where("checkIn").gt(checkOut)
+        criterias.add(new Criteria().andOperator(
+                Criteria.where("checkIn").gte(checkIn),
+                Criteria.where("checkOut").lte(checkOut)
         ));
 
-        criterias.add(new Criteria().orOperator(
-                Criteria.where("checkOut").lt(checkIn),
-                Criteria.where("checkOut").gt(checkOut)
+        criterias.add(new Criteria().andOperator(
+                Criteria.where("checkIn").lte(checkIn),
+                Criteria.where("checkOut").gte(checkOut)
         ));
 
-        query.addCriteria(new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()])));
+        query.addCriteria(new Criteria().andOperator(
+                Criteria.where("location").is(location),
+                new Criteria().orOperator(criterias.toArray(new Criteria[criterias.size()]))));
+
         return reactiveMongoTemplate.find(query, Reservation.class, "reservations").map(Reservation::getPropertyId);
     }
 }

@@ -20,7 +20,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             " p.address_id in" +
             " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
             " and" +
-            " p.id in :propertyIds")
+            " p.id not in :propertyIds")
     List<Property> searchProperties(
             @Param("propertyIds") List<Long> propertyIds,
             @Param("location") String location,
@@ -36,7 +36,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             " p.address_id in" +
             " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
             " and" +
-            " p.id in :propertyIds")
+            " p.id not in :propertyIds")
     Long count(
             @Param("propertyIds") List<Long> propertyIds,
             @Param("location") String location,

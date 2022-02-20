@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
@@ -17,11 +20,20 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public @ResponseBody
-    ErrorResponse handleNotFoundExceptions(
-            ServerHttpRequest request, Exception ex) {
+    public @ResponseBody ErrorResponse handleNotFoundExceptions(NotFoundException notFoundException) {//ServerHttpRequest request, Exception ex) {
+        return createHttpErrorInfo(NOT_FOUND, null, notFoundException);
+    }
 
-        return createHttpErrorInfo(NOT_FOUND, request, ex);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String serverExceptionHandler(Exception ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public @ResponseBody ErrorResponse handleConstraintViolationException(ServerHttpRequest request, Exception ex) {
+        return createHttpErrorInfo(BAD_REQUEST, request, ex);
     }
 
     private ErrorResponse createHttpErrorInfo(
@@ -30,7 +42,7 @@ public class GlobalExceptionHandler {
         final var message = ex.getMessage();
 
         log.debug("Returning HTTP status: {} for path: {}, message: {}", httpStatus, path, message);
-        return new ErrorResponse(httpStatus, message, ex);
+        return new ErrorResponse(httpStatus, message, path);
     }
 
 }

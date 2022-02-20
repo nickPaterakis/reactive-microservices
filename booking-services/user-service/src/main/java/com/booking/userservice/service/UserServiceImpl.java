@@ -44,13 +44,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public Mono<UserDto> getUserById(UUID userId) {
         log.info("getUserById: {}", userId);
-        return userRepository.findById(userId).map(UserMapper::toUserDto);
+        return userRepository.findById(userId)
+                .switchIfEmpty(error(new NotFoundException("No user found for user id: " + userId.toString())))
+                .map(UserMapper::toUserDto);
     }
 
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         log.info("findUserByEmail: {}", email);
-        return userRepository.findUserByEmail(email).map(UserMapper::toUserDetailsDto);
+        return userRepository.findUserByEmail(email)
+                .switchIfEmpty(Mono.empty())
+                .map(UserMapper::toUserDetailsDto);
     }
 
     @Override
@@ -58,8 +62,7 @@ public class UserServiceImpl implements UserService {
         log.info("Create user with ID: {}", userDetailsDto.getId());
         User user = UserMapper.toUser(userDetailsDto);
         return userRepository.save(user)
-                .map(UserMapper::toUserDetailsDto)
-                .onErrorReturn(new UserDetailsDto());
+                .map(UserMapper::toUserDetailsDto);
     }
 
     @Override
