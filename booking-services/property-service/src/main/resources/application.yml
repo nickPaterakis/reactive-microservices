@@ -64,7 +64,7 @@ spring:
       ddl-auto: update
   datasource:
     platform: mysql
-#    schema: classpath*:db/schema.sql
+    schema: classpath*:db/schema.sql
 #    data: classpath*:db/data.sql
     url: jdbc:mysql://${app.database.mysql.host}:${app.database.mysql.port}/property_db?allowPublicKeyRetrieval=true&useSSL=false
     username: root

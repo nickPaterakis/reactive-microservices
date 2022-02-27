@@ -6,6 +6,8 @@
 create database if not exists property_db;
 use property_db;
 
+SET FOREIGN_KEY_CHECKS=0;
+
 CREATE TABLE IF NOT EXISTS countries (
     id VARCHAR(2) NOT NULL,
     name VARCHAR(80),

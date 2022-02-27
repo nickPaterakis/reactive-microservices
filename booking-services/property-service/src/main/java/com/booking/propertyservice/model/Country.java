@@ -1,6 +1,9 @@
 package com.booking.propertyservice.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.SQLInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,10 +11,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "countries")
+@SQLInsert(sql = "INSERT IGNORE INTO countries (name, id) " +
+        "VALUES (?, ?)" )
 public class Country {
 
     @Id

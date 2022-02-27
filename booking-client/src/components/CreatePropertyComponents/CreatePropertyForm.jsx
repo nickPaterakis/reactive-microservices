@@ -305,7 +305,6 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
       updatedFormElement.touched = true;
       updatedFormElement.validation = validate(val, updatedFormElement.validationRules);
 
-      console.log(updatedFormElement.validation);
       updatedControls[name] = updatedFormElement;
 
       // if the form is valid the create button will become available
@@ -359,7 +358,6 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
 
     const formData = {};
     const fd = new FormData();
-
     for (const formElementId in createPropertyForm.formControls) {
       if (Object.prototype.hasOwnProperty.call(createPropertyForm.formControls, formElementId)) {
         if (formElementId === 'amenities') {
@@ -763,7 +761,6 @@ const CreatePropertyForm = ({ history, loadHandler }) => {
             )
             : null}
         </div>
-        {console.log(createPropertyForm.isFormValid)}
         <button disabled={!createPropertyForm.isFormValid} className={`btn btn--submit ${createPropertyForm.isFormValid ? null : 'btn--submit-disabled'}`} type="submit">
           <span className="btn__font">Create</span>
         </button>

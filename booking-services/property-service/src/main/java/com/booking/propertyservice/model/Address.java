@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -18,7 +17,7 @@ public class Address extends BaseEntity{
     @Column(name = "city")
     private String city;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id")
     private Country country;
 

@@ -43,9 +43,6 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             @Param("guestNumber") int guestNumber
     );
 
-    @Query(nativeQuery = true, value = "SELECT MAX(id) FROM properties where owner = :ownerId")
-    Long getLastSavedProperty(@Param("ownerId") String ownerId);
-
     @Query(nativeQuery = true, value = "SELECT * from properties where owner = :ownerId")
     List<Property> findByOwner(@Param("ownerId") String ownerId, Pageable pageable);
 

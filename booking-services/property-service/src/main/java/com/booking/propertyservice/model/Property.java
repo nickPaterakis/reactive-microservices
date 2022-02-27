@@ -13,6 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Accessors(chain = true)
 @Entity
 @Table(name = "properties")

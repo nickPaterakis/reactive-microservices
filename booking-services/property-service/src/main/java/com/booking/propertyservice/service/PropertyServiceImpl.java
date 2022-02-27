@@ -153,16 +153,6 @@ public class PropertyServiceImpl implements PropertyService {
         property.getAddress().getCountry().addAddress(property.getAddress());
         propertyRepository.save(property);
 
-//        Long propertyId = propertyRepository.getLastSavedProperty(property.getOwner());
-//        ReservationDto reservationDto = new ReservationDto()
-//                .setCheckIn(LocalDate.now())
-//                .setCheckOut(LocalDate.now())
-//                .setOwnerId(UUID.fromString(property.getOwner()))
-//                .setPropertyId(propertyId)
-//                .setLocation(property.getAddress().getCountry().getName())
-//                .setPrice(BigDecimal.valueOf(0));
-//
-//        integration.createReservation(reservationDto);
         return Mono.empty();
     }
 
