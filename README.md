@@ -12,6 +12,10 @@ This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Sprin
 
 ![main_diagram_2 (10)](https://user-images.githubusercontent.com/36018286/128594607-e6ee3b75-0098-4a9e-a94f-8ce463284ee2.png)
 
+# OAuth Flow
+
+![security_diagram (1)](https://user-images.githubusercontent.com/36018286/160458106-663d38c9-070f-43f8-94bf-a6be0a327b9d.png)
+
 # Operations
 
 <h3>Create Property</h3>
