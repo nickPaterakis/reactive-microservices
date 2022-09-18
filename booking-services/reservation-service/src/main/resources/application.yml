@@ -11,6 +11,7 @@ app:
   auth-server:
     host: localhost
     port: 8090
+    client-secret: 947169c8-515f-4403-8eed-4708f36c90f0
   database:
     mongo:
       host: localhost
@@ -77,7 +78,7 @@ spring:
         registration:
           keycloak:
             client-id: 'reservation-service-client'
-            client-secret: '947169c8-515f-4403-8eed-4708f36c90f0'
+            client-secret: ${app.auth-server.client-secret}
             authorizationGrantType: client_credentials
             client-name: keycloak
             redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
@@ -102,11 +103,13 @@ app:
   property-service:
     host: property-service
   auth-server:
-    host: 34.123.156.85
+    host: keycloak
+    port: 8080
+    client-secret: MkmPjhwVQFhGfD6ClRFjug3ycS0WBplA
   database:
     mongo:
       host: mongo
   rabbitmq:
     host: rabbitmq
-    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
-    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
+    username: default_user_XhVRPRZIV6v4Kkn3VOU
+    password: kePZ_VoNHTqJU4pxuIY8RlaWPhA9Bwv6

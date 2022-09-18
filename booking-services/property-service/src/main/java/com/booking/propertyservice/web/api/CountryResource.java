@@ -21,12 +21,6 @@ public class CountryResource {
         this.countryService = countryService;
     }
 
-    @GetMapping("/{name}")
-    public Flux<CountryDto> getCountries(@PathVariable String name) {
-        log.info(String.format("Country.findCountryByName(%s)", name));
-        return countryService.getCountries(name);
-    }
-
     @GetMapping("/all")
     public Flux<CountryDto> getCountries() {
         log.info(String.format("Country.getCountries()"));

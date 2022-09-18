@@ -16,7 +16,7 @@ import java.io.IOException;
 @RestController
 public class ImageResource {
 
-    @Value("gs://booking-uniwa/")
+    @Value("gs://booking-uniwa1/")
     Resource gcsFile;
 
 

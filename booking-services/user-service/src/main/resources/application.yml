@@ -53,26 +53,23 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8090/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://localhost:8090/auth/realms/booking
-
-#          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
-#          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
+          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
 ---
 spring:
   config:
     activate:
       on-profile: kubernetes
-  zipkin:
-    baseUrl: http://zipkin-server:9411
 
 app:
   auth-server:
-    host: 34.123.156.85
+    host: keycloak
+    port: 8080
   database:
     mongo:
       host: mongo
   rabbitmq:
     host: rabbitmq
-    username: c9X2ij1fJJ04Om4nab3tHU56pTbH660B
-    password: OXlN-b_3Sdyag6-W_d6ftji9-izGBnsl
+    username: default_user_XhVRPRZIV6v4Kkn3VOU
+    password: kePZ_VoNHTqJU4pxuIY8RlaWPhA9Bwv6
+

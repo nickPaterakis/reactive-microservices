@@ -157,12 +157,6 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Mono<UserDetailsDto> findUserByEmail(String email) {
-        log.info("findUserByEmail: {}", email);
-        return integration.findUserByEmail(email);
-    }
-
-    @Override
     public Mono<Void> deleteProperty(Long id) {
         log.info("deleteProperty");
         propertyRepository.deleteById(id);
@@ -174,6 +168,12 @@ public class PropertyServiceImpl implements PropertyService {
     public Mono<PropertyReservationDataDto> getPropertyById(Long propertyId) {
         log.info("Get properties by id: {}", propertyId);
         return asyncMono(() -> Mono.just(propertyRepository.getPropertyById(propertyId)).map(PropertyMapper::toPropertyReservationDataDto));
+    }
+    
+    @Override
+    public Mono<UserDetailsDto> findUserByEmail(String email) {
+        log.info("findUserByEmail: {}", email);
+        return integration.findUserByEmail(email);
     }
 
     private <T> Flux<T> asyncFlux(Supplier<Publisher<T>> publisherSupplier) {

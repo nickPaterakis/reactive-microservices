@@ -72,7 +72,7 @@ public class UserResource {
         filePartMono.doOnNext(fp -> userService.uploadImage(userId, imagesURL + "/" + fp.filename())).zipWith(
                 filePartMono.flatMap(filePart -> filePart.content().shareNext()),
                 (a, b) -> {
-                    final BlobId blobId = BlobId.of("booking-uniwa",  imagesURL + "/" + a.filename());
+                    final BlobId blobId = BlobId.of("booking-uniwa1",  imagesURL + "/" + a.filename());
                     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
                     byte[] bytes = b.asByteBuffer().array();
                     storage.create(blobInfo, bytes);

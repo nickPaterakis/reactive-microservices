@@ -23,7 +23,6 @@ function ReservationCard({ reservation, history }) {
     window.location.reload();
   };
 
-  console.log(reservation.id);
   return (
     <div className="reservation-card">
       <div className="reservation-card__header">

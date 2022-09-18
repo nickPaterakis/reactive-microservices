@@ -73,7 +73,7 @@ public class PropertyResource {
         return propertyService.getProperty(propertyId);
     }
 
-    //@PreAuthorize("hasRole('BOOKING_USER')")
+    // @PreAuthorize("hasRole('BOOKING_USER')")
     @GetMapping("/my-properties/{currentPage}")
     public Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user,
                                               @NotNull @Min(value = 0) @PathVariable int currentPage) {
@@ -99,7 +99,7 @@ public class PropertyResource {
         partFlux.doOnNext(fp -> propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename())).zipWith(
                 partFlux.flatMap(Part::content),
                 (a, b) -> {
-                    final BlobId blobId = BlobId.of("booking-uniwa",  imagesURL + "/" + a.filename());
+                    final BlobId blobId = BlobId.of("booking-uniwa1",  imagesURL + "/" + a.filename());
                     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
                     byte[] bytes = b.asByteBuffer().array();
                     storage.create(blobInfo, bytes);

@@ -5,7 +5,7 @@ metadata:
     app: reservation-service
   name: reservation-service
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - protocol: TCP
       name: "8083"

@@ -10,7 +10,7 @@ ARG JAR_FILE=target/*.jar
 # Copy fat jar file to current image builder
 COPY ${JAR_FILE} application.jar
 
-# Extract the jar file layers
+# Extract the jar file layer
 RUN java -Djarmode=layertools -jar --enable-preview application.jar extract
 #### End of builder stage
 

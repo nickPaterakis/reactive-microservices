@@ -5,7 +5,7 @@ metadata:
     app: user-service
   name: user-service
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - name: "8084"
       port: 8084
@@ -37,7 +37,7 @@ metadata:
     app: user-service
   name: user-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: user-service

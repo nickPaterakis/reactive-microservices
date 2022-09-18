@@ -82,7 +82,6 @@ function App() {
           {routes}
         </Layout>
       </ReactKeycloakProvider>
-   
     </div>
   );
 }
