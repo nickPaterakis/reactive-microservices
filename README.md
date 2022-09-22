@@ -10,7 +10,8 @@ This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Sprin
 
 # System
 
-![main_diagram_2 (10)](https://user-images.githubusercontent.com/36018286/128594607-e6ee3b75-0098-4a9e-a94f-8ce463284ee2.png)
+![main_diagram](https://user-images.githubusercontent.com/36018286/191720154-950952c5-76fe-44d0-a6ea-4a1be88355e1.png)
+
 
 # OAuth Flow
 
