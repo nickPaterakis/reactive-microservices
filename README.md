@@ -1,6 +1,5 @@
 
-# Booking-Microservices
-<img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
+# Booking-Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
 
 # Introduction
 Booking microservices project solves common use cases that concern applications like Airbnb, using microservices architecture. This project implements
