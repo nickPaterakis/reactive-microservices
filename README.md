@@ -6,7 +6,7 @@ reactive programming, Event-driven architecture, microservices design patterns l
 
 This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, CSS, Sass, OAuth 2.0, Keycloak, OpenID, MySQL, MongoDB, React, Redux, Docker, and Kubernetes.
 
-You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app)
+You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app).
 
 # System
 
