@@ -1,21 +1,22 @@
 
-# Booking-Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
+# Booking Microservices <img alt="GitHub" src="https://img.shields.io/github/license/nickPaterakis/Booking-Microservices">
 
 Booking microservices project solves common use cases that concern applications like Airbnb, using microservices architecture. This project implements
 reactive programming, Event-driven architecture, microservices design patterns like Choreography-based saga and Database per Service, OAuth 2.0 authorization, and Container Orchestration. The project follows the  <a href="https://12factor.net/"> twelve-factor app </a> methodology for building software-as-a-service applications.
 
 This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, CSS, Sass, OAuth 2.0, Keycloak, OpenID, MySQL, MongoDB, React, Redux, Docker, and Kubernetes.
 
+You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app)
+
 # System
 
 ![main_diagram](https://user-images.githubusercontent.com/36018286/191720154-950952c5-76fe-44d0-a6ea-4a1be88355e1.png)
-
 
 # OAuth Flow
 
 ![security_diagram (1)](https://user-images.githubusercontent.com/36018286/160458106-663d38c9-070f-43f8-94bf-a6be0a327b9d.png)
 
-# Operations
+# Overview
 
 <h3>Create Property</h3>
 
