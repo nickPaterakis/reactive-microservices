@@ -1,5 +1,6 @@
 HELP.md
 target/
+mysql-volume/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -8,8 +9,11 @@ config/repo
 booking-client/src/images/backgrounds
 booking-services/property-service/src/main/resources/key.json
 booking-services/user-service/src/main/resources/key.json
+booking-services/reservation-service/src/main/resources/email_credentials.txt
 
 k8s/ingress.yaml
+
+### Resources ###
 
 
 ### STS ###
