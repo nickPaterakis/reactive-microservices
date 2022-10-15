@@ -61,7 +61,6 @@ public class PropertyServiceImpl implements PropertyService {
                 integration.getPropertyIds(location, checkIn, checkOut)
                 .collectList()
                 .map(longs -> {
-                    System.out.println(propertyIds);
                     if (propertyIds.isEmpty())
                         propertyIds.add(0L);
                     propertyIds.addAll(longs);
