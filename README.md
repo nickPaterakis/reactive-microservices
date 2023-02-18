@@ -4,7 +4,7 @@
 Booking microservices project solves common use cases that concern applications like Airbnb, using microservices architecture. This project implements
 reactive programming, Event-driven architecture, microservices design patterns like Choreography-based saga and Database per Service, OAuth 2.0 authorization, and Container Orchestration. The project follows the  <a href="https://12factor.net/"> twelve-factor app </a> methodology for building software-as-a-service applications.
 
-This project uses cutting edge technologies like Spring Boot 2.4, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, CSS, Sass, OAuth 2.0, Keycloak, OpenID, MySQL, MongoDB, React, Redux, Docker, and Kubernetes.
+This project uses technologies like Spring Boot, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, CSS, Sass, OAuth 2.0, Keycloak, OpenID, MySQL, MongoDB, React, Redux, Docker, and Kubernetes.
 
 You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app).
 
