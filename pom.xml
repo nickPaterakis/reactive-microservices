@@ -31,8 +31,8 @@
 		<module>booking-base/booking-build-chassis</module>
 		<module>booking-base/booking-cloud-chassis</module>
 		<module>booking-base/booking-service-chassis</module>
-		<module>booking-common/booking-api</module>
-		<module>booking-common/booking-utils</module>
+		<module>common/common-api</module>
+		<module>common/common-domain</module>
 		<module>booking-services/property-service</module>
 		<module>booking-services/user-service</module>
 		<module>booking-services/reservation-service</module>

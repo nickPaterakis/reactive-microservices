@@ -25,8 +25,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             @Param("propertyIds") List<Long> propertyIds,
             @Param("location") String location,
             @Param("guestNumber") int guestNumber,
-            Pageable pageable
-            );
+            Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT count(*) FROM properties p" +
             " inner join addresses c on p.address_id = c.id" +
@@ -40,8 +39,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
     Long count(
             @Param("propertyIds") List<Long> propertyIds,
             @Param("location") String location,
-            @Param("guestNumber") int guestNumber
-    );
+            @Param("guestNumber") int guestNumber);
 
     @Query(nativeQuery = true, value = "SELECT * from properties where owner = :ownerId")
     List<Property> findByOwner(@Param("ownerId") String ownerId, Pageable pageable);

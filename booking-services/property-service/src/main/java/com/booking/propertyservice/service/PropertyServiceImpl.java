@@ -1,17 +1,16 @@
 package com.booking.propertyservice.service;
 
-import com.booking.bookingapi.property.Dto.*;
-import com.booking.bookingapi.property.PropertyService;
-import com.booking.bookingapi.user.dto.BookingUser;
-import com.booking.bookingapi.user.dto.UserDetailsDto;
+import com.booking.commondomain.dto.property.*;
+import com.booking.commondomain.dto.user.BookingUser;
 import com.booking.bookingutils.exception.NotFoundException;
-import com.booking.propertyservice.integration.PropertyIntegration;
+import com.booking.propertyservice.integration.reservationservice.ReservationServiceIntegration;
+import com.booking.propertyservice.integration.userservice.UserServiceIntegration;
 import com.booking.propertyservice.mapper.PropertyMapper;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.repository.PropertyRepository;
-import lombok.extern.log4j.Log4j2;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,20 +27,15 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@Service("PropertyServiceImpl")
-@Log4j2
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
-    private final PropertyIntegration integration;
+    private final ReservationServiceIntegration reservationServiceIntegration;
+    private final UserServiceIntegration userServiceIntegration;
     private final Scheduler scheduler;
-
-    @Autowired
-    public PropertyServiceImpl(PropertyRepository propertyRepository, PropertyIntegration integration, Scheduler scheduler) {
-        this.propertyRepository = propertyRepository;
-        this.integration = integration;
-        this.scheduler = scheduler;
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -52,13 +46,14 @@ public class PropertyServiceImpl implements PropertyService {
             int guestNumber,
             int currentPage
     ) {
-        log.info("search properties by location: {}", location);
+        log.info("Search properties by location: {}", location);
         Pageable pageable;
         pageable = PageRequest.of(currentPage,5);
         PageProperties result = new PageProperties();
         List<Long> propertyIds = new ArrayList<>();
+
         return asyncMono(() ->
-                integration.getPropertyIds(location, checkIn, checkOut)
+                reservationServiceIntegration.getPropertyIds(location, checkIn, checkOut)
                 .collectList()
                 .map(longs -> {
                     if (propertyIds.isEmpty())
@@ -132,7 +127,7 @@ public class PropertyServiceImpl implements PropertyService {
                             .setOwnerId(propertyDetailsDto.getOwnerId());
                     return propertyAggregate;
                 })
-                .flatMap(property -> integration.getUserById(property.getOwnerId()))
+                .flatMap(property -> userServiceIntegration.getUserById(property.getOwnerId()))
                 .map(userDto -> {
                     propertyAggregate
                             .setOwnerFirstName(userDto.getFirstName())
@@ -156,23 +151,16 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Mono<Void> deleteProperty(Long id) {
+    public void deleteProperty(Long id) {
         log.info("deleteProperty");
         propertyRepository.deleteById(id);
-        integration.deleteAllReservationsByPropertyId(id);
-        return Mono.empty();
+        reservationServiceIntegration.deleteAllReservationsByPropertyId(id);
     }
 
     @Override
     public Mono<PropertyReservationDataDto> getPropertyById(Long propertyId) {
         log.info("Get properties by id: {}", propertyId);
         return asyncMono(() -> Mono.just(propertyRepository.getPropertyById(propertyId)).map(PropertyMapper::toPropertyReservationDataDto));
-    }
-    
-    @Override
-    public Mono<UserDetailsDto> findUserByEmail(String email) {
-        log.info("findUserByEmail: {}", email);
-        return integration.findUserByEmail(email);
     }
 
     private <T> Flux<T> asyncFlux(Supplier<Publisher<T>> publisherSupplier) {

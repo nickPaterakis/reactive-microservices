@@ -1,9 +1,10 @@
 package com.booking.propertyservice.service;
 
-import com.booking.bookingapi.property.CountryService;
-import com.booking.bookingapi.property.Dto.CountryDto;
+import com.booking.commondomain.dto.property.CountryDto;
 import com.booking.propertyservice.repository.CountryRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,37 +17,20 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Service("CountryServiceImpl")
-@Log4j2
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
     private final CountryRepository countryRepository;
     private final ModelMapper modelMapper;
     private final Scheduler scheduler;
 
-    @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository, ModelMapper modelMapper, Scheduler scheduler) {
-        this.countryRepository = countryRepository;
-        this.modelMapper = modelMapper;
-        this.scheduler = scheduler;
-    }
-
     @Override
-    @Transactional(readOnly = true)
-    public Flux<CountryDto> getCountries(String name) {
-        log.info("GetCountries: {}", name);
-        return asyncFlux(() -> Flux.fromIterable(
-                countryRepository.findCountryByName(name).stream()
-                .map(country -> modelMapper.map(country, CountryDto.class))
-                .collect(Collectors.toList())));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Flux<CountryDto> getCountries() {
-        log.info("GetCountries");
+        log.info("Get all countries");
         return asyncFlux(() -> Flux.fromIterable(
-                StreamSupport.stream(countryRepository.findAll().spliterator(), false)
+                countryRepository.findAll().stream()
                         .map(country -> modelMapper.map(country, CountryDto.class))
                         .collect(Collectors.toList())));
     }

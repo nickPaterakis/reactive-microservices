@@ -1,26 +1,23 @@
 package com.booking.reservationservice.security;
 
-import com.booking.bookingapi.user.dto.BookingUser;
-import com.booking.bookingapi.reservation.ReservationService;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.booking.commondomain.dto.user.BookingUser;
+import com.booking.reservationservice.integration.userservice.UserServiceIntegration;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Service
-@Log4j2
+@Slf4j
+@Component
+@RequiredArgsConstructor
 public class BookingReactiveUserDetailsService implements ReactiveUserDetailsService {
 
-    private final ReservationService reservationService;
-
-    public BookingReactiveUserDetailsService(@Qualifier("ReservationServiceImpl") ReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
+    private final UserServiceIntegration userServiceIntegration;
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        return reservationService.findUserByEmail(username).switchIfEmpty(Mono.empty()).map(BookingUser::new);
+        return userServiceIntegration.findUserByEmail(username).switchIfEmpty(Mono.empty()).map(BookingUser::new);
     }
 }

@@ -1,6 +1,6 @@
 package com.booking.reservationservice.mapper;
 
-import com.booking.bookingapi.reservation.dto.ReservationDto;
+import com.booking.commondomain.dto.reservation.ReservationDto;
 import com.booking.reservationservice.model.Reservation;
 
 public class ReservationMapper {

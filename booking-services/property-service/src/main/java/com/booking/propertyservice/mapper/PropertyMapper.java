@@ -1,6 +1,6 @@
 package com.booking.propertyservice.mapper;
 
-import com.booking.bookingapi.property.Dto.*;
+import com.booking.commondomain.dto.property.*;
 import com.booking.propertyservice.model.*;
 
 import java.util.*;
@@ -76,7 +76,6 @@ public class PropertyMapper {
     }
 
     public static PropertyReservationDataDto toPropertyReservationDataDto(Property property) {
-        System.out.println(property.getOwner());
         return new PropertyReservationDataDto()
                 .setTitle(property.getTitle())
                 .setPropertyType(property.getPropertyType().getName())

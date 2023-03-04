@@ -1,13 +1,15 @@
 server:
   port: 8083
 
-app:
+reservation-service:
   user-service:
     host: localhost
     port: 8084
+    url: "http://${reservation-service.user-service.host}:${reservation-service.user-service.port}"
   property-service:
     host: localhost
     port: 8081
+    url: "http://${reservation-service.property-service.host}:${reservation-service.property-service.port}"
   auth-server:
     host: localhost
     port: 8090
@@ -36,14 +38,14 @@ spring:
         starttls.enable: true
   data:
     mongodb:
-      host: ${app.database.mongo.host}
-      port: ${app.database.mongo.port}
+      host: ${reservation-service.database.mongo.host}
+      port: ${reservation-service.database.mongo.port}
       database: reservations
   rabbitmq:
-    host: ${app.rabbitmq.host}
-    port: ${app.rabbitmq.port}
-    username: ${app.rabbitmq.username}
-    password: ${app.rabbitmq.password}
+    host: ${reservation-service.rabbitmq.host}
+    port: ${reservation-service.rabbitmq.port}
+    username: ${reservation-service.rabbitmq.username}
+    password: ${reservation-service.rabbitmq.password}
   cloud:
     config:
       enabled: false
@@ -72,13 +74,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
+          jwk-set-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/auth/realms/booking
       client:
         registration:
           keycloak:
             client-id: 'reservation-service-client'
-            client-secret: ${app.auth-server.client-secret}
+            client-secret: ${reservation-service.auth-server.client-secret}
             authorizationGrantType: client_credentials
             client-name: keycloak
             redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
@@ -88,8 +90,8 @@ spring:
               - email
         provider:
           keycloak:
-            issuerUri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
-            token-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/token
+            issuerUri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/auth/realms/booking
+            token-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/auth/realms/booking/protocol/openid-connect/token
 
 ---
 spring:
@@ -97,7 +99,7 @@ spring:
     activate:
       on-profile: kubernetes
 
-app:
+reservation-service:
   user-service:
     host: user-service
   property-service:

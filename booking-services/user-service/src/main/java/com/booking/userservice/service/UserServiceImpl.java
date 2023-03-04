@@ -1,14 +1,15 @@
 package com.booking.userservice.service;
 
-import com.booking.bookingapi.user.UserService;
-import com.booking.bookingapi.user.dto.BookingUser;
-import com.booking.bookingapi.user.dto.UserDetailsDto;
-import com.booking.bookingapi.user.dto.UserDto;
+import com.booking.commondomain.dto.user.BookingUser;
+import com.booking.commondomain.dto.user.UserDetailsDto;
+import com.booking.commondomain.dto.user.UserDto;
 import com.booking.bookingutils.exception.NotFoundException;
-import com.booking.userservice.dto.mapper.UserMapper;
+import com.booking.userservice.mapper.UserMapper;
 import com.booking.userservice.model.User;
 import com.booking.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +21,13 @@ import java.util.UUID;
 
 import static reactor.core.publisher.Mono.error;
 
-@Service("UserServiceImpl")
-@Log4j2
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {

@@ -1,6 +1,6 @@
 package com.booking.userservice.model;
 
-import com.booking.bookingapi.role.Role;
+import com.booking.commondomain.role.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;

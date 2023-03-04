@@ -1,6 +1,6 @@
 package com.booking.userservice.repository;
 
-import com.booking.bookingapi.user.dto.UserDetailsDto;
+import com.booking.commondomain.dto.user.UserDetailsDto;
 import com.booking.userservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;

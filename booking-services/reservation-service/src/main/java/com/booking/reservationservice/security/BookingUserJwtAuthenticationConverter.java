@@ -28,11 +28,9 @@ public class BookingUserJwtAuthenticationConverter
   @Override
   public Mono<AbstractAuthenticationToken> convert(Jwt jwt) {
     Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-    Mono<AbstractAuthenticationToken> abstractAuthenticationTokenMono =  bookingReactiveUserDetailsService
+    return bookingReactiveUserDetailsService
             .findByUsername(jwt.getClaimAsString("email"))
             .map(u -> new UsernamePasswordAuthenticationToken(u, "n/a", authorities));
-
-    return abstractAuthenticationTokenMono;
   }
 
   private Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {

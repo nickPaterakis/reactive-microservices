@@ -1,6 +1,6 @@
 package com.booking.propertyservice.mapper;
 
-import com.booking.bookingapi.property.Dto.AmenityDto;
+import com.booking.commondomain.dto.property.AmenityDto;
 import com.booking.propertyservice.model.Amenity;
 
 public class AmenitiesMapper {
