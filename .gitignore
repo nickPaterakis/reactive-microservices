@@ -6,10 +6,10 @@ mysql-volume/
 !**/src/test/**/target/
 db
 config/repo
-booking-client/src/images/backgrounds
-booking-services/property-service/src/main/resources/key.json
-booking-services/user-service/src/main/resources/key.json
-booking-services/reservation-service/src/main/resources/email_credentials.txt
+
+services/property-service/src/main/resources/key.json
+services/user-service/src/main/resources/key.json
+services/reservation-service/src/main/resources/email_credentials.txt
 
 k8s/ingress.yaml
 

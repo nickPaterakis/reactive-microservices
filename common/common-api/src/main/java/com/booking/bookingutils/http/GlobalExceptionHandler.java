@@ -2,6 +2,7 @@ package com.booking.bookingutils.http;
 
 import com.booking.bookingutils.exception.NotFoundException;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,8 +15,8 @@ import javax.validation.ConstraintViolationException;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+@Slf4j
 @RestControllerAdvice
-@Log4j2
 public class GlobalExceptionHandler {
 
     @ResponseStatus(NOT_FOUND)
