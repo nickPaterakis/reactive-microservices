@@ -4,7 +4,6 @@ import com.booking.commondomain.dto.user.UserDetailsDto;
 import com.booking.commondomain.dto.user.UserDto;
 import com.booking.reservationservice.integration.propertyservice.MessageSources;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.stereotype.Component;
@@ -14,14 +13,13 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-@Slf4j
 @Component
-@RequiredArgsConstructor
 @EnableBinding(MessageSources.class)
+@RequiredArgsConstructor
 public class UserServiceIntegrationImpl implements UserServiceIntegration {
 
     @Value("${reservation-service.user-service.url}")
-    private final String userServiceUrl;
+    private String userServiceUrl;
     private final WebClient webClient;
 
     @Override

@@ -43,14 +43,14 @@ public class ReservationController {
 
     @PreAuthorize("hasRole('BOOKING_USER')")
     @PostMapping("/create")
-    public Mono<Void> createReservation(@Valid @RequestBody ReservationDto reservationDto) {
-        reservationService.createReservation(reservationDto);
-        return Mono.empty();
+    public Mono<ReservationDetailsDto> createReservation(@Valid @RequestBody ReservationDto reservationDto) {
+        return reservationService.createReservation(reservationDto);
+
     }
 
     @PreAuthorize("hasRole('BOOKING_USER')")
     @DeleteMapping("/delete/{reservationId}")
-    public void deleteReservation(@PathVariable String reservationId) {
-        reservationService.deleteReservation(reservationId);
+    public Mono<Void> deleteReservation(@PathVariable String reservationId) {
+        return reservationService.deleteReservation(reservationId);
     }
 }

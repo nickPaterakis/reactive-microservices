@@ -7,12 +7,13 @@ import com.booking.bookingutils.exception.NotFoundException;
 import com.booking.userservice.mapper.UserMapper;
 import com.booking.userservice.model.User;
 import com.booking.userservice.repository.UserRepository;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final Storage storage;
 
     @Override
     public Mono<UserDetailsDto> getUserDetails(@AuthenticationPrincipal BookingUser user) {
@@ -65,12 +67,25 @@ public class UserServiceImpl implements UserService {
     public Mono<Void> updateUser(UserDetailsDto userDetailsDto) {
         log.info("Update User: {}", userDetailsDto.getId());
         userRepository.updateUser(userDetailsDto);
-        return null;
+        return Mono.empty();
     }
 
-    public ResponseEntity uploadImage(String userId, String path) {
+    @Override
+    public Mono<Void> uploadImage(String userId, Mono<FilePart> filePartMono) {
         log.info("Update User Image: {}", userId);
-        userRepository.updateProfileImage(UUID.fromString(userId), path);
-        return ResponseEntity.ok().build();
+        String imagesURL = "images/users/" + userId;
+        filePartMono
+                .doOnNext(fp -> userRepository.updateProfileImage(UUID.fromString(userId), imagesURL + "/" + fp.filename()))
+                .zipWith(filePartMono.flatMap(filePart -> filePart.content().shareNext()),
+                (a, b) -> {
+                    final BlobId blobId = BlobId.of("booking-uniwa1",  imagesURL + "/" + a.filename());
+                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+                    byte[] bytes = b.asByteBuffer().array();
+                    storage.create(blobInfo, bytes);
+                    return Mono.empty();
+                })
+                .then()
+                .subscribe();
+        return Mono.empty();
     }
 }

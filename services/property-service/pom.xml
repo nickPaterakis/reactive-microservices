@@ -5,9 +5,9 @@
 
 	<parent>
 		<groupId>com.booking</groupId>
-		<artifactId>booking-service-chassis</artifactId>
+		<artifactId>service-chassis</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath>../../booking-base/booking-service-chassis/pom.xml</relativePath>
+		<relativePath>../../base/service-chassis/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>property-service</artifactId>

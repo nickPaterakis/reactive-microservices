@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.booking</groupId>
-		<artifactId>booking-build-chassis</artifactId>
+		<artifactId>build-chassis</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath>../booking-build-chassis/pom.xml</relativePath>
+		<relativePath>../build-chassis/pom.xml</relativePath>
 	</parent>
 
-	<artifactId>booking-cloud-chassis</artifactId>
+	<artifactId>cloud-chassis</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>booking-cloud-chassis</name>
+	<name>cloud-chassis</name>
 	<description>Parent pom project for Building Booking Services</description>
 	<packaging>pom</packaging>
 

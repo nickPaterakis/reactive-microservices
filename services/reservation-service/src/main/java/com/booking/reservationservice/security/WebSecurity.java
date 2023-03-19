@@ -1,6 +1,6 @@
 package com.booking.reservationservice.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -9,14 +9,10 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
+@RequiredArgsConstructor
 public class WebSecurity {
 
     private final BookingReactiveUserDetailsService bookingReactiveUserDetailsService;
-
-    @Autowired
-    public WebSecurity(BookingReactiveUserDetailsService bookingReactiveUserDetailsService) {
-        this.bookingReactiveUserDetailsService = bookingReactiveUserDetailsService;
-    }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http)  {

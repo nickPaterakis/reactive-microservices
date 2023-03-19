@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>com.booking</groupId>
-	<artifactId>booking-build-chassis</artifactId>
+	<artifactId>build-chassis</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>booking-build-chassis</name>
+	<name>build-chassis</name>
 	<description>Parent pom project for Building Booking Services</description>
 	<packaging>pom</packaging>
 
@@ -31,7 +31,7 @@
 		<docker.image.dockerize.version>v0.6.1</docker.image.dockerize.version>
 		<docker.plugin.version>1.2.0</docker.plugin.version>
 		<maven.plugin.dockerfile.version>1.4.13</maven.plugin.dockerfile.version>
-		<org.lombok.version>1.18.12</org.lombok.version>
+		<org.lombok.version>1.18.26</org.lombok.version>
 	</properties>
 
 	<dependencyManagement>

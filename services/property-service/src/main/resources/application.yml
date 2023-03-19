@@ -12,7 +12,7 @@ property-service:
     url: "http://${property-service.reservation-service.host}:${property-service.reservation-service.port}"
   auth-server:
     host: localhost
-    port: 8090
+    port: 8080
   database:
     mysql:
       host: localhost
@@ -39,7 +39,7 @@ spring:
       enabled: false
     gcp:
       credentials:
-        location: classpath:key.json
+        location: classpath:gcp-account-file.json
     stream:
       defaultBinder: rabbit
       default.contentType: application/json
@@ -69,7 +69,7 @@ spring:
   datasource:
     platform: mysql
     schema: classpath*:db/schema.sql
-#    data: classpath*:db/data.sql
+    data: classpath*:db/data.sql
     url: jdbc:mysql://${property-service.database.mysql.host}:${property-service.database.mysql.port}/property_db?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: root
@@ -82,14 +82,14 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/auth/realms/booking
+          jwk-set-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/realms/booking
 
 ---
 spring:
   config:
     activate:
-      on-profile: kubernetes
+      on-profile: prod
 
 property-service:
   user-service:

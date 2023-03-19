@@ -4,7 +4,7 @@ server:
 app:
   auth-server:
     host: localhost
-    port: 8090
+    port: 8080
   database:
     mongo:
       host: localhost
@@ -31,7 +31,7 @@ spring:
   cloud:
     gcp:
       credentials:
-        location: classpath:key.json
+        location: classpath:gcp-account-file.json
     config:
       enabled: false
     stream:
@@ -53,13 +53,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/auth/realms/booking
+          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/realms/booking
 ---
 spring:
   config:
     activate:
-      on-profile: kubernetes
+      on-profile: prod
 
 app:
   auth-server:

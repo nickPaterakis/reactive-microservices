@@ -19,7 +19,7 @@ metadata:
   name: user-service
 data:
   database-name: users
-  SPRING_PROFILES_ACTIVE: kubernetes
+  SPRING_PROFILES_ACTIVE: prod
 ---
 apiVersion: v1
 kind: Secret

@@ -5,9 +5,9 @@
 
 	<parent>
 		<groupId>com.booking</groupId>
-		<artifactId>booking-build-chassis</artifactId>
+		<artifactId>build-chassis</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath>../../booking-base/booking-build-chassis/pom.xml</relativePath>
+		<relativePath>../../base/build-chassis/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>common-domain</artifactId>

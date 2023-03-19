@@ -5,6 +5,7 @@ import com.booking.commondomain.dto.user.UserDetailsDto;
 import com.booking.commondomain.dto.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -18,8 +19,10 @@ import java.util.UUID;
 public class UserServiceIntegrationImpl implements UserServiceIntegration {
 
     @Value("${property-service.user-service.url}")
-    private final String userServiceUrl;
+    private String userServiceUrl;
     private final WebClient webClient;
+
+
 
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {

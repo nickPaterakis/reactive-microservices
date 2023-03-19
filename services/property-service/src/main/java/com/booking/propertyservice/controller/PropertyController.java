@@ -93,7 +93,7 @@ public class PropertyController {
         propertyService.deleteProperty(id);
     }
 
-    @PreAuthorize("hasRole('BOOKING_USER')")
+    // @PreAuthorize("hasRole('BOOKING_USER')")
     @GetMapping("/property-reservation/{propertyId}")
     public Mono<PropertyReservationDataDto> getPropertyById(@NotNull @Positive @PathVariable Long propertyId) {
         return propertyService.getPropertyById(propertyId);

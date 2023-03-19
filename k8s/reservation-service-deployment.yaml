@@ -20,7 +20,7 @@ metadata:
   name: reservation-service
 data:
   database-name: reservations
-  SPRING_PROFILES_ACTIVE: kubernetes
+  SPRING_PROFILES_ACTIVE: prod
 ---
 apiVersion: v1
 kind: Secret

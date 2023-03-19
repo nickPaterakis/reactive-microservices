@@ -3,23 +3,18 @@ package com.booking.userservice.security;
 import com.booking.commondomain.dto.user.BookingUser;
 import com.booking.userservice.service.UserService;
 import com.booking.commondomain.dto.user.UserDetailsDto;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Service
-@Log4j2
+@Component
+@RequiredArgsConstructor
 public class BookingReactiveUserDetailsService implements ReactiveUserDetailsService {
 
     private final UserService userService;
-
-    public BookingReactiveUserDetailsService(@Qualifier("UserServiceImpl") UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {

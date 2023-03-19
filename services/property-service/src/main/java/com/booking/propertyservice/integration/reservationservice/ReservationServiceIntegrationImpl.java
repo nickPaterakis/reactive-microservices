@@ -24,7 +24,7 @@ public class ReservationServiceIntegrationImpl implements ReservationServiceInte
 
     private final MessageSources messageSources;
     @Value("${property-service.reservation-service.url}")
-    private final String reservationServiceUrl;
+    private String reservationServiceUrl;
     private final WebClient webClient;
 
     @Override

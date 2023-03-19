@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PropertyServiceIntegrationImpl implements PropertyServiceIntegration {
 
-    @Value("${reservation-service.proeprty-service.url}")
-    private final String propertyServiceUrl;
+    @Value("${reservation-service.property-service.url}")
+    private String propertyServiceUrl;
     private final WebClient webClient;
 
     @Override

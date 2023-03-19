@@ -15,7 +15,7 @@ public interface ReservationService {
 
     Flux<ReservationDetailsDto> getReservationsByUserId(@AuthenticationPrincipal BookingUser user);
 
-    Mono<Void> createReservation(ReservationDto reservationDto);
+    Mono<ReservationDetailsDto> createReservation(ReservationDto reservationDto);
 
     Mono<Void> deleteReservation(String reservationId);
 
