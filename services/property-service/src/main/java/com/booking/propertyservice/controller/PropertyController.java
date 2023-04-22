@@ -4,7 +4,8 @@ import com.booking.commondomain.dto.property.PageProperties;
 import com.booking.commondomain.dto.property.PropertyAggregate;
 import com.booking.commondomain.dto.property.PropertyDetailsDto;
 import com.booking.commondomain.dto.property.PropertyReservationDataDto;
-import com.booking.propertyservice.service.PropertyService;
+import com.booking.propertyservice.controller.request.PropertySearchCriteria;
+import com.booking.propertyservice.service.propertyservice.PropertyService;
 import com.booking.commondomain.dto.user.BookingUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,6 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.codec.multipart.Part;
@@ -24,11 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @CrossOrigin("*")
@@ -43,14 +42,8 @@ public class PropertyController {
     private final Storage storage;
 
     @GetMapping("/search")
-    public Mono<PageProperties> searchProperties(
-            @NotEmpty @RequestParam(value = "location") String location,
-            @NotNull @RequestParam(value = "checkIn") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
-            @NotNull @RequestParam(value = "checkOut") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
-            @NotNull @Range(min = 0, max = 16) @RequestParam(value = "guestNumber") int guestNumber,
-            @NotNull @Min(value = 0) @RequestParam(value = "currentPage") int currentPage
-            ) {
-        return propertyService.searchProperties(location, checkIn, checkOut, guestNumber, currentPage);
+    public Mono<PageProperties> searchProperties(@Valid PropertySearchCriteria criteria) {
+        return propertyService.searchProperties(criteria);
     }
 
     @GetMapping("/property/{propertyId}")
@@ -71,13 +64,13 @@ public class PropertyController {
                                      @NotEmpty @RequestPart("property") String property) throws JsonProcessingException {
         PropertyDetailsDto propertyDetailsDto = objectMapper.readValue(property, PropertyDetailsDto.class);
 
-        String imagesURL = "images/properties/" + propertyDetailsDto.getCountry().getName() + "/" +
-                propertyDetailsDto.getOwnerId().toString() + "/" + UUID.randomUUID().toString();
+        String imagesURL = String.format("images/properties/%s/%s/%s", propertyDetailsDto.getCountry().getName(),
+                propertyDetailsDto.getOwnerId().toString(), UUID.randomUUID());
 
         partFlux.doOnNext(fp -> propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename())).zipWith(
                 partFlux.flatMap(Part::content),
                 (a, b) -> {
-                    final BlobId blobId = BlobId.of("booking-uniwa1",  imagesURL + "/" + a.filename());
+                    final BlobId blobId = BlobId.of("booking-project",  imagesURL + "/" + a.filename());
                     BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
                     byte[] bytes = b.asByteBuffer().array();
                     storage.create(blobInfo, bytes);
@@ -89,8 +82,8 @@ public class PropertyController {
 
     @PreAuthorize("hasRole('BOOKING_USER')")
     @DeleteMapping("delete/{id}")
-    public void deleteProperty(@NotNull @Positive @PathVariable Long id) {
-        propertyService.deleteProperty(id);
+    public Mono<Void> deleteProperty(@NotNull @Positive @PathVariable Long id) {
+        return propertyService.deleteProperty(id);
     }
 
     // @PreAuthorize("hasRole('BOOKING_USER')")

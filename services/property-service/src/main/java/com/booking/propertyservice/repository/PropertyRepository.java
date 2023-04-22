@@ -36,7 +36,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
             " (SELECT a.id FROM addresses a inner join countries c on a.country_id = c.id WHERE c.name = :location)" +
             " and" +
             " p.id not in :propertyIds")
-    Long count(
+    int count(
             @Param("propertyIds") List<Long> propertyIds,
             @Param("location") String location,
             @Param("guestNumber") int guestNumber);
@@ -45,7 +45,7 @@ public interface PropertyRepository extends PagingAndSortingRepository<Property,
     List<Property> findByOwner(@Param("ownerId") String ownerId, Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT count(*) from properties where owner = :ownerId")
-    Long count(String ownerId);
+    int count(String ownerId);
 
     Property getPropertyById(Long propertyId);
 }

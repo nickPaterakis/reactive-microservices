@@ -23,7 +23,7 @@ property-service:
     username: guest
     password: guest
 
-bucketname: booking-uniwa
+bucketname: booking-project
 subdirectory: images
 
 spring:

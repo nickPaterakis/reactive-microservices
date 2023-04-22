@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequestMapping("/users")
 public class ImageController {
 
-    @Value("gs://booking-uniwa1/")
+    @Value("gs://booking-project/")
     Resource gcsFile;
 
     @GetMapping(
@@ -37,10 +37,4 @@ public class ImageController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(bytes);
     }
-
-//    @Bean
-//    public RouterFunction<ServerResponse> imgRouter() {
-//        return RouterFunctions
-//                .resources("/**", new ClassPathResource("images/"));
-//    }
 }

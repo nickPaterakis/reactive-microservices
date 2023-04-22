@@ -31,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Flux<Long> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
-        log.info("Get property ids");
+        log.info("Get reserved property ids");
         return reservationRepository.findPropertyIds(location, checkIn, checkOut);
     }
 

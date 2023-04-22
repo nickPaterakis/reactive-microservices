@@ -1,6 +1,6 @@
 package com.booking.propertyservice.controller;
 
-import com.booking.propertyservice.service.CountryService;
+import com.booking.propertyservice.service.countryservice.CountryService;
 import com.booking.commondomain.dto.property.CountryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ public class CountryController {
 
     @GetMapping("/all")
     public Flux<CountryDto> getCountries() {
-        return countryService.getCountries();
+        return countryService.getAllCountries();
     }
 
 }

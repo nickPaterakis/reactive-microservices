@@ -22,6 +22,7 @@ public class MessageProcessor {
     @StreamListener(target = Sink.INPUT)
     public void process(Event<Integer, UserDetailsDto> event) {
         log.info("Process message created at {}...", event.getEventCreatedAt());
+
         if (event.getEventType() == Event.Type.CREATE) {
             UserDetailsDto userDetailsDto = event.getData();
 

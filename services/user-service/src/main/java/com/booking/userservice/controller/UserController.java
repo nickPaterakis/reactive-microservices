@@ -52,9 +52,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('BOOKING_USER')")
     @PostMapping(value = "/imageUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Mono<Void> uploadImage(
-            @NotEmpty @RequestPart("userId") String userId,
-            @NotNull @RequestPart("file") Mono<FilePart> filePartMono) {
+    public Mono<Void> uploadImage(@NotEmpty @RequestPart("userId") String userId,
+                                  @NotNull @RequestPart("file") Mono<FilePart> filePartMono) {
         return userService.uploadImage(userId, filePartMono);
     }
 }

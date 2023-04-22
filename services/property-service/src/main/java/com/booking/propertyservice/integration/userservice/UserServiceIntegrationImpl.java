@@ -22,8 +22,6 @@ public class UserServiceIntegrationImpl implements UserServiceIntegration {
     private String userServiceUrl;
     private final WebClient webClient;
 
-
-
     @Override
     public Mono<UserDetailsDto> findUserByEmail(String email) {
         var url = UriComponentsBuilder.fromUriString(userServiceUrl.concat("/users/{email}"))

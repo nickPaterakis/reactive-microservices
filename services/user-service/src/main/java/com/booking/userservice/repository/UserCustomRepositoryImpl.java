@@ -2,22 +2,21 @@ package com.booking.userservice.repository;
 
 import com.booking.commondomain.dto.user.UserDetailsDto;
 import com.booking.userservice.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@Component
+@RequiredArgsConstructor
 public class UserCustomRepositoryImpl implements UserCustomRepository {
 
-    ReactiveMongoTemplate reactiveMongoTemplate;
-
-    @Autowired
-    public UserCustomRepositoryImpl(ReactiveMongoTemplate reactiveMongoTemplate) {
-        this.reactiveMongoTemplate = reactiveMongoTemplate;
-    }
+    private final ReactiveMongoTemplate reactiveMongoTemplate;
 
     @Override
     public void updateProfileImage(UUID userId, String profileImagePath) {
@@ -25,11 +24,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         query.addCriteria(Criteria.where("_id").is(userId));
 
         reactiveMongoTemplate.findOne(query, User.class)
-                .doOnNext(user -> {
-                    user.setProfileImage(profileImagePath);
-                    System.out.println(user);
-
-                }).flatMap(user -> reactiveMongoTemplate.save(user)).subscribe();
+                .doOnNext(user -> user.setProfileImage(profileImagePath))
+                .flatMap(reactiveMongoTemplate::save).subscribe();
     }
 
     @Override
@@ -42,7 +38,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                             .setFirstName(userDetailsDto.getFirstName())
                             .setLastName(userDetailsDto.getLastName())
                             .setPhone(userDetailsDto.getPhone()))
-                .flatMap(user -> reactiveMongoTemplate.save(user)).subscribe();
+                .flatMap(reactiveMongoTemplate::save).subscribe();
     }
 
     @Override

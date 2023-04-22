@@ -22,7 +22,7 @@ public class PageProperties {
 
     @NotNull
     @Min(value = 0)
-    private Long totalElements;
+    private int totalElements;
 
     @Valid
     private List<PropertyDto> properties;

@@ -1,4 +1,4 @@
-package com.booking.propertyservice.service;
+package com.booking.propertyservice.service.propertyservice;
 
 
 import com.booking.commondomain.dto.property.PropertyReservationDataDto;
@@ -6,6 +6,7 @@ import com.booking.commondomain.dto.user.BookingUser;
 import com.booking.commondomain.dto.property.PropertyAggregate;
 import com.booking.commondomain.dto.property.PageProperties;
 import com.booking.commondomain.dto.property.PropertyDetailsDto;
+import com.booking.propertyservice.controller.request.PropertySearchCriteria;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import reactor.core.publisher.Mono;
 
@@ -13,12 +14,7 @@ import java.time.LocalDate;
 
 public interface PropertyService {
 
-    Mono<PageProperties> searchProperties(
-            String location,
-            LocalDate checkIn,
-            LocalDate checkOut,
-            int guestNumber,
-            int currentPage);
+    Mono<PageProperties> searchProperties(PropertySearchCriteria criteria);
 
     Mono<PageProperties> getProperties(@AuthenticationPrincipal BookingUser user, int currentPage);
 
@@ -28,5 +24,5 @@ public interface PropertyService {
 
     Mono<PropertyReservationDataDto> getPropertyById(Long propertyId);
 
-    void deleteProperty(Long id);
+    Mono<Void> deleteProperty(Long id);
 }
