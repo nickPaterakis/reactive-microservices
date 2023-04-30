@@ -15,7 +15,6 @@ metadata:
   name: mysql
 data:
   MYSQL_DATABASE: property_db
-  MYSQL_ROOT_PASSWORD: root
 ---
 apiVersion: apps/v1
 kind: Deployment
