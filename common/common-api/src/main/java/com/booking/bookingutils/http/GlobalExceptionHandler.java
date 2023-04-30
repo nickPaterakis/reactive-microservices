@@ -1,5 +1,6 @@
 package com.booking.bookingutils.http;
 
+import com.booking.bookingutils.exception.InvalidInputException;
 import com.booking.bookingutils.exception.NotFoundException;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public @ResponseBody ErrorResponse handleNotFoundExceptions(NotFoundException notFoundException) {//ServerHttpRequest request, Exception ex) {
+    public @ResponseBody ErrorResponse handleNotFoundExceptions(NotFoundException notFoundException) {
         return createHttpErrorInfo(NOT_FOUND, null, notFoundException);
     }
 
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody ErrorResponse handleConstraintViolationException(ServerHttpRequest request, Exception ex) {
         return createHttpErrorInfo(BAD_REQUEST, request, ex);
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public @ResponseBody ErrorResponse handleInvalidInputException(InvalidInputException ex) {
+        return createHttpErrorInfo(BAD_REQUEST, null, ex);
     }
 
     private ErrorResponse createHttpErrorInfo(

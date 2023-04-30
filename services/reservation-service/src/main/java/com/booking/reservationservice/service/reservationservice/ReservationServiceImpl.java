@@ -60,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
                                 userServiceIntegration.getUserById(reservation.getOwnerId()),
                                 (propertyReservationDataDto, userDto) -> reservationServiceHelper
                                         .createReservationDetailsDto(reservation, propertyReservationDataDto, userDto)))
-                .map(reservationServiceHelper::sendCancellationMessage);
+                .map(reservationServiceHelper::sendReservationDetailsMessage);
     }
 
     @Override
