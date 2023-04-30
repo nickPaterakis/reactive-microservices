@@ -38,8 +38,6 @@ import java.util.UUID;
 public class PropertyController {
 
     private final PropertyService propertyService;
-    private final ObjectMapper objectMapper;
-    private final Storage storage;
 
     @GetMapping("/search")
     public Mono<PageProperties> searchProperties(@Valid PropertySearchCriteria criteria) {
@@ -58,26 +56,33 @@ public class PropertyController {
         return propertyService.getProperties(user, currentPage);
     }
 
+//    @PreAuthorize("hasRole('BOOKING_USER')")
+//    @PostMapping(value = "/create-property", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+//    public Mono<Void> createProperty(@NotNull @RequestPart("file") Flux<FilePart> partFlux,
+//                                     @NotEmpty @RequestPart("property") String property) throws JsonProcessingException {
+//        PropertyDetailsDto propertyDetailsDto = objectMapper.readValue(property, PropertyDetailsDto.class);
+//
+//        String imagesURL = String.format("images/properties/%s/%s/%s", propertyDetailsDto.getCountry().getName(),
+//                propertyDetailsDto.getOwnerId().toString(), UUID.randomUUID());
+//
+//        partFlux.doOnNext(fp -> propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename())).zipWith(
+//                partFlux.flatMap(Part::content),
+//                (a, b) -> {
+//                    final BlobId blobId = BlobId.of("booking-project",  imagesURL + "/" + a.filename());
+//                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+//                    byte[] bytes = b.asByteBuffer().array();
+//                    storage.create(blobInfo, bytes);
+//                    return Mono.empty();
+//                }).then().subscribe();
+//
+//        return propertyService.createProperty(propertyDetailsDto);
+//    }
+
     @PreAuthorize("hasRole('BOOKING_USER')")
     @PostMapping(value = "/create-property", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public Mono<Void> createProperty(@NotNull @RequestPart("file") Flux<FilePart> partFlux,
-                                     @NotEmpty @RequestPart("property") String property) throws JsonProcessingException {
-        PropertyDetailsDto propertyDetailsDto = objectMapper.readValue(property, PropertyDetailsDto.class);
-
-        String imagesURL = String.format("images/properties/%s/%s/%s", propertyDetailsDto.getCountry().getName(),
-                propertyDetailsDto.getOwnerId().toString(), UUID.randomUUID());
-
-        partFlux.doOnNext(fp -> propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename())).zipWith(
-                partFlux.flatMap(Part::content),
-                (a, b) -> {
-                    final BlobId blobId = BlobId.of("booking-project",  imagesURL + "/" + a.filename());
-                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-                    byte[] bytes = b.asByteBuffer().array();
-                    storage.create(blobInfo, bytes);
-                    return Mono.empty();
-                }).then().subscribe();
-
-        return propertyService.createProperty(propertyDetailsDto);
+    public Mono<Void> createProperty(@NotNull @RequestPart("file") Flux<FilePart> filePartFlux,
+                                     @NotEmpty @RequestPart("property") String property) {
+        return propertyService.createProperty(filePartFlux, property);
     }
 
     @PreAuthorize("hasRole('BOOKING_USER')")

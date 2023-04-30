@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,13 +29,18 @@ public class ReservationServiceIntegrationImpl implements ReservationServiceInte
     @Override
     public Flux<Long> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
         var url = UriComponentsBuilder
-                .fromUriString(reservationServiceUrl
-                        .concat("/reservations/propertyIds?location={location}&checkIn={checkIn}&checkOut={checkOut}"))
-                .build(location, checkIn, checkOut);
+                .fromUriString(reservationServiceUrl)
+                .path("/reservations/propertyIds")
+                .queryParam("location", location)
+                .queryParam("checkIn", checkIn)
+                .queryParam("checkOut", checkOut)
+                .build();
+
+        log.debug("Fetching property IDs with URL: {}", url);
 
         return webClient
                 .get()
-                .uri(url)
+                .uri(url.toUri())
                 .retrieve()
                 .bodyToFlux(Long.class)
                 .switchIfEmpty(Flux.empty());
@@ -44,12 +48,10 @@ public class ReservationServiceIntegrationImpl implements ReservationServiceInte
 
     @Override
     public void deleteAllReservationsByPropertyId(Long propertyId) {
-        log.info("Delete all reservations by property id: {}", propertyId);
+        log.info("Deleting all reservations for property with ID: {}", propertyId);
 
-        Message<Event<Long, Long>> message =
-                MessageBuilder.withPayload(new Event<>(DELETE, propertyId, propertyId))
-                        .build();
+        Event<Long, Long> event = new Event<>(DELETE, propertyId, propertyId);
 
-        messageSources.outputReservations().send(message);
+        messageSources.outputReservations().send(MessageBuilder.withPayload(event).build());
     }
 }

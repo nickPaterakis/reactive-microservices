@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -118,9 +118,12 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Mono<Void> createProperty(PropertyDetailsDto propertyDetailsDto) {
+    public Mono<Void> createProperty(Flux<FilePart> filePartFlux, String propertyJson) {
+        PropertyDetailsDto propertyDetailsDto = propertyServiceHelper.deserializePropertyDetails(propertyJson);
+
         log.info("Creating new property for owner: {}", propertyDetailsDto.getOwnerId());
 
+        propertyServiceHelper.processAndUploadImages(filePartFlux, propertyDetailsDto);
         Property property = propertyServiceHelper.mapPropertyDetailsToProperty(propertyDetailsDto);
 
         return propertyServiceHelper.saveProperty(property)

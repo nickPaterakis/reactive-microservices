@@ -1,5 +1,6 @@
 package com.booking.propertyservice.service.propertyservice;
 
+import com.booking.bookingutils.exception.InvalidInputException;
 import com.booking.commondomain.dto.property.AddressDto;
 import com.booking.commondomain.dto.property.PropertyAggregate;
 import com.booking.commondomain.dto.property.PropertyDetailsDto;
@@ -10,8 +11,17 @@ import com.booking.propertyservice.mapper.PropertyMapper;
 import com.booking.propertyservice.model.Property;
 import com.booking.propertyservice.repository.PropertyRepository;
 import com.booking.propertyservice.utils.ReactiveUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.codec.multipart.FilePart;
+import org.springframework.http.codec.multipart.Part;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,13 +29,16 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PropertyServiceHelper {
 
     private final ReservationServiceIntegration reservationServiceIntegration;
     private final PropertyRepository propertyRepository;
+    private final Storage storage;
     private final ReactiveUtils reactiveUtils;
 
     public Mono<List<Long>> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
@@ -94,5 +107,46 @@ public class PropertyServiceHelper {
 
     public Mono<Property> saveProperty(Property property) {
         return reactiveUtils.asyncMono(() -> Mono.just(propertyRepository.save(property)));
+    }
+
+    public PropertyDetailsDto deserializePropertyDetails(String property) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        PropertyDetailsDto propertyDetailsDto;
+
+        try {
+            propertyDetailsDto = objectMapper.readValue(property, PropertyDetailsDto.class);
+        } catch (JsonProcessingException e) {
+            throw new InvalidInputException("Invalid JSON", e);
+        }
+
+        log.debug("Deserialized property details: {}", propertyDetailsDto);
+        return propertyDetailsDto;
+    }
+
+    public void processAndUploadImages(Flux<FilePart> partFlux, PropertyDetailsDto propertyDetailsDto) {
+        String imagesURL = generateImagesURL(propertyDetailsDto);
+        log.debug("Generated images URL: {}", imagesURL);
+
+        partFlux.doOnNext(fp -> {
+            propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename());
+        }).zipWith(
+                partFlux.flatMap(Part::content),
+                (a, b) -> {
+                    uploadImageToStorage(imagesURL, a, b);
+                    return Mono.empty();
+                }).then().subscribe();
+    }
+
+    private String generateImagesURL(PropertyDetailsDto propertyDetailsDto) {
+        return String.format("images/properties/%s/%s/%s", propertyDetailsDto.getCountry().getName(),
+                propertyDetailsDto.getOwnerId().toString(), UUID.randomUUID());
+    }
+
+    private void uploadImageToStorage(String imagesURL, FilePart filePart, DataBuffer dataBuffer) {
+        final BlobId blobId = BlobId.of("booking-project", imagesURL + "/" + filePart.filename());
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+        byte[] bytes = dataBuffer.asByteBuffer().array();
+        storage.create(blobInfo, bytes);
+        log.debug("Uploaded image '{}' to storage", filePart.filename());
     }
 }
