@@ -9,33 +9,23 @@ You can find the front-end of the application [here](https://github.com/nickPate
 
 # System
 
+The architecture of the reactive microservices project is designed to provide a scalable and decoupled solution. The project consists of three main services: the Reservation Service, Property Service, and User Service. The services communicate with each other via RESTful APIs, allowing seamless integration and exchange of information.
+
+To facilitate communication between services, the project employs the use of Spring WebClient, a non-blocking web client provided by the Spring framework. This enables efficient and asynchronous communication for remote calls, ensuring responsive interactions between services while maintaining the reactive programming paradigm. In addition, the project incorporates RabbitMQ, a popular message broker, to enable asynchronous messaging and event-driven communication between services.
+
+The services utilize different databases to optimize data storage and retrieval based on their specific requirements. The Property Service utilizes a MySQL database, which offers a reliable and robust relational database management system. On the other hand, the Reservation and User Services employ MongoDB, a highly scalable and flexible NoSQL database, known for its document-oriented nature and horizontal scalability.
+
+Furthermore, the project incorporates Keycloak, an open-source identity and access management solution, to enhance security and authentication. Keycloak supports industry-standard protocols such as OAuth 2.0 and OpenID Connect, providing secure access delegation and user authentication. By integrating Keycloak, the project delegates user authentication to a centralized identity provider, allowing services to focus on core functionalities.
+
+To deploy the project to production, it leverages Kubernetes, an open-source container orchestration platform. Kubernetes offers robust management and scaling capabilities, ensuring high availability and fault tolerance. By utilizing Kubernetes, the project can easily manage and automate the deployment, scaling, and monitoring of the services, providing a reliable and efficient environment for production usage.
+
+Overall, the reactive microservices project embraces modern architectural principles and technologies to deliver a scalable, responsive, and highly available solution. By leveraging reactive programming, RESTful APIs, different databases, message queuing, Kubernetes, and Keycloak, it enables seamless communication between services, efficient data management, reliable production deployments, and robust security and authentication capabilities.
+
 ![main_diagram](https://user-images.githubusercontent.com/36018286/191720154-950952c5-76fe-44d0-a6ea-4a1be88355e1.png)
 
 # OAuth Flow
 
 ![security_diagram (1)](https://user-images.githubusercontent.com/36018286/160458106-663d38c9-070f-43f8-94bf-a6be0a327b9d.png)
-
-# Overview
-
-<h3>Create Property</h3>
-
-![create-property](https://user-images.githubusercontent.com/36018286/129600915-4006c647-9086-4ae1-81c9-19aec0400c45.gif)
-
-<h3>View and Delete Property</h3>
-
-![view-delete property](https://user-images.githubusercontent.com/36018286/129580087-b5eb2dd9-2214-4063-9761-19bafe66e3bd.gif)
-
-<h3>Create User</h3>
-
-![create-user](https://user-images.githubusercontent.com/36018286/129600937-64e203f5-baba-4f7f-b0e0-c7ee19d53054.gif)
-
-<h3>Sign In and Sign out</h3>
-
-![sing_in-sign_out](https://user-images.githubusercontent.com/36018286/129601030-815d5283-e70b-4512-98aa-1c0f7b5240fe.gif)
-
-<h3>Edit User</h3>
-
-![user-edit](https://user-images.githubusercontent.com/36018286/129580112-1f0b8f9c-ffb2-4a14-9d5a-a05139ac093d.gif)
 
 # Property Service Database Schema
 
