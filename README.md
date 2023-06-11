@@ -7,7 +7,7 @@ This project uses technologies like Spring Boot, WebFlux, Spring Cloud Stream, M
 
 You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app).
 
-# System
+# System Architecture
 
 The architecture of the reactive microservices project is designed to provide a scalable and decoupled solution. The project consists of three main services: the Reservation Service, Property Service, and User Service. The services communicate with each other via RESTful APIs, allowing seamless integration and exchange of information.
 
