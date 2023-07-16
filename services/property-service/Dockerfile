@@ -40,17 +40,10 @@ COPY --from=builder temp/snapshot-dependencies/ ./
 COPY --from=builder temp/spring-boot-loader/ ./
 COPY --from=builder temp/application/ ./
 
-# Expose current application to port 8080
-EXPOSE 8080
-
-ARG JAVA_OPTS=""
+# Expose current application to port 8081
+EXPOSE 8081
 
 # Run the application with JVM configs if any
-#ENTRYPOINT ["bash", "-c", \
-#"java -server --enable-preview \
-#-XX:+AlwaysActAsServerClassMachine -XX:+UseG1GC -XX:+UseStringDeduplication ${JAVA_OPTS} \
-#org.springframework.boot.loader.JarLauncher ${0} ${@}"]
-
 ENTRYPOINT ["bash", "-c", \
 "java -server --enable-preview \
 org.springframework.boot.loader.JarLauncher ${0} ${@}"]

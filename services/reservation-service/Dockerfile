@@ -10,18 +10,17 @@ ARG JAR_FILE=target/*.jar
 # Copy fat jar file to current image builder
 COPY ${JAR_FILE} application.jar
 
-# Extract the jar file layer
+# Extract the jar file layers
 RUN java -Djarmode=layertools -jar --enable-preview application.jar extract
 #### End of builder stage
 
 #### Start of actual image
 # ------------------------
-# Build image based on latest JDK 15 base image, based on latest debian buster OS
 FROM openjdk:11-jre
 
 # Set image information, but could be set to different location from command line
 ARG IMAGE_VERSION="0.0.1-SNAPSHOT"
-ARG IMAGE_NAME="User Service"
+ARG IMAGE_NAME="Reservation Service"
 ARG MAINTAINER="Nicholas Paterakis <nikolas.paterakis@gmail.com>"
 
 LABEL version=${IMAGE_VERSION} name=${IMAGE_NAME} maintainer=${MAINTAINER}
@@ -41,11 +40,10 @@ COPY --from=builder temp/snapshot-dependencies/ ./
 COPY --from=builder temp/spring-boot-loader/ ./
 COPY --from=builder temp/application/ ./
 
-# Expose current application to port 8084
-EXPOSE 8084
+# Expose current application to port 8083
+EXPOSE 8083
 
-#Run the application with JVM configs if any
+# Run the application with JVM configs if any
 ENTRYPOINT ["bash", "-c", \
 "java -server --enable-preview \
 org.springframework.boot.loader.JarLauncher ${0} ${@}"]
-#ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

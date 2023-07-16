@@ -16,10 +16,9 @@ FROM adoptopenjdk:11-jre-hotspot
 
 # Set image information, but could be set to different location from command line
 ARG IMAGE_VERSION="0.0.1-SNAPSHOT"
-ARG IMAGE_NAME="Config Server"
 ARG MAINTAINER="Nicholas Paterakis <nikolas.paterakis@gmail.com>"
 
-LABEL version=${IMAGE_VERSION} name=${IMAGE_NAME} maintainer=${MAINTAINER}
+LABEL version=${IMAGE_VERSION} maintainer=${MAINTAINER}
 
 # Limiting security access to not user root user
 RUN addgroup nicholaspat && useradd -g nicholaspat -ms /bin/bash nicholas
