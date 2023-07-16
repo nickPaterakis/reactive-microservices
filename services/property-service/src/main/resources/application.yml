@@ -22,9 +22,7 @@ property-service:
     port: 5672
     username: guest
     password: guest
-
-bucketname: booking-project
-subdirectory: images
+  bucket-name: booking-bucket-1
 
 spring:
   application:
@@ -83,13 +81,13 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${property-service.auth-server.host}:${property-service.auth-server.port}/realms/booking
+          issuer-uri: http://localhost:8080/realms/booking
 
 ---
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: docker
 
 property-service:
   user-service:
@@ -106,3 +104,25 @@ property-service:
     host: rabbitmq
     username: default_user_XhVRPRZIV6v4Kkn3VOU
     password: kePZ_VoNHTqJU4pxuIY8RlaWPhA9Bwv6
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+
+property-service:
+  user-service:
+    host: user-service
+  reservation-service:
+    host: reservation-service
+  auth-server:
+    host: keycloak
+    port: 8080
+  database:
+    mysql:
+      host: mysql
+  rabbitmq:
+    host: rabbitmq
+    username: default_user_DUkcxxwyn9gFzfgFrvi
+    password: W5xjFWTF6CE_XGeBf9jGRFwyqvB7xJ23

@@ -1,7 +1,7 @@
 server:
   port: 8084
 
-app:
+user-service:
   auth-server:
     host: localhost
     port: 8080
@@ -14,20 +14,21 @@ app:
     port: 5672
     username: guest
     password: guest
+  bucket-name: booking-bucket-1
 
 spring:
   application:
     name: user-service
   data:
     mongodb:
-      host: ${app.database.mongo.host}
-      port: ${app.database.mongo.port}
+      host: ${user-service.database.mongo.host}
+      port: ${user-service.database.mongo.port}
       database: users
   rabbitmq:
-    host: ${app.rabbitmq.host}
-    port: ${app.rabbitmq.port}
-    username: ${app.rabbitmq.username}
-    password: ${app.rabbitmq.password}
+    host: ${user-service.rabbitmq.host}
+    port: ${user-service.rabbitmq.port}
+    username: ${user-service.rabbitmq.username}
+    password: ${user-service.rabbitmq.password}
   cloud:
     gcp:
       credentials:
@@ -53,18 +54,17 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${app.auth-server.host}:${app.auth-server.port}/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${app.auth-server.host}:${app.auth-server.port}/realms/booking
+          jwk-set-uri: http://${user-service.auth-server.host}:${user-service.auth-server.port}/realms/booking/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/booking
 ---
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: docker
 
-app:
+user-service:
   auth-server:
     host: keycloak
-    port: 8080
   database:
     mongo:
       host: mongo
@@ -72,4 +72,21 @@ app:
     host: rabbitmq
     username: default_user_XhVRPRZIV6v4Kkn3VOU
     password: kePZ_VoNHTqJU4pxuIY8RlaWPhA9Bwv6
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+
+user-service:
+  auth-server:
+    host: keycloak
+  database:
+    mongo:
+      host: mongo
+  rabbitmq:
+    host: rabbitmq
+    username: default_user_DUkcxxwyn9gFzfgFrvi
+    password: W5xjFWTF6CE_XGeBf9jGRFwyqvB7xJ23
 

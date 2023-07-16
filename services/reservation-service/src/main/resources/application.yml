@@ -13,7 +13,6 @@ reservation-service:
   auth-server:
     host: localhost
     port: 8080
-    client-secret: Tvv9MAZFH7qZCaQijraKeLXvOMq3OGjF
   database:
     mongo:
       host: localhost
@@ -75,30 +74,13 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/realms/booking/protocol/openid-connect/certs
-          issuer-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/realms/booking
-      client:
-        registration:
-          keycloak:
-            client-id: 'reservation-service-client'
-            client-secret: ${reservation-service.auth-server.client-secret}
-            authorizationGrantType: client_credentials
-#            client-name: keycloak
-#            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
-#            scope:
-#              - openid
-#              - profile
-#              - email
-        provider:
-          keycloak:
-            # http://localhost:8080/realms/booking
-            #issuerUri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/realms/booking
-            token-uri: http://${reservation-service.auth-server.host}:${reservation-service.auth-server.port}/realms/booking/protocol/openid-connect/token
+          issuer-uri: http://localhost:8080/realms/booking
 
 ---
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: docker
 
 reservation-service:
   user-service:
@@ -108,7 +90,6 @@ reservation-service:
   auth-server:
     host: keycloak
     port: 8080
-    client-secret: MkmPjhwVQFhGfD6ClRFjug3ycS0WBplA
   database:
     mongo:
       host: mongo
@@ -116,3 +97,25 @@ reservation-service:
     host: rabbitmq
     username: default_user_XhVRPRZIV6v4Kkn3VOU
     password: kePZ_VoNHTqJU4pxuIY8RlaWPhA9Bwv6
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+
+reservation-service:
+  user-service:
+    host: user-service
+  property-service:
+    host: property-service
+  auth-server:
+    host: keycloak
+    port: 8080
+  database:
+    mongo:
+      host: mongo
+  rabbitmq:
+    host: rabbitmq
+    username: default_user_DUkcxxwyn9gFzfgFrvi
+    password: W5xjFWTF6CE_XGeBf9jGRFwyqvB7xJ23
