@@ -1,71 +1,119 @@
 version: '2'
 
 services:
-#  property-service:
-#    links:
-#      - mysql
-#    image: nicholaspat/property-service
-#    container_name: property-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=prod
-#    depends_on:
-#      - mysql
-#    ports:
-#      - 8081:8081
-#
-#  reservation-service:
-#    links:
-#      - mongo
-#    image: nicholaspat/reservation-service
-#    mem_limit: 700m
-#    container_name: reservation-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=prod
-#    depends_on:
-#      - mongo
-#    ports:
-#      - 8083:8083
-#
-#  user-service:
-#    links:
-#      - mongo
-#    image: nicholaspat/user-service
-#    container_name: user-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=prod
-#    depends_on:
-#      - mongo
-#    ports:
-#      - 8082:8082
-#
-#  client:
-#    container_name: booking-client
-#    image: nicholaspat/client-service
-#    ports:
-#      - 80:80
-#    depends_on:
-#      - property-service
+  property-service:
+    container_name: reactive-property-service
+    image: nicholaspat/property-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mysql
+    ports:
+      - 8081:8081
+    networks:
+      - reactiveNet
+
+  reservation-service:
+    container_name: reactive-reservation-service
+    image: nicholaspat/reservation-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EMAIL=nikolas.paterakis@gmail.com
+      - EMAIL_PASSWORD=rwjhsweknabdkmjh
+    depends_on:
+      - mongo
+    ports:
+      - "8083:8083"
+    networks:
+      - reactiveNet
+
+  user-service:
+    container_name: reactive-user-service
+    image: nicholaspat/user-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongo
+    ports:
+      - "8084:8084"
+    networks:
+      - reactiveNet
+
+  client-service:
+    container_name: client-service
+    image: nicholaspat/client-service
+    ports:
+      - "80:80"
+    networks:
+      - reactiveNet
 
   mysql:
-    image: mysql
     container_name: mysql
+    image: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=property_db
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
-      - "./mysql-volume:/var/lib/mysql"
+      - mysqlData:/var/lib/mysql
+    networks:
+      - reactiveNet
 
-#  mongo:
-#    container_name: mongodb
-#    image: mongo:4.2.6-bionic
-#    ports:
-#      - "27017-27019:27017-27019"
+  mongo:
+    container_name: mongodb
+    image: mongo:4.2.6-bionic
+    ports:
+      - "27017-27019:27017-27019"
+    volumes:
+      - mongoData:/data/db
+    networks:
+      - reactiveNet
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - reactiveNet
+
+  keycloak:
+    container_name: keycloak
+    hostname: keycloak
+    image: quay.io/keycloak/keycloak:17.0
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_HOSTNAME: localhost
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloakdb
+    command:
+      - start-dev
+      - --http-port=8080
+    networks:
+      - reactiveNet
+
+  keycloak-db:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: keycloakdb
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+    networks:
+      - reactiveNet
+
+networks:
+  reactiveNet:
+
+volumes:
+  postgresData:
+  mongoData:
+  mysqlData:
