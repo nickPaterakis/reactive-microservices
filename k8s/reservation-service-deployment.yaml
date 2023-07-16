@@ -5,7 +5,7 @@ metadata:
     app: reservation-service
   name: reservation-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - protocol: TCP
       name: "8083"
@@ -19,8 +19,9 @@ kind: ConfigMap
 metadata:
   name: reservation-service
 data:
-  database-name: reservations
-  SPRING_PROFILES_ACTIVE: prod
+  EMAIL: nikolas.paterakis@gmail.com
+  EMAIL_PASSWORD: rwjhsweknabdkmjh
+  SPRING_PROFILES_ACTIVE: kubernetes
 ---
 apiVersion: v1
 kind: Secret
@@ -57,5 +58,15 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: SPRING_PROFILES_ACTIVE
+                  name: reservation-service
+            - name: EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  key: EMAIL
+                  name: reservation-service
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: EMAIL_PASSWORD
                   name: reservation-service
       restartPolicy: Always

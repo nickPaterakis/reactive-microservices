@@ -5,7 +5,7 @@ metadata:
     app: user-service
   name: user-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: "8084"
       port: 8084
@@ -18,8 +18,7 @@ kind: ConfigMap
 metadata:
   name: user-service
 data:
-  database-name: users
-  SPRING_PROFILES_ACTIVE: prod
+  SPRING_PROFILES_ACTIVE: kubernetes
 ---
 apiVersion: v1
 kind: Secret

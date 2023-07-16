@@ -5,7 +5,7 @@ metadata:
     app: property-service
   name: property-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: "8081"
       port: 8081
@@ -18,7 +18,7 @@ kind: ConfigMap
 metadata:
   name: property-service
 data:
-  SPRING_PROFILES_ACTIVE: prod
+  SPRING_PROFILES_ACTIVE: kubernetes
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -47,8 +47,4 @@ spec:
                 configMapKeyRef:
                   key: SPRING_PROFILES_ACTIVE
                   name: property-service
-            - name: DATABASE_HOST
-              value: mysql
-            - name: DATABASE_PORT
-              value: "3306"
       restartPolicy: Always
