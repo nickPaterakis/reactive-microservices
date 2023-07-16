@@ -18,13 +18,10 @@ import java.io.IOException;
 @RequestMapping("/users")
 public class ImageController {
 
-    @Value("gs://booking-project/")
+    @Value("gs://booking-bucket-1/")
     Resource gcsFile;
 
-    @GetMapping(
-            value = "/image/**",
-            produces = MediaType.IMAGE_JPEG_VALUE
-    )
+    @GetMapping(value = "/image/**", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImageWithMediaType(ServerHttpRequest request) throws IOException {
         String path = request.getPath().toString().replace("/users/image/","");
 

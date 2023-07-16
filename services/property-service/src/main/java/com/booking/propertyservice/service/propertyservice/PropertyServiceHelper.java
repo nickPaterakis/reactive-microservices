@@ -18,6 +18,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.codec.multipart.FilePart;
@@ -40,6 +41,8 @@ public class PropertyServiceHelper {
     private final PropertyRepository propertyRepository;
     private final Storage storage;
     private final ReactiveUtils reactiveUtils;
+    @Value("${property-service.bucket-name}")
+    private String bucketName;
 
     public Mono<List<Long>> getPropertyIds(String location, LocalDate checkIn, LocalDate checkOut) {
         return reservationServiceIntegration.getPropertyIds(location, checkIn, checkOut)
@@ -127,9 +130,8 @@ public class PropertyServiceHelper {
         String imagesURL = generateImagesURL(propertyDetailsDto);
         log.debug("Generated images URL: {}", imagesURL);
 
-        partFlux.doOnNext(fp -> {
-            propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename());
-        }).zipWith(
+        partFlux.doOnNext(fp -> propertyDetailsDto.getImages().add(imagesURL + "\\" + fp.filename()))
+                .zipWith(
                 partFlux.flatMap(Part::content),
                 (a, b) -> {
                     uploadImageToStorage(imagesURL, a, b);
@@ -143,7 +145,7 @@ public class PropertyServiceHelper {
     }
 
     private void uploadImageToStorage(String imagesURL, FilePart filePart, DataBuffer dataBuffer) {
-        final BlobId blobId = BlobId.of("booking-project", imagesURL + "/" + filePart.filename());
+        final BlobId blobId = BlobId.of(bucketName, imagesURL + "/" + filePart.filename());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         byte[] bytes = dataBuffer.asByteBuffer().array();
         storage.create(blobInfo, bytes);
