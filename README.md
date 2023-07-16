@@ -19,7 +19,8 @@ To deploy the project to production, it utilizes Kubernetes, which provides robu
 
 Overall, the reactive microservices project embraces modern architectural principles and technologies, including Kubernetes, to deliver a scalable, responsive, and highly available solution. By leveraging reactive programming, RESTful APIs, different databases, message queuing, and Keycloak for security and authentication, it enables seamless communication between services, efficient data management, reliable production deployments, and robust security measures. 
 
-![main_diagram](https://user-images.githubusercontent.com/36018286/191720154-950952c5-76fe-44d0-a6ea-4a1be88355e1.png)
+![main_diagram](https://github.com/nickPaterakis/reactive-microservices/assets/36018286/9a97847c-4a09-4c58-8025-533a7dbb19a7)
+
 
 # OAuth Flow
 
