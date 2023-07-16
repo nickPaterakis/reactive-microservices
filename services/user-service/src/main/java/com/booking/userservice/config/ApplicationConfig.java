@@ -27,5 +27,4 @@ public class ApplicationConfig {
     public WebClient.Builder loadBalancedWebClientBuilder() {
         return WebClient.builder();
     }
-
 }

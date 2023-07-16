@@ -50,10 +50,6 @@ spring:
             backOffInitialInterval: 500
             backOffMaxInterval: 1000
             backOffMultiplier: 2.0
-        output-users:
-          destination: users
-          producer:
-            required-groups: auditGroup
         output-reservations:
           destination: reservations
           producer:
