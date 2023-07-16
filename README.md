@@ -3,7 +3,7 @@
 
 Reactive microservices project using microservices architecture and implements reactive programming, OAuth 2.0 authorization, Container Orchestration, and microservices design patterns like Choreography-based saga and Database per Service. The project follows the  <a href="https://12factor.net/"> twelve-factor app </a> methodology for building software-as-a-service applications.
 
-This project uses technologies like Spring Boot, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, OAuth 2.0, OpenID, Keycloak, MySQL, MongoDB, Docker, and Kubernetes.
+This project uses technologies like Spring Boot, WebFlux, Spring Cloud Stream, Maven, RabbitMQ, OAuth 2.0, OpenID, Keycloak, PostgreSQL, MySQL, MongoDB, Docker, and Kubernetes.
 
 You can find the front-end of the application [here](https://github.com/nickPaterakis/booking-web-app).
 
