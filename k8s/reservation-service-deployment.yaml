@@ -19,8 +19,8 @@ kind: ConfigMap
 metadata:
   name: reservation-service
 data:
-  EMAIL: nikolas.paterakis@gmail.com
-  EMAIL_PASSWORD: rwjhsweknabdkmjh
+  EMAIL: changeIt
+  EMAIL_PASSWORD: changeIt
   SPRING_PROFILES_ACTIVE: kubernetes
 ---
 apiVersion: v1
